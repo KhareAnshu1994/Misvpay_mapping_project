@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.Models
+{
+    public class ArnPrmRmcodeMappingDetails
+    {
+        public string arn_code { get; set; }
+        public string arn_name { get; set; }
+        public string ufc_code { get; set; }
+        public string ufc { get; set; }
+        public string ufc_region { get; set; }
+        public string zone { get; set; }
+        public string prm_code { get; set; }
+        public string prm_emp_code { get; set; }
+        public string prm_name { get; set; }
+        public string ufc_location { get; set; }
+        public string prm { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? valid_from { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? valid_upto { get; set; }
+        public DateTime? lstupdate { get; set; }
+        public DateTime? creationdt { get; set; }
+        public string sap_region_code { get; set; }
+        public string sap_zone_code { get; set; }
+        public string channel_code { get; set; }
+
+    }
+
+
+}

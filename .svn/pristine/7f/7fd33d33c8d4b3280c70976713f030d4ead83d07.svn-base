@@ -1,0 +1,74 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalArnPrmRmcodeMapping : IDalArnPrmRmcodeMapping
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<ArnPrmRmcodeMappingDetails> GetArnPrmRmcodeMapping(MapSearchActivites e)
+        {
+            List<ArnPrmRmcodeMappingDetails> ARN = new List<ArnPrmRmcodeMappingDetails>();
+
+            using (OracleConnection con = new OracleConnection(CustomHelper.CustomHelper.getConnectionStringForMapping("MISVPAY_TBL_PRM_MAPPING_RTL", e.ufc_name)))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "GETALL_PRM_MAPPING_RTL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                cmd.Parameters.Add(new OracleParameter("ufcname", e.ufc_name));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            ArnPrmRmcodeMappingDetails a = new ArnPrmRmcodeMappingDetails();
+                            a.arn_code = Convert.ToString(dr["arn_code"]);
+                            a.arn_name = Convert.ToString(dr["arn_name"]);
+                            a.ufc_code = Convert.ToString(dr["ufc_code"]);
+                            a.ufc = Convert.ToString(dr["ufc"]);
+                            a.ufc_region = Convert.ToString(dr["ufc_region"]);
+                            a.zone = Convert.ToString(dr["zone"]);
+                            a.prm_code = Convert.ToString(dr["prm_code"]);
+                            a.prm_emp_code = Convert.ToString(dr["prm_emp_code"]);
+                            a.prm_name = Convert.ToString(dr["prm_name"]);
+                            a.ufc_location = Convert.ToString(dr["ufc_location"]);
+                            a.prm = Convert.ToString(dr["prm"]);
+                            a.valid_from = (DateTime?)(dr["valid_from"]);
+                            a.valid_upto = dr["valid_upto"] == DBNull.Value ? null : (DateTime?)dr["valid_upto"];
+                            a.lstupdate = dr["lstupdate"] == DBNull.Value ? null : (DateTime?)dr["lstupdate"];
+                            a.creationdt = dr["creationdt"] == DBNull.Value ? null : (DateTime?)dr["creationdt"];
+                            a.channel_code = Convert.ToString(dr["channel_code"]);
+
+
+                            ARN.Add(a);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Arn Master Data (ArnMasterDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ARN;
+        }
+    }
+}

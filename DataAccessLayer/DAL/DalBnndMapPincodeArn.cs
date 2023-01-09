@@ -1,0 +1,185 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalBnndMapPincodeArn : IdalBnndMapPincodeArn
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        static string strconTemp = ConfigurationManager.ConnectionStrings["OracleTEMP"].ToString();
+        public List<BnndMapPincodeArnDetails> GetBnndMapPincodeArn(MapSearchActivites e)
+        {
+            List<BnndMapPincodeArnDetails> BNND = new List<BnndMapPincodeArnDetails>();
+            using (OracleConnection con = new OracleConnection(CustomHelper.CustomHelper.getConnectionStringForMapping("MISVPAY_TBL_ARN_PINCODE_TO_RM_MAPPING_RTL", e.ufc_name)))
+            {
+                OracleCommand cmd = new OracleCommand("GETALL_ARN_PINCODE_TO_RM_MAPPING_RTL", con);//Get_All_Tbl_BnndMapPincodeArn_Data
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                cmd.Parameters.Add(new OracleParameter("ufcname", e.ufc_name));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            BnndMapPincodeArnDetails b = new BnndMapPincodeArnDetails();
+                            b.id = Convert.ToInt32(dr["id"]);
+                            b.arn_number = dr["ARN_NUMBER"] != DBNull.Value ? dr["ARN_NUMBER"].ToString() : "";
+                            b.pin_code = dr["PINCODE"] == DBNull.Value ? '\0' : Convert.ToInt32(dr["PINCODE"]);
+                            b.arn_name = dr["ARN_NAME"] != DBNull.Value ? dr["ARN_NAME"].ToString() : "";
+                            b.rm_code = dr["RM_CODE"] != DBNull.Value ? dr["RM_CODE"].ToString() : "";
+                            b.rm_name = dr["RM_NAME"] != DBNull.Value ? dr["RM_NAME"].ToString() : "";
+                            b.region_code = dr["REGION_CODE"] != DBNull.Value ? dr["REGION_CODE"].ToString() : "";
+                            b.region_name = dr["REGION_NAME"] != DBNull.Value ? dr["REGION_NAME"].ToString() : "";
+                            b.ufc_code = Convert.ToString(dr["UFC_CODE"]);
+                            b.ufc_name = dr["UFC_NAME"] != DBNull.Value ? dr["UFC_NAME"].ToString() : "";
+                            b.zone = dr["ZONE"] != DBNull.Value ? dr["ZONE"].ToString() : "";
+                            b.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+                            b.sap_region_code = dr["sap_region_code"] != DBNull.Value ? dr["sap_region_code"].ToString() : "";
+                            b.sap_zone_code = dr["sap_zone_code"] != DBNull.Value ? dr["sap_zone_code"].ToString() : "";
+
+                            BNND.Add(b);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal BnndMapPincodeArn Data (BnndMapPincodeArnDetails Model) ERROR :" + ex.Message);
+
+                    throw;
+                }
+                con.Close();
+            }
+
+            return BNND;
+        }
+
+        #region Update ARN PINCODE TO RM MAPPING RTL
+        public Response Update_ARN_PINCODE_TO_RM_MAPPING_RTL(List<BnndMapPincodeArnDetails> objList)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    for (int i = 0; i < objList.Count; i++)
+                    {
+                        OracleCommand cmd = new OracleCommand("UPDATE_MISVPAY_TBL_ARN_PINCODE_TO_RM_MAPPING_RTL", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        var split_rm_code = objList[i].rm_code.Split('|');
+
+                        var arr_rm_code = split_rm_code.ToArray();
+
+                        cmd.Parameters.Add(new OracleParameter("v_id", objList[i].id));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[0]));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[1]));
+
+                        cmd.ExecuteNonQuery();
+
+                        if (cmd.ExecuteNonQuery() < 0)
+                        {
+                            res.status = true;
+                            res.message = "Data Updated Successfully";
+                        }
+                        else
+                        {
+                            res.status = false;
+                            res.message = "Data not Updated";
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+        #region Bulk Update Rm Code ARN PINCODE TO RM MAPPING RTL
+        public Response Bulk_Update_ARN_Pincode(BnndMapPincodeArnDetails objModel)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    OracleCommand cmd = new OracleCommand("UPDATE_BULK_RMCODE_misvpay_tbl_arn_pincode_to_rm_mapping_rtl", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    var split_new_rm = objModel.New_rmcode.Split('|');
+
+                    var new_rm = split_new_rm.ToArray();
+
+                    var split_old_rm = objModel.Old_rmcode.Split('|');
+                    var old_rm = split_old_rm.ToArray();
+
+                    cmd.Parameters.Add(new OracleParameter("S_rm_code", new_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("p_rm_code", old_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("S_rm_name", new_rm[1]));
+
+                    cmd.ExecuteNonQuery();
+
+                    if (cmd.ExecuteNonQuery() < 0)
+                    {
+                        res.status = true;
+                        res.message = "RM Code Replaced Successfully";
+                    }
+                    else
+                    {
+                        res.status = false;
+                        res.message = "RM Code not Replaced Successfully";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+
+    }
+
+}

@@ -1,0 +1,188 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ExceptionMappingInstitutionDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-12">
+    <h4 style="font-size:20px">EXCEPTIONS MAPPING</h4>
+</div>
+<div class="col-md-4 text-end text-danger">
+    @*Access Valid Till :  01/09/2022 to 12/09/2022*@
+</div>
+<hr style="
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-right: 0px;
+            width: 810px;
+            height: 0.80px;
+        " />
+
+@* <div id="left">
+          <div id="sidebar">
+              <div id="accordian">
+                  <h1 class="serchtitle">
+                      <span id="ContentPlaceHolder1_spnMobCategoryName" class="category-name"></span>
+                  </h1>
+                  <p class="filter-option-heading">Search</p>
+                  <div class="row pt-3 filter-option-content" id="step1" style="
+    padding-top: 0px;">
+                      <div class="form-group col-md-3">
+                          <input type="text" class="form-control" />
+                      </div>
+                      <div class="col-md-3"><a href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100">Search</a></div>
+                  </div>
+              </div>
+          </div>
+      </div>*@
+<hr style="
+                margin-top: 0px;
+                margin-bottom: 0px;
+                border-top-width: 0px;
+                border-bottom-width: 0px;
+            " />
+<div id="left" style="padding-bottom:8px;">
+    <div id="sidebar">
+        <div id="accordian">
+            <h1 class="serchtitle">
+                <span id="ContentPlaceHolder1_spnMobCategoryName" class="category-name"></span>
+            </h1>
+            <p class="filter-option-heading">Update Records(Bulk Update On Basis Of RM To New RM)</p>
+            <div class="row pt-3 filter-option-content" id="step1" style="
+      padding-top: 0px;">
+                <div class="col-md-12 row">
+                    <div class="form-group col-md-3">
+                        <select class="form-select">
+                            <option>Old RM_Code</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select class="form-select">
+                            <option>Replace with New RM_Code</option>
+                            <option> 4546</option>
+                            <option>4251</option>
+                            <option>D-PRM-115</option>
+                            <option>NORM</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" placeholder="Effective date" />
+                    </div>
+                    <div class="col-md-2"><a href="#" id="" name="" class="btn btn-primary w-100">Save</a></div>
+                    <div class="col-md-2 pb-2">
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-solid fa-download"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" type="button">PDF</button></li>
+                                <li><button class="dropdown-item" type="button">Excel</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <hr style="
+          margin-top: 0px;
+          margin-bottom: 0px;
+          border-top-width: -1;
+          border-bottom-width: 0px;
+          border-top-width: 0px;
+      " />
+
+    <br>
+    <table>
+        <!-- 1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a> -->
+        <tbody>
+            <tr>
+
+                <td>
+                    @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                    @*<select class="form-select" id="Quartertxt">
+                            <option>Select Quarter</option>
+                            <option value="202353">2022-23-Q1</option>
+                            <option value="202354">2022-23-Q2</option>
+                            <option value="202355">2022-23-Q3</option>
+                            <option value="202356">2022-23-Q4</option>
+                        </select>*@
+                </td>
+                <td>
+                    <input type="text" class="form-control" id="txtsearch">
+                </td>
+
+                <td>
+                    <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100" style="margin-left: 10px;">Search</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <div class="row" style="padding-left:15px;">
+        <div class="col-md-12">
+            <div class="overflow-auto" id="TableData">
+                @Html.Partial("_ExceptionMappingInstitutionView", Model)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#tblExceptionMappingInst').DataTable({
+                searching: false,
+
+            });
+
+
+            $("#btn_search").click(function () {
+                let obj = {}
+
+                let searchText = $("#txtsearch").val();
+                let slctQurater = $("#select1").val();
+
+                obj.search_text = searchText;
+                //obj.quarter = slctQurater;
+
+
+                $("#TableData").show();
+                $.ajax({
+                    url: "/ExceptionMappingInstitution/_ExceptionMappingInstitutionView",
+                    type: "get",
+                    data: obj,
+                    dataType: "html",
+                    success: function (result) {
+                        $("#TableData").html(result);
+                        table = $('#tblExceptionMappingInst').DataTable({ searching: false, });
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 401) {
+                            window.location.reload();
+                            return;
+                        }
+                        $("#TableData").hide();
+                    }
+
+                });
+
+            });
+        });
+
+    </script>
+
+

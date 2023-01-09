@@ -1,0 +1,341 @@
+﻿@model IEnumerable<Mapping_Solution.Models.VymoDistributorMappingDetail>
+@using Mapping_Solution.CustomHelper;
+
+<table class="table small border table-hover" id="tblVymoDistributorMapping">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th scope="col" id="colall">All<input type="checkbox" class="form-check-input" id="alltxt" /> </th>
+            <th scope="col">Lead Code <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col">Assigned To <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+            <th scope="col" class="bg-danger">User ID <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">Creation Date <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">Last Updated Date <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">Distributor Name <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">Email <i class="fa fa-solid fa-sort" onclick="sortBy(7)"></i></th>
+            <th scope="col">Phone <i class="fa fa-solid fa-sort" onclick="sortBy(8)"></i></th>
+            <th scope="col">Primary Phone Number <i class="fa fa-solid fa-sort" onclick="sortBy(9)"></i></th>
+            <th scope="col">Status <i class="fa fa-solid fa-sort" onclick="sortBy(10)"></i></th>
+            <th scope="col">Category <i class="fa fa-solid fa-sort" onclick="sortBy(11)"></i></th>
+            <th scope="col">Partner Recruitment Date <i class="fa fa-solid fa-sort" onclick="sortBy(12)"></i></th>
+            <th scope="col">Engagement Frequency <i class="fa fa-solid fa-sort" onclick="sortBy(13)"></i></th>
+            <th scope="col">ARN Number <i class="fa fa-solid fa-sort" onclick="sortBy(14)"></i></th>
+            <th scope="col">Sub ARN <i class="fa fa-solid fa-sort" onclick="sortBy(15)"></i></th>
+            <th scope="col">Sub ARN Name <i class="fa fa-solid fa-sort" onclick="sortBy(16)"></i></th>
+            <th scope="col">Group Name <i class="fa fa-solid fa-sort" onclick="sortBy(17)"></i></th>
+            <th scope="col">Group ARN <i class="fa fa-solid fa-sort" onclick="sortBy(18)"></i></th>
+            <th scope="col">Commission Category <i class="fa fa-solid fa-sort" onclick="sortBy(19)"></i></th>
+            <th scope="col">Tier <i class="fa fa-solid fa-sort" onclick="sortBy(20)"></i></th>
+            <th scope="col">State <i class="fa fa-solid fa-sort" onclick="sortBy(21)"></i></th>
+            <th scope="col">City <i class="fa fa-solid fa-sort" onclick="sortBy(22)"></i></th>
+            <th scope="col">Home Location <i class="fa fa-solid fa-sort" onclick="sortBy(23)"></i></th>
+            <th scope="col">ARN Validity <i class="fa fa-solid fa-sort" onclick="sortBy(24)"></i></th>
+            <th scope="col">Channel <i class="fa fa-solid fa-sort" onclick="sortBy(25)"></i></th>
+            <th scope="col">Distributor PAN <i class="fa fa-solid fa-sort" onclick="sortBy(26)"></i></th>
+            <th scope="col">Distributor Type <i class="fa fa-solid fa-sort" onclick="sortBy(27)"></i></th>
+            <th scope="col">Effective Date <i class="fa fa-solid fa-sort" onclick="sortBy(28)"></i></th>
+            <th scope="col">Secondary Contact Number <i class="fa fa-solid fa-sort" onclick="sortBy(29)"></i></th>
+            <th scope="col">Residential Contact Number <i class="fa fa-solid fa-sort" onclick="sortBy(30)"></i></th>
+            <th scope="col">Pincode <i class="fa fa-solid fa-sort" onclick="sortBy(31)"></i></th>
+            <th scope="col">Birth Date <i class="fa fa-solid fa-sort" onclick="sortBy(32)"></i></th>
+            <th scope="col">Dist Key <i class="fa fa-solid fa-sort" onclick="sortBy(33)"></i></th>
+            <th scope="col">Mapping City <i class="fa fa-solid fa-sort" onclick="sortBy(34)"></i></th>
+            <th scope="col">Tagged UTI Branch <i class="fa fa-solid fa-sort" onclick="sortBy(35)"></i></th>
+            <th scope="col">Tagged UTI Branch Code <i class="fa fa-solid fa-sort" onclick="sortBy(36)"></i></th>
+            <th scope="col">Tagged MISVPAY Branch Code <i class="fa fa-solid fa-sort" onclick="sortBy(37)"></i></th>
+            <th scope="col">Alternate Address Line 1 <i class="fa fa-solid fa-sort" onclick="sortBy(38)"></i></th>
+            <th scope="col">Alternate Address Line 2 <i class="fa fa-solid fa-sort" onclick="sortBy(39)"></i></th>
+            <th scope="col">Alternate City <i class="fa fa-solid fa-sort" onclick="sortBy(40)"></i></th>
+            <th scope="col">Alternate State <i class="fa fa-solid fa-sort" onclick="sortBy(41)"></i></th>
+            <th scope="col">Alternate Pincode <i class="fa fa-solid fa-sort" onclick="sortBy(42)"></i></th>
+            <th scope="col">Anniversary Date <i class="fa fa-solid fa-sort" onclick="sortBy(43)"></i></th>
+            <th scope="col">Distributor ARN <i class="fa fa-solid fa-sort" onclick="sortBy(44)"></i></th>
+            <th scope="col">Alternate Email <i class="fa fa-solid fa-sort" onclick="sortBy(45)"></i></th>
+            <th scope="col">Distributor Segment <i class="fa fa-solid fa-sort" onclick="sortBy(46)"></i></th>
+            <th scope="col">Alternate Contact Number <i class="fa fa-solid fa-sort" onclick="sortBy(47)"></i></th>
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td><input type="checkbox" class="form-check-input row-checkbox" data-id="@item.id"></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lead_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.assigned_to)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.user_id)*@
+                    @* @Html.DropDownListFor(modelItem => item.user_id, ViewBag.rm_code as SelectList, item.user_id, new { @class = "form-select rm-select" })*@
+                    <select class="form-select rm-select rm_code_list">
+
+                        @foreach (var drp in ViewBag.rm_code)
+                        {
+                            if (item.user_id == drp.Value)
+                            {
+                                <option value="@drp.Value" selected>@drp.Value, @drp.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@drp.Value">@drp.Value, @drp.Text</option>
+                            }
+
+                        }
+                    </select>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.creation_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.last_updated_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.primary_phone_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.partner_recruitment_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.engagement_frequency)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sub_arn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sub_arn_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.group_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.group_arn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.commission_category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.state)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.home_location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_validity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.channel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_pan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.effective_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.secondary_contact_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.residential_contact_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pincode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.birth_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dist_key)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.mapping_city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tagged_uti_branch)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tagged_uti_branch_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tagged_misvpay_branch_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_address_line_1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_address_line_2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_state)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_pincode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.anniversary_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_arn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_segment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alternate_contact_number)
+                </td>
+                @* <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+
+    <tr id="ufc_data_update_btn_sec">
+
+        <td><input type="button" id="updateBtn" class="btn btn-primary" value="Update" /></td>
+        <td><input type="button" id="ActivityComplete_Btn" class="btn btn-primary" value="Activity Completed" data-mappig_id="" data-mappig_trans_id="" /></td>
+        <td><input type="text" class="form-control" id="remark_text" placeholder="Remark" style="margin-left: 0px;" /></td>
+    </tr>
+
+
+</table>
+
+
+<script>
+    var onClick = function () {
+    };
+
+    // $('#button').click(onClick);
+
+    $('#button2').click(function () {
+        alert('Are you sure to proceed?');
+    });
+
+    $('#updateBtn').click(function () {
+
+        var data = [];
+
+        $(".row-checkbox").each(function () {
+
+
+            if ($(this).is(":checked")) {
+
+                var id = $(this).attr("data-id");
+                var user_id = $(this).parents("tr").find(".rm-select").val();
+
+                data.push({ 'id': id, 'user_id': user_id })
+
+            }
+
+        });
+        console.log(data);
+        if (data.length > 0) {
+            jsondata = JSON.stringify(data);
+
+            $.ajax({
+                url: "/VymoDistributorMapping/Update",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                data: jsondata,
+                success: function (data) {
+                    alert(JSON.stringify(data.message));
+                },
+                error: function (err) {
+                    console.error(err.message);
+                },
+            })
+        }
+        else {
+            alert("Please select any item");
+        }
+        //console.log(data)
+    });
+    $('#ActivityComplete_Btn').click(function () {
+
+        if (confirm("Are you sure you want to complete this") == true) {
+
+            var mapping_id = $(this).attr('data-mappig_id');
+            var mapping_trans_id = $(this).attr('data-mappig_trans_id');
+            var remark = $("#remark_text").val().trim();
+            if (remark != "") {
+
+                var data = {
+                    mapping_id: mapping_id,
+                    mapping_trans_id: mapping_trans_id,
+                    remark: remark
+                };
+                console.log(data);
+
+                $.ajax({
+                    url: "/MappingChangesAccess/UpdateActivity",
+                    //contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    type: "POST",
+                    data: data,
+                    success: function (data) {
+                        alert(JSON.stringify(data.message));
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.error(err.message);
+                    },
+                })
+            }
+            else {
+                $("#remark_text").focus();
+            }
+
+
+        }
+
+    })
+
+</script>
+
+
+@*<div class="col-md-12 mt-3">
+        <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Update </a><p>(Update Selected Record Only As Per Above Search Criteria)</p>
+    </div>*@
+
+
+
+
+

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MappingChangesAccessDetail>
+
+@{
+    ViewBag.Title = "Mapping Change Access";
+    ViewBag.page_id = "46";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Mapping Change Access</h5>
+        <form>
+            <hr>
+            <div class="row pt-3">
+                <div class="form-group col-md-4 mb-3">
+                    <label> Access Start Date</label>
+                    <input type="date" id="access_start_Date" name="access_start_Date" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Access End Date</label>
+                    <input type="date" id="access_end_Date" name="access_end_Date" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Kra Valid From</label>
+                    <input type="date" id="kravalidfrom" name="kra_valid_from" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Vymo Valid From</label>
+                    <input type="date" id="vymo_valid_from" name="vymo_valid_from" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Stages </label>
+                    <select name="SelectStage" value="1" class="form-select" , id="select1">
+                        @if (ViewBag.stage != null)
+                        {
+                            <option value="0">All</option>
+                            foreach (var item in ViewBag.stage)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    @*@Html.DropDownList("SelectStage", ViewBag.stage as SelectList, "Open for Changes", new { @class = "form-select", id = "select1" })*@
+
+                    @*<select name="ddlEmpRole" id="ddlEmpRole" class="form-select w-100">
+                            <option selected="selected" value="Select">Select</option>
+                            <option value="1">Open for Changes</option>
+                            <option value="2">Work In Progress</option>
+                            <option value="3">Final Submission</option>
+                            <option value="4">Ready to Move for Prodcution</option>
+                            <option value="4">Activity Completed</option>
+                        </select>*@
+                </div>
+                <div class="col-md-12 mt-3">
+                    <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary" onclick="" style="margin-left:0px;">Search</a>
+                    <a href="@Url.Action("Index","MappingChangesAccess")" id="btn_search" name="btnsearch" class="btn btn-primary">Add New Control Record</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        @*1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a>*@
+        <div class="overflow-auto" id="TableData">
+            @Html.Partial("_MappingChangesAccessView", Model)
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    $(document).ready(function () {
+
+        $('#tblMappingChangeAccess').DataTable({
+            searching: false
+        });
+
+
+        $('#btn_search').click(function () {
+
+            let obj = {};
+
+            let accessStartDate = $('#access_start_Date').val();
+            let accessEndDate = $('#access_end_Date').val();
+            let kraValidfrom = $('#kravalidfrom').val();
+            let vymovalidFrom = $('#vymo_valid_from').val();
+            let stage = $('#select1').val();
+
+            obj.access_start_date = accessStartDate;
+            obj.access_end_date = accessEndDate;
+            obj.kra_valid_from = kraValidfrom;
+            obj.vymo_valid_from = vymovalidFrom;
+            obj.stages = stage;
+
+
+            $('#TableData').show();
+            $.ajax({
+                url: "/MappingChangesAccess/_MappingChangesAccessView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblMappingChangeAccess').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+
+        });
+
+    });
+
+</script>

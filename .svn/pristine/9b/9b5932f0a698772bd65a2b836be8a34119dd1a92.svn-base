@@ -1,0 +1,367 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+
+    public class DALAddEmpDropDown : IDALAddEmpDropDown
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        //public List<AddEmployeeDetails> GetChannel()
+        //{
+        //    List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+        //    using (OracleConnection con = new OracleConnection(strcon))
+        //    {
+        //        OracleCommand cmd = new OracleCommand("MISVPAY_channelmaster_GETALL", con);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        cmd.Parameters.Add(new OracleParameter("search_text", null ));
+        //        cmd.Parameters.Add(new OracleParameter("channelccode", null));
+        //        cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        try
+        //        {
+        //            con.Open();
+        //            OracleDataReader dr = cmd.ExecuteReader();
+        //            if (dr.HasRows)
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    AddEmployeeDetails a = new AddEmployeeDetails();
+        //                    a.ChannelCode = Convert.ToString(dr["channel_code"]);
+                         //   a.ChannelName = Convert.ToString(dr["channel_name"]);
+
+        //                    ObjAddEmp.Add(a);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Helper.WriteLog("DALAddEmpDropDown Data (AddEmployeeDetails Model) ERROR :" + ex.Message);
+        //            throw;
+        //        }
+        //        con.Close();
+        //    }
+        //    return ObjAddEmp;
+        //}
+
+        public List<AddEmployeeDetails> GetEMPRole() // seperate table
+        {
+            List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("GET_ALL_TBL_ROLE", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            AddEmployeeDetails a = new AddEmployeeDetails();
+                            a.EmployeeRole = Convert.ToString(dr["NAME"]);
+                            a.listofrole_srno = Convert.ToInt32(dr["srno"]);
+
+                            ObjAddEmp.Add(a);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                con.Close();
+            }
+            return ObjAddEmp;
+        }
+
+        public List<AddEmployeeDetails> GetRegion()
+        {
+            List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "get_region_name";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            AddEmployeeDetails a = new AddEmployeeDetails();
+                            a.Region = Convert.ToString(dr["umr_region_name"]);
+                            a.Region_code = Convert.ToString(dr["umr_region_code"]);
+
+
+                            ObjAddEmp.Add(a);
+                        }
+                    }
+
+                }
+                catch (Exception)
+                {
+                    //Helper.WriteLog("Arn Master Data (ArnMasterDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ObjAddEmp;
+        }
+
+        // Get Zone Dropdown
+        //public List<AddEmployeeDetails> GetZone()
+        //{
+        //    List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+
+        //    using (OracleConnection con = new OracleConnection(strcon))
+        //    {
+        //        OracleCommand cmd = new OracleCommand();
+        //        cmd.Connection = con;
+        //        cmd.CommandText = "get_all_zone_master";
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        cmd.Parameters.Add(new OracleParameter("search_text", null));
+        //        cmd.Parameters.Add(new OracleParameter("zone_code",null));
+
+        //        cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        try
+        //        {
+        //            con.Open();
+        //            OracleDataReader dr = cmd.ExecuteReader();
+        //            if (dr.HasRows)
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    AddEmployeeDetails a = new AddEmployeeDetails();
+        //                    a.Zone = Convert.ToString(dr["umz_zone_code"]);
+
+
+        //                    ObjAddEmp.Add(a);
+        //                }
+        //            }
+
+        //        }
+        //        catch (Exception)
+        //        {
+        //            //Helper.WriteLog("Arn Master Data (ArnMasterDetails Model) ERROR :" + ex.Message);
+        //            throw;
+        //        }
+        //        con.Close();
+        //    }
+        //    return ObjAddEmp;
+        //}
+
+        //public List<AddEmployeeDetails> GetLocation()
+        //{
+        //    List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+        //    using (OracleConnection con = new OracleConnection(strcon))
+        //    {
+        //        OracleCommand cmd = new OracleCommand("GET_ALL_TBL_LOCATIONUFC_DETAILS", con);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        try
+        //        {
+        //            con.Open();
+        //            OracleDataReader dr = cmd.ExecuteReader();
+        //            if (dr.HasRows)
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    AddEmployeeDetails a = new AddEmployeeDetails();
+        //                    a.Loaction_Ufc = Convert.ToString(dr["LOCATION_UFC"]);
+
+        //                    ObjAddEmp.Add(a);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Helper.WriteLog(ex.Message);
+        //            throw;
+        //        }
+        //        con.Close();
+        //    }
+        //    return ObjAddEmp;
+        //}
+        //public List<AddEmployeeDetails> GetFunctionalRole()
+        //{
+        //    List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+        //    using (OracleConnection con = new OracleConnection(strcon))
+        //    {
+        //        OracleCommand cmd = new OracleCommand("GET_ALL_TBL_FUNCTINALROLE_DETAILS", con);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        try
+        //        {
+        //            con.Open();
+        //            OracleDataReader dr = cmd.ExecuteReader();
+        //            if (dr.HasRows)
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    AddEmployeeDetails a = new AddEmployeeDetails();
+        //                    a.FunctionalRole = Convert.ToString(dr["FUNCTIONALROLE"]);
+
+        //                    ObjAddEmp.Add(a);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Helper.WriteLog(ex.Message);
+        //            throw;
+        //        }
+        //        con.Close();
+        //    }
+        //    return ObjAddEmp;
+        //}
+        //public List<AddEmployeeDetails> GetCity()
+        //{
+        //    List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+        //    using (OracleConnection con = new OracleConnection(strcon))
+        //    {
+        //        OracleCommand cmd = new OracleCommand("GET_ALL_TBL_CITY_DETAILS", con);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        try
+        //        {
+        //            con.Open();
+        //            OracleDataReader dr = cmd.ExecuteReader();
+        //            if (dr.HasRows)
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    AddEmployeeDetails a = new AddEmployeeDetails();
+        //                    a.City = Convert.ToString(dr["CITY"]);
+
+        //                    ObjAddEmp.Add(a);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Helper.WriteLog(ex.Message);
+        //            throw;
+        //        }
+        //        con.Close();
+        //    }
+        //    return ObjAddEmp;
+        //}
+        public List<AddEmployeeDetails> GetStatus()
+        {
+            List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("Get_all_tbl_Status", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            AddEmployeeDetails a = new AddEmployeeDetails();
+                            a.Status = Convert.ToString(dr["STATUS"]);
+                            a.status_id = Convert.ToInt32(dr["id"]);
+
+                            ObjAddEmp.Add(a);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog(ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ObjAddEmp;
+        }
+
+        public List<AddEmployeeDetails> GetMovement()
+        {
+            List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("Get_all_tbl_Movement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            AddEmployeeDetails a = new AddEmployeeDetails();
+                            a.TypeOfMovement = Convert.ToString(dr["MOVEMENT"]);
+                            a.movement_id = Convert.ToInt32(dr["id"]);
+
+                            ObjAddEmp.Add(a);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog(ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ObjAddEmp;
+        }
+
+        public List<AddEmployeeDetails> GetQuarter()
+        {
+            List<AddEmployeeDetails> ObjAddEmp = new List<AddEmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("Get_all_tbl_Quarter", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            AddEmployeeDetails a = new AddEmployeeDetails();
+                            a.SelectQuarter = Convert.ToString(dr["QUARTER"]);
+                            a.quarter_id = Convert.ToInt32(dr["id"]);
+
+                            ObjAddEmp.Add(a);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog(ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ObjAddEmp;
+        }
+    }
+}

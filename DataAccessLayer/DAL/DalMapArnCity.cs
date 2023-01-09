@@ -1,0 +1,208 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMapArnCity : IDalMapArnCity
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        static string strconTemp = ConfigurationManager.ConnectionStrings["OracleTEMP"].ToString();
+
+        public List<MapArnCityDetails> GetMapArnCity(MapSearchActivites e)
+        {
+            List<MapArnCityDetails> res = new List<MapArnCityDetails>();
+
+            using (OracleConnection con = new OracleConnection(CustomHelper.CustomHelper.getConnectionStringForMapping("MISVPAY_TBL_ARN_CITY_TO_RM_MAPPING_RTL", e.ufc_name)))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "GETALL_ARN_CITY_TO_RM_MAPPING_RTL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                cmd.Parameters.Add(new OracleParameter("ufcname", e.ufc_name));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            MapArnCityDetails r = new MapArnCityDetails();
+                            r.id = Convert.ToInt32(rd["id"]);
+                            r.arn = Convert.ToString(rd["arn"]);
+                            r.distributor_name = Convert.ToString(rd["distributor_name"]);
+                            r.city = Convert.ToString(rd["city"]);
+                            r.channel_code = Convert.ToString(rd["channel_code"]);
+                            r.rm_code = Convert.ToString(rd["rm_code"]);
+                            r.rm_name = Convert.ToString(rd["rm_name"]);
+                            r.valid_from = rd["valid_from"] == DBNull.Value ? null : (DateTime?)rd["valid_from"];
+                            r.ufc_code = rd["ufc_code"] != DBNull.Value ? rd["ufc_code"].ToString() : "";
+                            r.ufc_name = rd["ufc_name"] != DBNull.Value ? rd["ufc_name"].ToString() : "";
+                            r.region_code = rd["region_code"] != DBNull.Value ? rd["region_code"].ToString() : "";
+                            r.region_name = rd["region_name"] != DBNull.Value ? rd["region_name"].ToString() : "";
+                            r.zone = rd["zone"] != DBNull.Value ? rd["zone"].ToString() : "";
+                            r.sap_ufc_code = rd["sap_ufc_code"] != DBNull.Value ? rd["sap_ufc_code"].ToString() : "";
+                            r.sap_region_code = rd["sap_region_code"] != DBNull.Value ? rd["sap_region_code"].ToString() : "";
+                            r.sap_zone_code = rd["sap_zone_code"] != DBNull.Value ? rd["sap_zone_code"].ToString() : "";
+
+
+                            res.Add(r);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MapArnCity Data (MapArnCityDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return res;
+            }
+        }
+
+        #region Update MapArn City
+        public Response UpdateMapArnCity(List<MapArnCityDetails> objList)
+        {
+
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+
+                    for (int i = 0; i < objList.Count; i++)
+                    {
+                        OracleCommand cmd = new OracleCommand("UPDATE_misvpay_tbl_arn_city_to_rm_mapping_rtl", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        var split_rm_code = objList[i].rm_code.Split('|');
+
+                        var arr_rm_code = split_rm_code.ToArray();
+
+
+
+                        cmd.Parameters.Add(new OracleParameter("v_id", objList[i].id));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[0]));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[1]));
+
+
+
+
+                        var a = cmd.ExecuteNonQuery();
+
+                        if (a < 0)
+                        {
+                            res.status = true;
+                            res.message = "Data Updated Successfully";
+                        }
+                        else
+                        {
+                            res.status = false;
+                            res.message = "Data not Updated";
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+        #region Bulk Update Rm Code ARN CITY TO RM MAPPING RTL
+        public Response Bulk_Update_ARN_CITY_TO_RM_MAPPING_RTL(MapArnCityDetails objModel)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    //for (int i = 0; i < objList.Count; i++)
+                    //{
+                    OracleCommand cmd = new OracleCommand("UPDATE_BULK_RMCODE_MISVPAY_TBL_ARN_CITY_TO_RM_MAPPING_RTL", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    var split_new_rm = objModel.New_rmcode.Split('|');
+
+                    var new_rm = split_new_rm.ToArray();
+
+                    var split_old_rm = objModel.Old_rmcode.Split('|');
+                    var old_rm = split_old_rm.ToArray();
+
+                    cmd.Parameters.Add(new OracleParameter("S_rm_code", new_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("p_rm_code", old_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("S_rm_name", new_rm[1]));
+
+
+
+                    cmd.ExecuteNonQuery();
+
+                    if (cmd.ExecuteNonQuery() < 0)
+                    {
+                        res.status = true;
+                        res.message = "RM Code Replaced Successfully";
+                    }
+                    else
+                    {
+                        res.status = false;
+                        res.message = "RM Code not Replaced Successfully";
+                    }
+
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+    }
+}

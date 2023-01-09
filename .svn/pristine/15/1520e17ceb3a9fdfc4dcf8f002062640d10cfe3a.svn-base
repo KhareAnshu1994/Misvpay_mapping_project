@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Mapping_Solution.Models.AssignRoleToUsersDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 style="font-size:20px;">Assign Role To Users</h4>
+        </div>
+        <hr id="arn-master-secondhr">
+        <div class="col-md-6">
+    <tr>
+        <th scope="col">Records <i class="fa fa-solid"></i></th>
+        <td>
+            <select class="form-select" id="records">
+                <option>50</option>
+                <option>100</option>
+                <option>200</option>
+                <option>All</option>
+            </select>
+        </td>
+    </tr>
+    </div>
+    <div class="col-md-6">
+        <label>Search:<input type="search" class="form-control" placeholder=""></label>
+    </div>
+    </div>
+    <hr>
+    <div class="overflow-auto">
+        @Html.Partial("_AssignRoleToUsersView")
+        </div>
+       

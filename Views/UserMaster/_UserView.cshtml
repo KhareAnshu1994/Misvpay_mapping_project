@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Mapping_Solution.Models.UserDetail>
+<table class="table small border" id="tblUserMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th></th>
+            <th scope="col">EMP_ID</th>
+            <th scope="col">EMPNAME</th>
+            <th scope="col">EMP_ROLE</th>
+            <th scope="col">CHANNEL_CODE</th>
+            <th scope="col">UFC_CODE</th>
+            <th scope="col">START_DATE</th>
+            <th scope="col">END_DATE</th>
+            <th scope="col">VALID_FROM</th>
+            <th scope="col">VALID_UPTO</th>
+            <th scope="col">STATUS</th>
+            <th scope="col">REMARK</th>
+           @* <th scope="col">DV_FLAG</th>*@
+            <th scope="col">MISVPAY_CODE</th>
+            <th scope="col">FUNC_ROLE</th>
+           @* <th scope="col">LAST_UPDATED_DATE</th>
+            <th scope="col">LAST_UPDATED_USER</th>*@
+            <th scope="col">REGION_CODE</th>
+           @* <th scope="col">MAIL</th>*@
+            <th scope="col">ZONE</th>
+            <th scope="col">REPORTING_ROLE</th>
+            <th scope="col">POWER_USER_CODE</th>
+            <th scope="col">ACCESS_FROM</th>
+            <th scope="col">ACCESS_UPTO</th>
+            @*<th scope="col">CITY</th>*@
+            <th scope="col">SAP_UFC_CODE</th>
+            <th scope="col">SAP_REGION_CODE</th>
+            <th scope="col">SAP_ZONE_CODE</th>
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input" /></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emp_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.empname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emp_role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.channel_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.start_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.end_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_upto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.remark)
+                </td>
+               @* <td>
+                    @Html.DisplayFor(modelItem => item.dv_flag)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.misvpay_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.func_role)
+                </td>
+
+               @* <td>
+                    @Html.DisplayFor(modelItem => item.last_updated_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.last_updated_user)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_code)
+                </td>
+               @* <td>
+                    @Html.DisplayFor(modelItem => item.mail)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.reporting_role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.power_user_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.access_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.access_upto)
+                </td>
+              @*  <td>
+                    @Html.DisplayFor(modelItem => item.city)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_zone_code)
+                </td>
+
+                @* <td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Edit</option>
+                            <option>Save</option>
+                            <option>Delete</option>
+                        </select>
+                    </td>*@
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

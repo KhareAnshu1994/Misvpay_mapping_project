@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Mapping_Solution.Models.SchemeCatConversionDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>SCHEME CATEGORY CONVERSION MASTER</h5>
+    </div>
+</div>
+<hr id="arn-master-firsthr">
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="row pt-3 id=" step1" ="">
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control" id="select3"></td>
+                                    <td>
+                                        @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                                        @*<select class="form-select" id="select1">
+                                                <option>Select Quarter</option>
+                                                <option value="202353">2022-23-Q1</option>
+                                                <option value="202354">2022-23-Q2</option>
+                                                <option value="202355">2022-23-Q3</option>
+                                                <option value="202356">2022-23-Q4</option>
+                                            </select>*@
+                                    </td>
+                                    <td>
+
+                                        @Html.DropDownList("SchemeTypes", ViewBag.schemetype as SelectList, "Select Scheme Type", new { @class = "form-select", id = "select2", style = "width:200px;" })
+
+                                        @*<select class="form-select" id="select2" style="width:200px;">
+                                                <option>Select Scheme Type</option>
+                                                <option value="1">INDEX FUNDS - DEBT</option>
+                                                <option value="2">INDEX FUNDS - EQUITY</option>
+                                                <option value="3">ARBITRAGE FUND</option>
+                                                <option value="4">BANKING AND PSU FUND</option>
+                                                <option value="5">CHILDREN'S FUND</option>
+                                                <option value="6">CONSERVATIVE HYBRID FUND</option>
+                                                <option value="7">BALANCED HYBRID FUND/AGGRESSIVE HYBRID FUND</option>
+                                                <option value="8">CAPITAL PROTECTION ORIENTED  SCHEMES</option>
+                                                <option value="9">CREDIT RISK FUND</option>
+                                                <option value="10">EQUITY OTHERS (C)</option>
+                                            </select>*@
+                                    </td>
+                                    <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30" style="margin-left:100px">Search</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr id="arn-master-secondhr">
+<div class="row pt-2">
+    <div class="col-md-6">
+
+
+
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+        <ul class="dropdown-menu">
+            <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+        </ul>
+    </div>
+</div>
+<div class="overflow-auto" id="TableData">
+    @Html.Partial("_SchemeCatConversionView", Model)
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblSchemeCatConversion').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let schemetype = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.scheme_type = schemetype;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/SchemeCatConversionMaster/_SchemeCatConversionView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblSchemeCatConversion').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblSchemeCatConversion").table2excel({
+                filename: "SchemeCatConversionMasterTable.xls"
+
+            });
+        });
+    });
+
+</script>

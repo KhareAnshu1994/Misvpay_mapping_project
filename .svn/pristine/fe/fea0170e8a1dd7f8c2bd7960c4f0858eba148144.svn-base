@@ -1,0 +1,78 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalAssignMenusToRole : IdalAssignMenusToRole
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+
+        public List<AssignMenusToRole> Get_AssignMenusToRole_AllDetails()
+        {
+            List<AssignMenusToRoleDetail> obj = new List<AssignMenusToRoleDetail>();
+            using (OracleConnection objConn = new OracleConnection(strcon))
+            {
+                try
+                {
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = objConn;
+                    cmd.CommandText = "MISVPAY_AssignMenusToRole_GETALL";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    
+
+                    cmd.Parameters.Add("(MenusToRole ", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    objConn.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            AssignMenusToRoleDetail dt = new AssignMenusToRoleDetail();
+
+                            dt.module_name = reader["module_name"] != DBNull.Value ? reader["module_name"].ToString() : "";
+                            dt.page_name = reader["page_name"] != DBNull.Value ? reader["page_name"].ToString() : "";
+
+                            obj.Add(dt);
+                        }
+                    }
+
+
+                    cmd.Dispose();
+                    objConn.Close();
+
+                    var uniqueMmoduls = obj.Select(x => x.module_name).Distinct().ToList();
+
+                    List<AssignMenusToRole> moduleList = new List<AssignMenusToRole>();
+
+                    foreach (var item in uniqueMmoduls)
+                    {
+                        AssignMenusToRole newItem = new AssignMenusToRole();
+                        newItem.module_name = item;
+                        newItem.page_list = obj.Where(x => x.module_name == item).Select(x => x.page_name).ToList();
+                        moduleList.Add(newItem);
+                    }
+
+
+
+
+                    return moduleList;
+                }
+
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal AssignMenusToRole Data (AssignMenusToRoleDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+            }
+
+        }
+    }
+}

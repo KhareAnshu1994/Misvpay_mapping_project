@@ -1,0 +1,18 @@
+﻿using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Mapping_Solution.DataAccessLayer.InterfaceDAL
+{
+    public interface IDALEmployeeDetails
+    {
+        List<EmployeeDetails> GetEmployeeDetails(EmployeeDetailsSearch emp);
+        List<EmployeeDetails> GetEmployeeID();
+        List<EmployeeDetails> GetEmployeeDetails_id(EmployeeDetails objEmployeeDetails);
+
+
+    }
+}

@@ -1,0 +1,292 @@
+﻿
+@model IEnumerable<Mapping_Solution.Models.PanMappingDetails>
+
+@{
+    ViewBag.Title = "PAN MAPPING";
+    ViewBag.page_id = "6";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h4 style="font-size:20px">PAN MAPPING</h4>
+
+
+    </div>
+    <div class="col-md-4 text-end text-danger">
+        Access Valid Till :  01/09/2022 to 12/09/2022
+    </div>
+    <hr style="
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-right: 0px;
+
+            height: 0.80px;
+        " />
+
+
+    <div id="ufc_data_bulk_update_btn_sec" style="padding-bottom:8px;">
+        <div id="sidebar">
+            <div id="accordian">
+                <h1 class="serchtitle">
+                    <span id="ContentPlaceHolder1_spnMobCategoryName" class="category-name"></span>
+                </h1>
+                <p class="filter-option-heading">Update Records(Bulk Update On Basis Of RM To New RM)</p>
+
+                <div class="row  pt-3 filter-option-content" id="step1" style="
+      padding-top: 0px;">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-3">
+
+                            <select class="form-select" id="Old_Rmcode">
+                                @if (ViewBag.rm_code != null)
+                                {
+                                    <option value="">Old Rm_code </option>
+
+                                    foreach (var item in ViewBag.rm_code)
+                                    {
+
+
+                                        <option value="@item.Value"> @item.Value, @item.Text</option>
+
+                                    }
+                                }
+                            </select>
+
+
+                        </div>
+                        <div class="form-group col-md-3">
+                            <select class="form-select" id="New_Rmcode">
+                                @if (ViewBag.rm_code != null)
+                                {
+                                    <option value="">Replace with New RM_code </option>
+
+                                    foreach (var item in ViewBag.rm_code)
+                                    {
+
+
+                                        <option value="@item.Value"> @item.Value, @item.Text</option>
+
+                                    }
+                                }
+                            </select>
+
+
+                            @*@Html.DropDownList("NewRm_code", ViewBag.rm_code as SelectList, "Replace with New RM_code", new { @class = "form-select", id = "New_Rmcode" })*@
+
+                            @*<select class="form-select">
+                                    <option>Replace with New RM_Code</option>
+                                    <option> 4546</option>
+                                    <option>4251</option>
+                                    <option>D-PRM-115</option>
+                                    <option>NORM</option>
+                                </select>*@
+                        </div>
+                        @*<div class="form-group col-md-2">
+                                <input type="text" class="form-control" placeholder="Effective date" />
+                            </div>*@
+                        <div class="col-md-2">
+                            @*<button type="submit" name="Save" id="UpdateRmcode_Bulk_btn" class="btn btn-primary w-100" />*@
+                            <a href="#" name="" id="UpdateRmcode_Bulk_btn" class="btn btn-primary w-100">Save</a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <hr style="
+          margin-top: 0px;
+          margin-bottom: 0px;
+          border-top-width: -1;
+          border-bottom-width: 0px;
+          border-top-width: 0px;
+      " />
+</div>
+
+<br>
+<table>
+
+    <tbody>
+        <tr>
+            <td style="width:150px;">
+                <select class="form-select" id="ufcNameSearchFilter">
+                    @if (ViewBag.ufcName != null)
+                    {
+
+                        foreach (var item in ViewBag.ufcName)
+                        {
+                            if (ViewBag.ufc_code == item.Value)
+                            {
+                                <option value="@item.Value" selected> @item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value"> @item.Text</option>
+                            }
+
+                        }
+                    }
+                </select>
+                @* @Html.DropDownList("UfcName", ViewBag.ufcName as SelectList, "Select UFC NAME", new { @class = "form-select", id = "ufcName" })*@
+
+
+                @*<select class="form-select" id="Quartertxt">
+                        <option>Select Quarter</option>
+                        <option value="202353">2022-23-Q1</option>
+                        <option value="202354">2022-23-Q2</option>
+                        <option value="202355">2022-23-Q3</option>
+                        <option value="202356">2022-23-Q4</option>
+                    </select>*@
+            </td>
+
+            <td>
+                @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                @*<select class="form-select" id="Quartertxt">
+                        <option>Select Quarter</option>
+                        <option value="202353">2022-23-Q1</option>
+                        <option value="202354">2022-23-Q2</option>
+                        <option value="202355">2022-23-Q3</option>
+                        <option value="202356">2022-23-Q4</option>
+                    </select>*@
+            </td>
+            <td>
+                <input type="text" class="form-control" id="txtsearch">
+            </td>
+
+            <td>
+                <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100" style="margin-left: 10px;">Search</a>
+            </td>
+            <td>
+
+
+                <div class="dropdown pull-right" style="margin-left:20px">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-solid fa-download"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" type="button">PDF</button></li>
+                        <li><button class="dropdown-item" type="button">Excel</button></li>
+                    </ul>
+                </div>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<div class="overflow-auto" id="TableData">
+
+    @Html.Partial("_PanMappingView", Model)
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#tblPanMapping').DataTable({
+            searching: false,
+
+        });
+        checkUpdateBtnStatus();
+
+        $("#btn_search").click(function () {
+            let obj = {}
+
+            let searchText = $("#txtsearch").val();
+            let slctQurater = $("#select1").val();
+            let ufcname = $("#ufcNameSearchFilter").val();
+
+            obj.search_text = searchText;
+            obj.ufc_name = ufcname;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/PanMapping/_PanMappingView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblPanMapping').DataTable({ searching: false, });
+                    checkUpdateBtnStatus();
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+    });
+    $('#UpdateRmcode_Bulk_btn').click(function () {
+
+
+        if (confirm("Are you sure you want to complete this") == true) {
+
+            var Replace_rmcode = $('#New_Rmcode').val();
+            var old_rmcode = $('#Old_Rmcode').val();
+
+            if (Replace_rmcode != "" && old_rmcode != "") {
+
+                var data = {
+                    Replace_rmcode: Replace_rmcode,
+                    old_rmcode: old_rmcode,
+                };
+                console.log(data);
+
+                $.ajax({
+
+                    url: "/PanMapping/BulkUpdate",
+                    type: "POST",
+                    data: data,
+                    success: function (data) {
+                        alert(JSON.stringify(data.message));
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.error(err.message);
+                    },
+                })
+            }
+            else {
+                if (old_rmcode == "") {
+                    $("#Old_Rmcode").focus();
+                }
+                else {
+
+                    $("#New_Rmcode").focus();
+                }
+
+
+            }
+
+
+        }
+    });
+
+
+</script>
+
+
+

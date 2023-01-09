@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ExceptionsMasterDetails>
+
+<table class="table small border table-hover" id="tblExceptionMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <!-- <th scope="col"><input type="checkbox" class="form-check-input" /></th> -->
+            <th></th>
+            <th scope="col">CASE_ID <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">REMARKS <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">CASE_NAME <i class="fa fa-solid fa-sort"></i></th>
+            @*<th scope="col">FIELDS <i class="fa fa-solid fa-sort"></i></th>*@
+            <th scope="col">ATTRIBUTE <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">P_SEQ <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">EXCEPTION_ATTRIBUTE <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">SRNO <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">VALID_FROM <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">VALID_UPTO <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">CASENO <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">CASE_TYPE <i class="fa fa-solid fa-sort"></i></th>
+            <th scope="col">APPLICABILITY <i class="fa fa-solid fa-sort"></i></th>
+            @*<th scope="col">FLAG_RETROSPECTIVE <i class="fa fa-solid fa-sort" onclick="sortBy(14)"></i></th>
+            <th scope="col">LSTUPDDT <i class="fa fa-solid fa-sort" onclick="sortBy(15)"></i></th>*@
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input" /></td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.case_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.case_name)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.fields)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.attribute)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.p_seq)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.exception_attribute)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.srno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_upto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.case_no)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.case_type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.applicability)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.flag_retrospective)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lstupdt)
+                </td>*@
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+            </tr>
+        }
+
+    </tbody>
+</table>

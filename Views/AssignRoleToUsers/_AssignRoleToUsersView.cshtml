@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Mapping_Solution.Models.AssignRoleToUsersDetail>
+
+<table class="table small border table-hover" id="sortable">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th> </th>
+            <th scope="col">SrNo <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col">Code <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+            <th scope="col">Name <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">Role <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">Action <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+        </tr>
+    </thead>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><input type="checkbox" class="form-check-input" /></td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Channel_code)
+            </td>
+            <td>
+
+
+                @Html.DisplayFor(modelItem => item.Employee_Name)
+            </td>
+            <td>
+                @Html.DropDownList("Role", ViewBag.name as SelectList, "Select", new { @class = "form-select", style ="width:170px;margin-right:-90px;" })
+
+                @*  @Html.DisplayFor(modelItem => item.Functional_role)*@
+
+            </td>
+            @*  <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>*@
+            <td>
+                <select class="form-select">
+                    <option>Select</option>
+                    <option>Edit</option>
+                    <option>Update</option>
+                    <option>View</option>
+                    <option>Delete</option>
+                </select>
+            </td>
+        </tr>
+    }
+
+</table>

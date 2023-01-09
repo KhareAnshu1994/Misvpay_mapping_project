@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.Models
+{
+    public class ExceptionMappingInstitutionDetail
+    {
+        public int id { get; set; }
+        public string case_id { get; set; }
+        public string rm_code { get; set; }
+
+        public string rm_name { get; set; }
+        public char case_type { get; set; }
+    }
+}

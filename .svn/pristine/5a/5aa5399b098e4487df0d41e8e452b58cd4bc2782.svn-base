@@ -1,0 +1,175 @@
+﻿@model IEnumerable<Mapping_Solution.Models.EmployeeDetails>
+
+@{
+    ViewBag.Title = "Index";
+}
+@*@{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Employee Details</h4>
+        <form>
+            <hr>
+            <div class="row pt-3">
+                <div class="form-group col-md-4 mb-3">
+                    <label>Employee ID</label>
+                    <input type="text" id="empId" name="empId" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Employee Name </label>
+                    <input type="text" id="empName" name="empName" class="form-control">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Channel Code </label>
+                    @Html.DropDownList("ChannelCode", ViewBag.channelcode as SelectList, "Select Channel Code", new { @class = "form-select w-100", id = "ddlChannelCode" })
+
+                    @*<select name="ddlChannelCode" id="ddlChannelCode" class="form-select w-100">
+                            <option value="">Select</option>
+                            <option value="INST">INST</option>
+                            <option value="DSTH">DSTH</option>
+                            <option value="PSUC">PSUC</option>
+                            <option value="DSA">DSA</option>
+                            <option value="BND">BND</option>
+                            <option value="PMS">PMS</option>
+                            <option value="RTPV">RTPV</option>
+                            <option value="ONLC">ONLC</option>
+                            <option value="SIP">SIP</option>
+                            <option value="CDST">CDST</option>
+                            <option value="UTIMF">UTIMF</option>
+                            <option value="ADMI">ADMI</option>
+                            <option value="SME">SME</option>
+                            <option value="ALL">ALL</option>
+                            <option value="PSUB">PSUB</option>
+                            <option value="CC">CC</option>
+                            <option value="POST">POST</option>
+                            <option value="RTL">RTL</option>
+                            <option value="DSIT">DSIT</option>
+                            <option value="BANK">BANK</option>
+                            <option value="PVTB">PVTB</option>
+                            <option value="PRDCT">PRDCT</option>
+                        </select>*@
+                </div>
+                <div class="form-group col-md-4 mb-3">
+
+                    <label>Status</label>
+
+                    @Html.DropDownList("Status", ViewBag.Status as SelectList, "Select Status", new { @class = "form-select w-100", id = "ddlStatus" })
+
+                    @*<select name="ddlStatus" id="ddlStatus" class="form-select w-100">
+                            <option value="">Select</option>
+                            <option value="WORKING">Working</option>
+                            <option value="NOT WORKING">Not Working</option>
+                        </select>*@
+
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Employee Role </label>
+                    @Html.DropDownList("EmployeeRole", ViewBag.role as SelectList, "Select", new { @class = "form-select w-100", id = "ddlEmpRole" })
+
+
+                    @*<select name="ddlEmpRole" id="ddlEmpRole" class="form-select w-100">
+                            <option value="">Select</option>
+                            <option value="ZH">Zonal Head</option>
+                            <option value="RH">Region Head</option>
+                            <option value="CM">Chief Manager</option>
+                            <option value="CH">Channel Head</option>
+                        </select>*@
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label> Location/UFC </label>
+                    @Html.DropDownList("LocationUfc", ViewBag.Location as SelectList, "Select", new { @class = "form-select w-100", id = "ddlLocation" })
+
+                    @*<select name="ddlLocation" id="ddlLocation" class="form-select w-100">
+                            <option value="">Select</option>
+                            <option value="AJMER">AJMER</option>
+                            <option value="AKOLA">AKOLA</option>
+                        </select>*@
+                </div>
+                <div class="col-md-12 mt-3">
+                    <a style="margin-left:1px;" href="#" id="btn_search1" name="btnsearch1" class="btn btn-primary">Search</a>
+                    <a style="margin-left:3px;" href="@Url.Action("Index","AddEmployeeDetails")" id="btn_search" name="btnsearch" class="btn btn-primary">Add New Record</a>
+                    @*<a style="margin-left:3px;" href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Add Channel</a>
+                    <a style="margin-left:3px;" href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Login As User</a>*@
+                    <a style="margin-left:3px;" href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Download</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<hr mt-3>
+<div class="overflow-auto" id="empgrddetails">
+    @Html.Partial("_EmployeeDetail", Model)
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#tblEmpDetails').DataTable({
+            searching: false
+        });
+
+
+        $('#btn_search1').click(function () {
+
+            let obj = {};
+
+            let empId = $('#empId').val();
+            let empName = $('#empName').val();
+            let channelCode = $('#ddlChannelCode').val();
+            let status = $('#ddlStatus').val();
+            let empRole = $('#ddlEmpRole').val();
+            let locationUfc = $('#ddlLocation').val();
+
+            obj.EmployeeId = empId;
+            obj.EmployeeName = empName;
+            obj.ChannelCode = channelCode;
+            obj.Status = status;
+            obj.EmployeeRole = empRole;
+            obj.LocationUfc = locationUfc;
+
+            $('#empgrddetails').show();
+
+            $.ajax({
+                url: "/EmployeeDetail/_EmployeeDetail",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#empgrddetails").html(result);
+                    table = $('#tblEmpDetails').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#empgrddetails").hide();
+                }
+
+            });
+
+
+        });
+
+    });
+
+
+
+
+
+
+
+            //$('#empgrddetails').css('display', 'block');
+    //function displaydetails() {
+    //    document.getElementById("empgrddetails").style.display = "block";
+    //}
+</script>

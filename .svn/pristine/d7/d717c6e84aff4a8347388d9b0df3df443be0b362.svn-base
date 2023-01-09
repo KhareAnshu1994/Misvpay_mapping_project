@@ -1,0 +1,66 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalArnRiaCity : IdalArnRiaCity
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        public List<ArnRiaCityDetail> Get_ArnRiaCity_AllDetails(MapSearchActivites e)
+        {
+            List<ArnRiaCityDetail> obj = new List<ArnRiaCityDetail>();
+            using (OracleConnection objConn = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = objConn;
+                cmd.CommandText = "MISVPAY_RIA_CITY_MAPPING_GETALL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("aRn", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    objConn.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            ArnRiaCityDetail dt = new ArnRiaCityDetail();
+                            dt.arnno_ref = reader["arnno_ref"] != DBNull.Value ? reader["arnno_ref"].ToString() : "";
+                            dt.ria= reader["ria"] != DBNull.Value ? reader["ria"].ToString() : "";
+                            dt.city = reader["city"] != DBNull.Value ? reader["city"].ToString() : "";
+                            dt.distributor_name = reader["distributor_name"] != DBNull.Value ? reader["distributor_name"].ToString() : "";
+                           
+                            dt.rm_code = reader["rm_code"] != DBNull.Value ? reader["rm_code"].ToString() : "";
+                            dt.rm_name = reader["rm_name"] != DBNull.Value ? reader["rm_name"].ToString() : "";
+                            dt.region_code = reader["region_code"] != DBNull.Value ? reader["region_code"].ToString() : "";
+                            dt.region_name = reader["region_name"] != DBNull.Value ? reader["region_name"].ToString() : "";
+                            dt.ufc_code = reader["ufc_code"] != DBNull.Value ? reader["ufc_code"].ToString() : "";
+                            dt.ufc_name = reader["ufc_name"] != DBNull.Value ? reader["ufc_name"].ToString() : "";
+                            dt.zone = reader["zone"] != DBNull.Value ? reader["zone"].ToString() : "";
+                            dt.sap_ufc_code = reader["sap_ufc_code"] != DBNull.Value ? reader["sap_ufc_code"].ToString() : "";
+                            obj.Add(dt);
+                        }
+                    }
+                    cmd.Dispose();
+                    objConn.Close();
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal Arn Ria City Data (ArnRiaCityDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                return obj;
+            }
+
+        }
+    }
+}

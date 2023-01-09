@@ -1,0 +1,68 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalLogin : IdalLogin
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+
+        public List<LoginDetails> GetEmpLogin(LoginDetails e)
+        {
+
+            List<LoginDetails> res = new List<LoginDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+
+                try
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = "MISVPAY_Login";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new OracleParameter("emailid", e.EmailId));
+                    cmd.Parameters.Add(new OracleParameter("password", e.Password));
+                    cmd.Parameters.Add("chan", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    con.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+                    if (rd.HasRows)
+                    {
+                        LoginDetails r = new LoginDetails();
+                        while (rd.Read())
+                        {
+                            r.EmailId = Convert.ToString(rd["email_id"]);
+                            r.Password = Convert.ToString(rd["password"]);
+                            r.UserName = Convert.ToString(rd["employee_name"]);
+                            r.Role = Convert.ToString(rd["Employee_role"]);
+                            r.Location = Convert.ToString(rd["Location_ufc"]);
+                            res.Add(r);
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal Region Master Data (RegionMasterDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    con.Close();
+                }
+
+            }
+
+            return res;
+        }
+
+    }
+}

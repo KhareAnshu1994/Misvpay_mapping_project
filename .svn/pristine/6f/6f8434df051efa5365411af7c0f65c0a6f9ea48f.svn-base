@@ -1,0 +1,110 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalUfcMaster : IdalUfcMaster
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<UfcMasterDetails> GetUFCMaster(UfcMasterSearch e)
+        {
+            List<UfcMasterDetails> UFC = new List<UfcMasterDetails>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Get_All_Tbl_UfcMaster_Data";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", String.IsNullOrEmpty(e.search_text) ? null : e.search_text));
+                cmd.Parameters.Add(new OracleParameter("sapufccode", e.sap_ufc_code));
+                //cmd.Parameters.Add(new OracleParameter("quarter", e.quarter));
+
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            UfcMasterDetails u = new UfcMasterDetails();
+                            u.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+                            u.ufc_code = Convert.ToString(dr["UFC_CODE"]);
+                            u.ufc_name = Convert.ToString(dr["UFC_NAME"]);
+                            u.ufc_start_date = dr["UFC_START_DATE"] == DBNull.Value ? null : (DateTime?)dr["UFC_START_DATE"];
+                            u.region_code = Convert.ToString(dr["REGION_CODE"]);
+                            u.region_cd_chnl = Convert.ToString(dr["REGION_CD_CHNL"]);
+                            u.zone = Convert.ToString(dr["ZONE"]);
+                            u.state = Convert.ToString(dr["STATE"]);
+                            u.imc_city = Convert.ToString(dr["IMC_CITY"]);
+                            u.region_sap_code = Convert.ToString(dr["REGION_SAP_CODE"]);
+                            u.zone_sap_code = Convert.ToString(dr["ZONE_SAP_CODE"]);
+
+                            u.latitude = dr["LATITUDE"] != DBNull.Value ? (int)Convert.ToInt32(dr["LATITUDE"]) : 0;
+                            u.longitude = dr["LONGITUDE"] != DBNull.Value ? (int)Convert.ToInt32(dr["LONGITUDE"]) : 0;
+                            u.ufc_address = Convert.ToString(dr["UFC_ADDRESS"]);
+                            u.pincode = Convert.ToString(dr["PINCODE"]);
+                            u.ufc_type = Convert.ToString(dr["ufc_type"]);
+                            u.valid_from = dr["VALID_FROM"] == DBNull.Value ? null : (DateTime?)dr["VALID_FROM"];
+                            u.valid_upto = dr["VALID_UPTO"] == DBNull.Value ? null : (DateTime?)dr["VALID_UPTO"];
+
+                            UFC.Add(u);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return UFC;
+        }
+
+        public List<UfcMasterDetails> GetSapUfcCode()
+        {
+            List<UfcMasterDetails> UFC = new List<UfcMasterDetails>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "get_distinct_sap_ufc_code";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_sap_ufc_code", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            UfcMasterDetails u = new UfcMasterDetails();
+                            u.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+
+                            UFC.Add(u);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return UFC;
+        }
+
+
+    }
+}

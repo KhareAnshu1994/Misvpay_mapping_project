@@ -1,0 +1,75 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+
+    public class DalMapPanMapping : IdalMapPanMapping
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<MapPanMappingDetail> GetMapPanMapping(MapSearchActivites e)
+        {
+            List<MapPanMappingDetail> obj = new List<MapPanMappingDetail>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "MISVPAY_MapPanapping_GETALL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+
+                cmd.Parameters.Add("mappan", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            MapPanMappingDetail dt = new MapPanMappingDetail();
+                            dt.id = Convert.ToInt32(reader["id"]);
+                            dt.pan_no = reader["pan_no"] != DBNull.Value ? reader["pan_no"].ToString() : "";
+                            dt.name = reader["name"] != DBNull.Value ? reader["name"].ToString() : "";
+                            dt.rm_code = reader["rm_code"] != DBNull.Value ? reader["rm_code"].ToString() : "";
+                            dt.rm_name = reader["rm_name"] != DBNull.Value ? reader["rm_name"].ToString() : "";
+                            dt.client_group = reader["client_group"] != DBNull.Value ? reader["client_group"].ToString() : "";
+                            dt.source = reader["source"] != DBNull.Value ? reader["source"].ToString() : "";
+                            dt.group_code = reader["group_code"] != DBNull.Value ? reader["group_code"].ToString() : "";
+                            dt.group_name = reader["group_name"] != DBNull.Value ? reader["group_name"].ToString() : "";
+
+
+
+                            obj.Add(dt);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MapPanMapping Data (MapPanMappingDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return obj;
+            }
+        }
+    }
+}

@@ -1,0 +1,116 @@
+﻿@model Mapping_Solution.Models.EmployeeDetails
+@{
+    Layout = null;
+}
+
+<!--<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>UTI</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="~/Content/css/bootstrap.min.v5.1.3.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/css/main.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+</head>
+<body class="bg-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 bguti">
+                <img src="~/Content/images/logo.png" alt="Logo" class="bg-white" />
+            </div>
+            <div class="col-md-4 mt-5 p-5 col-md-3 loginr">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <img src="~/Content/images/logo.png" alt="Logo">
+                        <h1 class="logintext mt-4 mb-5">Login</h1>
+                    </div>
+                </div>
+                @*@using (Html.BeginForm("LoginCheck", "Login", FormMethod.Post))*@
+                {
+                    <form>
+                        <div class="form-group pl-5 pr-5">-->
+@*<input type="email" class="form-control is-invalid" id="adminemail" name="admin_email" aria-describedby="emailHelp" placeholder="Please Enter your email Id" oninvalid="setCustomValidity('Please enter a valid email address!')" onchange="try{setCustomValidity('')}catch(e){}" required="">
+    <span class="text-danger small">Please provide a valid details.</span>*@
+<!--@Html.TextBoxFor(m => m.UserName)
+</div>
+<div class="form-group pl-5 pr-5 pt-3">-->
+@*<input type="password" class="form-control" id="adminpass" name="admin_password" placeholder="Please Enter your Password">*@
+@*@Html.TextBoxFor(m => m.Password)*@
+<!--</div>
+                        <button type="submit" class="btn btn-primary nbtn mt-4 pull-right">Login</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>Login</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="~/Content/css/bootstrap.min.v5.1.3.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/css/main.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+</head>
+<body class="bg-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 bguti">
+                <img src="~/Content/images/logo.png" alt="Logo" width="100px" class="" />
+            </div>
+            <div class="col-md-4 p-5 col-md-3 loginr">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <img src="~/Content/images/logo.png" alt="Logo" />
+                        <h1 class="logintext mt-4 mb-5">Login</h1>
+                    </div>
+                </div>
+                @using (Html.BeginForm("LoginCheck", "Login", FormMethod.Post))
+                {
+                    <form>
+                        <div class="form-group pl-5 pr-5">
+                            @*@Html.Label("UserName");*@
+                            <input type="email" class="form-control" id="adminemail" name="EmailId" aria-describedby="emailHelp" placeholder="Please Enter your email Id" required>
+                            @*<span class="text-danger small">Please provide a valid details.</span>*@
+                            @*@Html.TextBox("EmailId", "", new { @class = "form-control", placeholder = "Please Enter your email Id", id = "emailid" })*@
+                        </div>
+                        <div class="form-group pl-5 pr-5 pt-3">
+                            @*@Html.Label("Password");*@
+                            @*@Html.Password("Password", "", new { @class = "form-control", placeholder = "Please Enter your Password", id = "pass" })*@
+                            <input type="password" class="form-control" id="adminpass" name="Password" placeholder="Please Enter your Password">
+                        </div>
+                        <div>
+                            @{ if (TempData["Error"] != null)
+                                {<br />
+                                    <center>
+                                        <span class="text-danger">@TempData["Error"]</span>
+                                    </center>
+                                }
+                            }
+                        </div>
+                        <button type="submit" class="btn btn-primary nbtn mt-4 pull-right" id="register">Login</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

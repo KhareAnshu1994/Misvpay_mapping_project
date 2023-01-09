@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Mapping_Solution.Models.RiaDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>RIA MASTER</h5>
+    </div>
+    <div class="col-md-4">
+        <form>
+            <!-- <input type="button" value="Templates" onClick="window.location.href='../Templates/ARN-Master.xls'"> -->
+            <a href="../Templates/Ria-master.xlsx" download="Ria-Master"><button type="button" id="templatebtn" class="btn btn-primary">Templates</button></a>
+        </form>
+    </div>
+</div>
+<hr id="ria-master-firsthr">
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="file" id="myFile">
+                    </td>
+                    <td>
+                        <input type="button" value="Upload" class="btn btn-primary">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr id="third-hr">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="row pt-3" id="step1">
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control" id="select3"></td>
+                                    <td>
+                                        @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                                        @*<select class="form-select" id="select1">
+                                                <option>Select Quarter</option>
+                                                <option value="202353">2022-23-Q1</option>
+                                                <option value="202354">2022-23-Q2</option>
+                                                <option value="202355">2022-23-Q3</option>
+                                                <option value="202356">2022-23-Q4</option>
+                                            </select>*@
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("RiaCode", ViewBag.riacode as SelectList, "Select RIACODE", new { @class = "form-select", id = "select2" })
+
+                                        @*<select class="form-select" id="select2">
+                                                <option>Select RIACODE</option>
+                                                <option value="1">INA000015996</option>
+                                                <option value="2">INA000015229</option>
+                                                <option value="3">INA200002429</option>
+                                                <option value="4">INA000015260</option>
+                                                <option value="5">INZ000005231</option>
+                                                <option value="6">INZ000185632</option>
+                                                <option value="7">INZ000218931</option>
+                                            </select>*@
+                                    </td>
+                                    <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30">Search</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr id="ria-master-secondhr">
+        <!-- 1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a> -->
+        <div class="row pt-2">
+            <div class="col-md-6">
+
+
+
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+                <ul class="dropdown-menu">
+                    <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="overflow-auto" id="TableData">
+            @Html.Partial("_RiaView", Model)
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblRiaMaster').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let ria_code = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.riacode = ria_code;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/RiaMaster/_RiaView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblRiaMaster').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblRiaMaster").table2excel({
+                filename: "RiaMasterTable.xls"
+
+            });
+        });
+    });
+
+</script>

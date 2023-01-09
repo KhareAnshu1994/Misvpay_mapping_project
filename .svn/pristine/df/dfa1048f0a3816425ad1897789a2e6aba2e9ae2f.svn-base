@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MapDsitDetails>
+
+<table class="table small border table-hover" id="tblMapDsit">
+    <thead>
+        <tr class="bg-primary text-white">
+            <!-- <th scope="col"><input type="checkbox" class="form-check-input" /></th> -->
+            <th>All<input type="checkbox" class="form-check-input"> </th>
+            <th scope="col">ARN_NUMBER <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col">ARN_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+            <th scope="col">UFC_AREA CODE <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">UFC_AREA_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col" class="bg-danger">RM_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">RM_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" class="form-check-input">
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_area_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_area_name)
+                </td>
+                <td>
+                   @* @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.list as SelectList, new { @class = "form-select" })*@
+                    @*@Html.DisplayFor(modelItem => item.emplid)*@
+                    @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.rm_code as SelectList, new { @class = "form-select" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rm_name)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+                <td>
+                    <select class="form-select">
+                        <option>Select</option>-->
+                        <option>Save</option>
+                    </select>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+<div class="col-md-12 mt-3">
+    <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Update </a><p>(Update Selected Record Only As Per Above Search Criteria)</p>
+</div>

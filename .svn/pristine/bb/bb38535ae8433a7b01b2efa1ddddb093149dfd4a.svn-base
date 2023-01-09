@@ -1,0 +1,85 @@
+﻿@model List<Mapping_Solution.Models.AssignMenusToRole>
+
+@{
+    ViewBag.Title = "Assign Menus To Role";
+    ViewBag.page_id = "51";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Assign Menus To Role</h5>
+    </div>
+    <hr id="arn-master-secondhr">
+    <left>
+        <form class="ng-pristine ng-invalid ng-invalid-required">
+            <div class="col-md-6">
+                <font size="2">
+                    <label>Role Name</label>
+                    @Html.DropDownList("Role", ViewBag.name as SelectList, "Select", new { @class = "form-select", style = "width:220px;margin-right:-90px;" })
+
+                </font>
+            </div>
+            <br>
+            <div ng-repeat="parent_items in menus_list track by $index" class="ng-scope"></div>
+            <!-- <h4 style="text-align:left"><b class="ng-binding">Masters</b></h4> -->
+            <table class="border" style="width:80% ">
+                <thead>
+                    <tr>
+                        <th colspan="2" rowspan="2" class="border" text-align="center"></th>
+                        <th colspan="5" class="border">Action</th>
+                    </tr>
+                    <tr class="border">
+                        <th class="border">All<input type="checkbox" /></th>
+                        <th class="border">Add<input type="checkbox" /></th>
+                        <th class="border">Edit<input type="checkbox" /></th>
+                        <!-- <th  class="border">Delete</th> -->
+                        <th class="border">View<input type="checkbox" /></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <th>
+                                @Model[i].module_name
+
+                            </th>
+                        </tr>
+
+
+                        for (int j = 0; j < Model[i].page_list.Count; j++)
+                        {
+                            <tr class="border">
+                                <td>
+                                    <input type="checkbox" id="@Model[i].page_list[j]" name="" value="@Model[i].page_list[j]">
+                                    <label for="@Model[i].page_list[j]" style="font-weight:normal;">@Model[i].page_list[j]</label>
+
+                                </td>
+                                <td></td>
+                                <td class="border"><input type="checkbox" value="true"></td>
+                                <td class="border"><input type="checkbox" value="true"></td>
+                                <td class="border"><input type="checkbox" value="true"></td>
+                                <td class="border"><input type="checkbox" value="true"></td>
+                            </tr>
+
+
+                        }
+
+                    }
+
+
+
+                </tbody>
+            </table>
+            <div class="col-md-12 mt-3 text-left">
+                <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Submit</a>
+            </div>
+            <!-- <div class="form-group row">
+              <div class="col-sm-5">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+            </div> -->
+        </form>
+</div>

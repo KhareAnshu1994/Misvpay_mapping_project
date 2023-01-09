@@ -1,0 +1,119 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalSubbrokerMaster : IdalSubbrokerMaster
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<SubbrokerMasterDetails> GetSUBBROKERMaster(SubbrokerMasterSearch e)
+        {
+            List<SubbrokerMasterDetails> SUBBROKER = new List<SubbrokerMasterDetails>();
+
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Get_All_Tbl_SubbrokerMaster_Data";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", String.IsNullOrEmpty(e.search_text) ? null : e.search_text));
+                cmd.Parameters.Add(new OracleParameter("branchcode", e.branch_code));
+                //cmd.Parameters.Add(new OracleParameter("quarter", e.quarter));
+
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            SubbrokerMasterDetails s = new SubbrokerMasterDetails();
+                            s.arn_no = Convert.ToString(dr["ARN_NO"]);
+                            s.subbroker_code = Convert.ToInt32(dr["subbroker_code"]);
+                            s.channel_code = Convert.ToString(dr["CHANNEL_CODE"]);
+                            s.region_code = Convert.ToString(dr["REGION_CODE"]);
+                            s.ufc_code = Convert.ToString(dr["UFC_CODE"]);
+                            
+                            s.krv_code = Convert.ToString(dr["KRV_CODE"]);
+                            s.valid_from = dr["VALID_FROM"] == DBNull.Value ? null : (DateTime?)dr["VALID_FROM"];
+                            s.valid_upto = dr["VALID_UPTO"] == DBNull.Value ? null : (DateTime?)dr["VALID_UPTO"];
+                            s.lst_upddt = dr["LST_UPDDT"] == DBNull.Value ? null : (DateTime?)dr["LST_UPDDT"];
+                            s.zone = Convert.ToString(dr["ZONE"]);
+                            
+                            s.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+                            s.sap_region_code = Convert.ToString(dr["SAP_REGION_CODE"]);
+                            s.ufc_location = dr["ufc_location"] == DBNull.Value ? dr["ufc_location"].ToString() : "";
+                            s.sap_zone_code = Convert.ToString(dr["SAP_ZONE_CODE"]);
+                            s.creation_date = dr["CREATION_DATE"] == DBNull.Value ? null : (DateTime?)dr["CREATION_DATE"];
+                            //s.address = Convert.ToString(dr["CODE"]); //Not uddate in Database
+                            //s.email_id = Convert.ToString(dr["CODE"]);//Not uddate in Database
+                            //s.phone_no = Convert.ToString(dr["CODE"]);//Not uddate in Database
+
+                            SUBBROKER.Add(s);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return SUBBROKER;
+        }
+
+
+        public List<SubbrokerMasterDetails> GetBranchCode()
+        {
+            List<SubbrokerMasterDetails> SUBBROKER = new List<SubbrokerMasterDetails>();
+
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Get_All_Tbl_SubbrokerMaster_Data";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", null));
+                cmd.Parameters.Add(new OracleParameter("branchcode", null));
+                //cmd.Parameters.Add(new OracleParameter("quarter", e.quarter));
+
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            SubbrokerMasterDetails s = new SubbrokerMasterDetails();
+                            s.branch_code = Convert.ToString(dr["branch_code"]);
+
+                            SUBBROKER.Add(s);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return SUBBROKER;
+        }
+
+
+    }
+}

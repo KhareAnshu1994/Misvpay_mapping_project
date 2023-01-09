@@ -1,0 +1,242 @@
+﻿@model List<Mapping_Solution.Models.AssignMenusToRole>
+
+@{
+    ViewBag.Title = "Assign Menus To Role";
+    ViewBag.page_id = "51";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Assign Menus To Role</h5>
+    </div>
+    <hr id="arn-master-secondhr">
+    <left>
+        <form class="ng-pristine ng-invalid ng-invalid-required">
+            <div class="col-md-6">
+                <font size="2">
+                    <label>Role Name</label>
+                    @Html.DropDownList("Role", ViewBag.name as SelectList, "Select", new { @class = "form-select", @id = "select_role_id", style = "width:220px;margin-right:-90px;" })
+
+                </font>
+            </div>
+            <br>
+            <div ng-repeat="parent_items in menus_list track by $index" class="ng-scope"></div>
+            <!-- <h4 style="text-align:left"><b class="ng-binding">Masters</b></h4> -->
+            <table class="border" style="width:80% ">
+                <thead>
+                    <tr>
+                        <th colspan="2" rowspan="2" class="border" text-align="center"></th>
+                        <th colspan="5" class="border">Action</th>
+                    </tr>
+                    <tr class="border">
+                        <th class="border">All<input type="checkbox" name="all_all"/></th>
+                        <th class="border">Add<input type="checkbox"  name="add_all"/></th>
+                        <th class="border">Edit<input type="checkbox"  name="edit_all"/></th>
+                        <!-- <th  class="border">Delete</th> -->
+                        <th class="border">View<input type="checkbox"  name="view_all"/></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <th>
+                                @Model[i].module_name
+
+                            </th>
+                        </tr>
+
+
+                        for (int j = 0; j < Model[i].page_list.Count; j++)
+                        {
+                            <tr class="border">
+                                <td>
+
+                                    <label class="pages_names_perm" style="font-weight:normal;" data-table="@(Model[i].page_list[j].table_name!="" ? Model[i].page_list[j].table_name : Model[i].page_list[j].page_name)">@Model[i].page_list[j].page_name</label>
+
+                                </td>
+                                <td></td>
+                                <td class="border"><input type="checkbox" value="true" name="all"></td>
+                                <td class="border"><input type="checkbox" value="true" name="add"></td>
+                                <td class="border"><input type="checkbox" value="true" name="edit"></td>
+                                <td class="border"><input type="checkbox" value="true" name="view"></td>
+                            </tr>
+
+
+                        }
+
+                    }
+
+
+
+                </tbody>
+            </table>
+            <div class="col-md-12 mt-3 text-left">
+                <a href="#" id="btn_save_permissions" name="btnsearch" class="btn btn-primary">Submit</a>
+            </div>
+            <!-- <div class="form-group row">
+              <div class="col-sm-5">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+            </div> -->
+        </form>
+</div>
+
+
+
+<script>
+
+    $("#select_role_id").change(function () {
+
+
+        var value = $(this).val();
+        $.ajax({
+
+            url: "/AddRole/get_permission",
+            type: "POST",
+            data: { role_id: value },
+            success: function (data) {
+                $("input[name=all]").attr("checked", false);
+                $("input[name=add]").attr("checked", false);
+                $("input[name=edit]").attr("checked", false);
+                $("input[name=view]").attr("checked", false);
+                if (data != "") {
+                    var permission = JSON.parse(data);
+
+                    permission.forEach(function (item) {
+                        console.log(item);
+                        if (item.add == true) {
+                            $(".pages_names_perm[data-table='" + item.page_name + "']").parents("tr").find("input[name=add]").attr("checked", true);
+                        }
+
+                        if (item.edit == true) {
+                            $(".pages_names_perm[data-table='" + item.page_name + "']").parents("tr").find("input[name=edit]").attr("checked", true);
+                        }
+
+                        if (item.view == true) {
+                            $(".pages_names_perm[data-table='" + item.page_name + "']").parents("tr").find("input[name=view]").attr("checked", true);
+                        }
+
+                        if (item.add == true && item.edit == true && item.view == true) {
+                            $(".pages_names_perm[data-table='" + item.page_name + "']").parents("tr").find("input[name=all]").attr("checked", true);
+                        }
+                    })
+                }
+              
+              
+            },
+            error: function (err) {
+                console.error(err.message);
+            },
+        })
+
+
+    })
+
+    $("#btn_save_permissions").click(function () {
+
+        var role_id = $("#select_role_id").val();
+        if (role_id != "") {
+            var permissions = [];
+            $(".pages_names_perm").each(function () {
+
+                var page_name = $(this).attr("data-table");
+                var add = $(this).parents("tr").find("input[name=add]").is(":checked");
+                var edit = $(this).parents("tr").find("input[name=edit]").is(":checked");
+                var view = $(this).parents("tr").find("input[name=view]").is(":checked");
+                permissions.push({ page_name: page_name, add: add, edit: edit, view: view });
+            })
+            console.log(permissions.toString());
+
+            $.ajax({
+
+                url: "/AddRole/Update_permission",
+                type: "POST",
+                data: { permission: JSON.stringify(permissions), role: role_id },
+                success: function (data) {
+                    alert(JSON.stringify(data.message));
+                    location.reload();
+                },
+                error: function (err) {
+                    console.error(err.message);
+                },
+            })
+
+
+        }
+        else {
+            alert('Please select role');
+        }
+    })
+
+    $("input[name=all]").change(function () {
+
+        if ($(this).is(":checked")) {
+            $(this).parents("tr").find("input[name=add]").prop("checked", true);
+            $(this).parents("tr").find("input[name=edit]").prop("checked", true);
+            $(this).parents("tr").find("input[name=view]").prop("checked", true);
+        }
+        else {
+            $(this).parents("tr").find("input[name=add]").prop("checked", false);
+            $(this).parents("tr").find("input[name=edit]").prop("checked", false);
+            $(this).parents("tr").find("input[name=view]").prop("checked", false);
+        }
+
+    })
+
+
+    $("input[name=all_all]").change(function () {
+
+        if ($(this).is(":checked")) {
+            $("input[name=all]").prop("checked", true);
+           
+        }
+        else {
+            $("input[name=all]").prop("checked", false);
+        }
+
+    })
+
+    $("input[name=add_all]").change(function () {
+
+        if ($(this).is(":checked")) {
+            $("input[name=add]").prop("checked", true);
+
+        }
+        else {
+            $("input[name=add]").prop("checked", false);
+        }
+
+    })
+
+    $("input[name=edit_all]").change(function () {
+
+        if ($(this).is(":checked")) {
+            $("input[name=edit]").prop("checked", true);
+
+        }
+        else {
+            $("input[name=edit]").prop("checked", false);
+        }
+
+    })
+
+
+    $("input[name=view_all]").change(function () {
+
+        if ($(this).is(":checked")) {
+            $("input[name=view]").prop("checked", true);
+
+        }
+        else {
+            $("input[name=view]").prop("checked", false);
+        }
+
+    })
+
+
+
+
+</script>

@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MappingChangesAccessDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Mapping Change Access</h4>
+            <form>
+                <hr>
+                <div class="row pt-3">
+                    <div class="form-group col-md-3 mb-3">
+                        <form class="demo-example">
+                            <label>Reason Codes</label>
+                            <td>
+                                <select class="form-select">
+                                    <option>--select--</option>
+                                    <!--<option>Addition</option>-->
+                                    <option>New Appointment</option>
+                                    <option>Promotion/Transfer</option>
+                                    <!--<option>Termination</option>-->
+                                    <option>Seperation</option>
+                                    <option>All India</option>
+                                </select>
+                            </td>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <form class="demo-example">
+                            <label>Channel Code</label>
+                            <td>
+                                <select class="form-select">
+                                    <option>--select--</option>
+                                    <option>RTL</option>
+                                    <option>INST</option>
+                                </select>
+                            </td>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <form class="demo-example">
+                            <label>Region</label>
+                            <td>
+                                <select class="form-select">
+                                    <option>--select--</option>
+                                    <option>MUMB</option>
+                                    <option>CORP</option>
+                                    <option>AP</option>
+                                    <option>CHAN</option>
+                                    <option>BANGLORE</option>
+                                    <option>All</option>
+                                </select>
+                            </td>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+
+                        <form class="demo-example" style="1">
+                            <label>Selected UFC’s</label>
+                            <select class="form-select">
+                                <option>--select--</option>
+                                <option value="alice">111,JVPD</option>
+                                <option value="bob">123,KALYAN</option>
+                                <option value="carol">125,BHAVNAGAR</option>
+                                <option value="jack">All</option>
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="form-group col-md-3 mb-3">
+                        <label>Access Start Date</label>
+                        <input type="datetime-local" id="startDate" name="start_Date" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <label>Access End Date</label>
+                        <input type="datetime-local" id="startDate" name="start_Date" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <!-- <label>Effective Date</label> -->
+                        <input type="text" class="form-control" placeholder="Effective date" style="
+                    margin-top: 20px;" />
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <label>KRA Valid From</label>
+                        <input type="datetime-local" id="startDate" name="start_Date" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <label>VYMO Valid From</label>
+                        <input type="datetime-local" id="startDate" name="start_Date" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Remark</label>
+                        <input type="text" id="startDate" name="start_Date" class="form-control" placeholder="Remark">
+                    </div>
+
+                    <!-- <div class="form-group col-md-3 mb-3">
+                          <form class="demo-example">
+                          <label>Quarter</label>
+                          <td>
+                            <select class="form-select">
+                              <option>--select--</option>
+                              <option>Q1</option>
+                              <option>Q2</option>
+                              <option>Q3</option>
+                              <option>Q4</option>
+                            </select>
+                          </td>
+                        </select>
+                        </form>
+                        </div> -->
+                    <div class="form-group col-md-3 mb-3">
+                        <form class="demo-example">
+                            <label>Purpose</label>
+                            <td>
+                                <select class="form-select">
+                                    <option>--select--</option>
+                                    <option>VYMO</option>
+                                    <option>Both(VYMO/KRA)</option>
+                                </select>
+                            </td>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-md-3 mt-3"><a  style="margin-left:1px;margin-top:12px;" href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100">Submit</a></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a>
+            <div class="overflow-auto">
+               @Html.Partial("_MappingChangesAccessView") 
+                </div>
+            </div>
+        </div>

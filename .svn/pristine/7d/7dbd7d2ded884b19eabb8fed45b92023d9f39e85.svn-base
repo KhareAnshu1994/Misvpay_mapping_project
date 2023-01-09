@@ -1,0 +1,40 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class MapPinEmpController : Controller
+    {
+        // GET: MapPinEmp
+        IDalMapPinEmp ex = new DalMapPinEmp();
+      
+        IDALEmployeeDetails emp_id = new DALEmployeeDetails();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+
+        public ActionResult Index(MapSearchActivites e)
+        {
+            var qt = drop.GetQuarter();
+            ViewBag.Quarter = new SelectList(qt, "SelectQuarter", "SelectQuarter");
+           
+            var emplid = emp_id.GetEmployeeID();
+            ViewBag.rm_code = new SelectList(emplid, "EmployeeId", "EmployeeId");
+            var a = ex.GetMapPinEmp(e);
+            return View(a);
+        }
+        public ActionResult _MapPinEmpView(MapSearchActivites e)
+        {
+           
+
+            var emplid = emp_id.GetEmployeeID();
+            ViewBag.rm_code = new SelectList(emplid, "EmployeeId", "EmployeeId");
+            var a = ex.GetMapPinEmp(e);
+            return PartialView("_MapPinEmpView", a);
+        }
+    }
+}

@@ -1,0 +1,198 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMapRiaCodeInstitutional : IDalMapRiaCodeInstitutional
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        static string strconTemp = ConfigurationManager.ConnectionStrings["OracleTEMP"].ToString();
+
+        public List<MapRiaCodeInstitutionalDetails> GetMapRiaCodeInstitutional(MapSearchActivites e)
+        {
+            List<MapRiaCodeInstitutionalDetails> ria = new List<MapRiaCodeInstitutionalDetails>();
+            using (OracleConnection con = new OracleConnection(CustomHelper.CustomHelper.getConnectionStringForMappingInst("MISVPAY_TBL_MAPRIA_CODE_INST", e.region_code)))
+            {
+                OracleCommand cmd = new OracleCommand("GET_ALL_TBL_MAPRIA_CODE_INST", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                cmd.Parameters.Add(new OracleParameter("v_region_code", e.region_code));
+
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            MapRiaCodeInstitutionalDetails m = new MapRiaCodeInstitutionalDetails();
+                            m.id = Convert.ToInt32(dr["id"]);
+                            m.ria_code = dr["ria_code"] != DBNull.Value ? dr["ria_code"].ToString() : "";
+                            m.ria_name = dr["ria_name"] != DBNull.Value ? dr["ria_name"].ToString() : "";
+                            m.arnno_ref = dr["arnno_ref"] != DBNull.Value ? dr["arnno_ref"].ToString() : "";
+                            m.multicity = dr["multicity"] != DBNull.Value ? dr["multicity"].ToString() : "";
+                            m.rm_code = dr["rm_code"] != DBNull.Value ? dr["rm_code"].ToString() : "";
+                            m.rm_name = dr["rm_name"] != DBNull.Value ? dr["rm_name"].ToString() : "";
+                            m.ufc_area_code = dr["ufc_area_code"] != DBNull.Value ? dr["ufc_area_code"].ToString() : "";
+                            m.ufc_area_name = dr["ufc_area_name"] != DBNull.Value ? dr["ufc_area_name"].ToString() : "";
+                            m.city = dr["city"] != DBNull.Value ? dr["city"].ToString() : "";
+                            m.region_code = dr["region_code"] != DBNull.Value ? dr["region_code"].ToString() : "";
+                            m.region_name = dr["region_name"] != DBNull.Value ? dr["region_name"].ToString() : "";
+                            m.zone = dr["zone"] != DBNull.Value ? dr["zone"].ToString() : "";
+                            m.sap_ufc_code = dr["sap_ufc_code"] != DBNull.Value ? dr["sap_ufc_code"].ToString() : "";
+                            m.sap_region_code = dr["sap_region_code"] != DBNull.Value ? dr["sap_region_code"].ToString() : "";
+                            m.sap_zone_code = dr["sap_zone_code"] != DBNull.Value ? dr["sap_zone_code"].ToString() : "";
+                            m.channel_code = dr["channel_code"] != DBNull.Value ? dr["channel_code"].ToString() : "";
+
+                            ria.Add(m);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("DalMapRiaCodeInstitutional Data (MapRiaCodeInstitutionalDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ria;
+        }
+
+
+        #region Update Ria Code Mapping Inst
+        public Response UpdateMapRiaCodeInst(List<MapRiaCodeInstitutionalDetails> objList)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    for (int i = 0; i < objList.Count; i++)
+                    {
+                        OracleCommand cmd = new OracleCommand("UPDATE_MISVPAY_TBL_MAPRIA_CODE_INST", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        var split_rm_code = objList[i].rm_code.Split('|');
+
+                        var arr_rm_code = split_rm_code.ToArray();
+
+
+
+                        cmd.Parameters.Add(new OracleParameter("v_id", objList[i].id));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[0]));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", arr_rm_code[1]));
+
+
+
+                        cmd.ExecuteNonQuery();
+
+                        if (cmd.ExecuteNonQuery() < 0)
+                        {
+                            res.status = true;
+                            res.message = "Data Updated Successfully";
+                        }
+                        else
+                        {
+                            res.status = false;
+                            res.message = "Data not Updated";
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+        #region Bulk Update Rm Code Ria Code Mapping Inst
+        public Response Bulk_Update_Ria_Code_Mapping_Inst(MapRiaCodeInstitutionalDetails objModel)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    OracleCommand cmd = new OracleCommand("UPDATE_BULK_RMCODE_MISVPAY_TBL_MAPRIA_CODE_INST", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    var split_new_rm = objModel.New_rmcode.Split('|');
+
+                    var new_rm = split_new_rm.ToArray();
+
+                    var split_old_rm = objModel.Old_rmcode.Split('|');
+                    var old_rm = split_old_rm.ToArray();
+
+                    cmd.Parameters.Add(new OracleParameter("S_rm_code", new_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("p_rm_code", old_rm[0]));
+                    cmd.Parameters.Add(new OracleParameter("S_rm_name", new_rm[1]));
+
+
+
+
+                    cmd.ExecuteNonQuery();
+
+                    if (cmd.ExecuteNonQuery() < 0)
+                    {
+                        res.status = true;
+                        res.message = "RM Code Replaced Successfully";
+                    }
+                    else
+                    {
+                        res.status = false;
+                        res.message = "RM Code not Replaced Successfully";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+
+
+
+
+    }
+}

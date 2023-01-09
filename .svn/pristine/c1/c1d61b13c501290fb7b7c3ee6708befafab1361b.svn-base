@@ -1,0 +1,72 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMapArnInstitution : IdalMapArnInstitution
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<MapArnInstitutionDetail> GetMapArnInstitution(MapSearchActivites e)
+        {
+            List<MapArnInstitutionDetail> obj = new List<MapArnInstitutionDetail>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "MISVPAY_MapArnInstitution_GETALL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("mapiarn", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            MapArnInstitutionDetail dt = new MapArnInstitutionDetail();
+                            dt.id = Convert.ToInt32(reader["id"]);
+                            dt.krv_code = reader["krv_code"] != DBNull.Value ? reader["krv_code"].ToString() : "";
+                            dt.name = reader["name"] != DBNull.Value ? reader["name"].ToString() : "";
+                            dt.channel_code = reader["channel_code"] != DBNull.Value ? reader["channel_code"].ToString() : "";
+                            dt.rm_code = reader["rm_code"] != DBNull.Value ? reader["rm_code"].ToString() : "";
+                            dt.rm_name = reader["rm_name"] != DBNull.Value ? reader["rm_name"].ToString() : "";
+                            dt.category = reader["category"] != DBNull.Value ? reader["category"].ToString() : "";
+                            dt.sub_channel = reader["sub_channel"] != DBNull.Value ? reader["sub_channel"].ToString() : "";
+
+
+
+                            obj.Add(dt);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MapArnInstitution Data (MapArnInstitutionDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return obj;
+            }
+        }
+    }
+}

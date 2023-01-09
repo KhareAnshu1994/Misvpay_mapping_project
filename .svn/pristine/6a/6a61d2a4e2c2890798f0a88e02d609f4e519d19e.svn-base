@@ -1,0 +1,42 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class MapArnInstitutionController : Controller
+    {
+        // GET: MapArnInstitution
+        IdalMapArnInstitution ins = new DalMapArnInstitution();
+       
+        IDALEmployeeDetails emp_id = new DALEmployeeDetails();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+
+        public ActionResult Index(MapSearchActivites e)
+        {
+            var qt = drop.GetQuarter();
+            ViewBag.Quarter = new SelectList(qt, "SelectQuarter", "SelectQuarter");
+
+          
+            var emplid = emp_id.GetEmployeeID();
+            ViewBag.rm_code = new SelectList(emplid, "EmployeeId", "EmployeeId");
+            var a = ins.GetMapArnInstitution(e);
+            return View(a);
+        }
+        
+        
+        public ActionResult _MapArnInstitutionView(MapSearchActivites e)
+        {
+           
+            var emplid = emp_id.GetEmployeeID();
+            ViewBag.rm_code = new SelectList(emplid, "EmployeeId", "EmployeeId");
+            var a = ins.GetMapArnInstitution(e);
+            return PartialView("_MapArnInstitutionView", a);
+        }
+    }
+}

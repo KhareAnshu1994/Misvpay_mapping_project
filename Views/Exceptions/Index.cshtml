@@ -1,0 +1,216 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ExceptionsMasterDetails>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="bg-white p-3 border">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 style="font-size:20px">EXCEPTIONS</h4>
+
+            <hr style="margin-bottom: 0px;">
+            <form>
+               
+                <div id="left">
+                    <div id="sidebar">
+                        <div id="accordian">
+                            <h1 class="serchtitle">
+                                <span id="ContentPlaceHolder1_spnMobCategoryName" class="category-name"></span>
+                            </h1>
+                            <p class="filter-option-heading">Search</p>
+                            <div class="row pt-3 filter-option-content" id="step1" style="
+      padding-top: 0px;">
+                                <div class="form-group col-md-3">
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-3"><a href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100">Search</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="
+                margin-top: 0px;
+                margin-bottom: 0px;
+                border-top-width: 0px;
+                border-bottom-width: 0px;
+            " />
+                <div id="left">
+                    <div id="sidebar">
+                        <div id="accordian">
+                            <h1 class="serchtitle">
+                                <span id="ContentPlaceHolder1_spnMobCategoryName" class="category-name"></span>
+                            </h1>
+                            <p class="filter-option-heading">Update Records</p>
+                            <div class="row pt-3 filter-option-content" id="step1" style="
+      padding-top: 0px;">
+                                <div class="form-group col-md-3">
+                                    <select class="form-select">
+                                        <option>Old RM_Code</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select class="form-select">
+                                        <option>Replace with New RM_Code</option>
+                                        <option> 4546</option>
+                                        <option>4251</option>
+                                        <option>D-PRM-115</option>
+                                        <option>NORM</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control" placeholder="Effective date" />
+                                </div>
+                                <div class="col-md-2"><a href="#" id="" name="" class="btn btn-primary w-100">Save</a></div>
+                                <div class="col-md-2 pb-2">
+                                    <div class="dropdown pull-right">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-solid fa-download"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><button class="dropdown-item" type="button">PDF</button></li>
+                                            <li><button class="dropdown-item" type="button">Excel</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr style="margin-top: 8px;margin-bottom: 8px;">
+    <div class="row">
+
+        <div class="col-md-12">
+           
+            Records <i class="fa fa-solid"></i>
+
+            <select class="form-select" style="
+                width: 82px;
+                height: 24px;
+                padding-top: 1px;
+                padding-bottom: 1px;
+                border-top-width: 1px;
+            ">
+                <option>50</option>
+                <option>100</option>
+                <option>200</option>
+                <option>All</option>
+            </select>
+
+
+            <div class="overflow-auto">
+                <table class="table small border table-hover" id="sortable">
+                    <thead>
+                        <tr class="bg-primary text-white">
+                            
+                            <th></th>
+                            <th scope="col">REMARKS <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+                            <th scope="col">CASE_ID <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+                            <th scope="col">CASE_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+                            <th scope="col">FIELDS <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+                            <th scope="col">ATTRIBUTE <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+                            <th scope="col">P_SEQ <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+                            <th scope="col">EXCEPTION_ATTRIBUTE <i class="fa fa-solid fa-sort" onclick="sortBy(7)"></i></th>
+                            <th scope="col">SRNO <i class="fa fa-solid fa-sort" onclick="sortBy(8)"></i></th>
+                            <th scope="col">VALID_FROM <i class="fa fa-solid fa-sort" onclick="sortBy(9)"></i></th>
+                            <th scope="col">VALID_UPTO <i class="fa fa-solid fa-sort" onclick="sortBy(10)"></i></th>
+                            <th scope="col">CASENO <i class="fa fa-solid fa-sort" onclick="sortBy(11)"></i></th>
+                            <th scope="col">CASE_TYPE <i class="fa fa-solid fa-sort" onclick="sortBy(12)"></i></th>
+                            <th scope="col">APPLICABILITY <i class="fa fa-solid fa-sort" onclick="sortBy(13)"></i></th>
+                            <th scope="col">FLAG_RETROSPECTIVE <i class="fa fa-solid fa-sort" onclick="sortBy(14)"></i></th>
+                            <th scope="col">LSTUPDDT <i class="fa fa-solid fa-sort" onclick="sortBy(15)"></i></th>
+                            @*<th scope="col">ACTION</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><input type="checkbox" class="form-check-input"></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.remarks)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.case_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.case_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.fields)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.attribute)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.p_seq)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.exception_attribute)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.sr_no)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.valid_from)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.valid_upto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.case_no)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.case_type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.applicability)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.flag_retrospective)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.lstupddt)
+                                </td>
+                                @*<td>
+                                    <select class="form-select">
+                                        <option>Select</option>
+                                        <option>Edit</option>
+                                        <option>Save</option>
+                                        <option>Delete</option>
+                                    </select>
+                                </td>*@
+                                @*<td>
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                    </td>*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

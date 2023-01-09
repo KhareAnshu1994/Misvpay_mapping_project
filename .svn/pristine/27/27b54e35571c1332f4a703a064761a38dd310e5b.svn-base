@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MfdexArnCityUfcWiseSharingMasterDetails>
+
+<table class="table small border" id="tblCityUfcWiseSharingMast">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th> </th>
+            <th scope="col">KRV_CODE </th>
+            <th scope="col">NEW_CITY </th>
+            <th scope="col">UFC_CODE </th>
+            <th scope="col">CITY_TYPE </th>
+            <th scope="col">MULTICITY </th>
+            <th scope="col">ARN_NAME </th>
+            <th scope="col">ARN_CHANNEL </th>
+            <th scope="col">T5B5_STATUS </th>
+            <th scope="col">MFDEX_CITY </th>
+            <th scope="col">SCHANNEL </th>
+            <th scope="col">REGION_CODE </th>
+            <th scope="col">SAP_UFC_CODE</th>
+            <th scope="col">ZONE </th>
+            <th scope="col">SOW_EHS_PERC_SHARE </th>
+            <th scope="col">SOW_INCOME_PERC_SHARE </th>
+            <th scope="col">SOW_LQNMM_PERC_SHARE </th>
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input"></td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.krv_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.new_city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.city_type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.multicity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_channel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.t5b5_status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.mfdex_city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.schannel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sow_ehs_perc_share)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sow_income_perc_share)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sow_lqnmm_perc_share)
+                </td>
+                @*<td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Edit</option>
+                            <option>Save</option>
+                            <option>Delete</option>
+                        </select>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

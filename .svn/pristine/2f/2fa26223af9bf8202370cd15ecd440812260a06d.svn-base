@@ -1,0 +1,70 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMapDsit : IDalMapDsit
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+
+        public List<MapDsitDetails> GetMapDsitInst(MapSearchActivites e)
+        {
+            List<MapDsitDetails> lst = new List<MapDsitDetails>();
+
+            using (OracleConnection conn = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = "get_all_tbl_map_dist";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    conn.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            MapDsitDetails r = new MapDsitDetails();
+
+
+                            r.arn_number = rd["arn_number"] != DBNull.Value ? rd["arn_number"].ToString() : "";
+                            r.arn_name = rd["arn_name"] != DBNull.Value ? rd["arn_name"].ToString() : "";
+                            r.ufc_area_code = rd["ufc_area_code"] != DBNull.Value ? rd["ufc_area_code"].ToString() : "";
+                            r.ufc_area_name = rd["ufc_area_name"] != DBNull.Value ? rd["ufc_area_name"].ToString() : "";
+                            r.rm_code = rd["rm_code"] != DBNull.Value ? rd["rm_code"].ToString() : "";
+                            r.rm_name = rd["rm_name"] != DBNull.Value ? rd["rm_name"].ToString() : "";
+
+                            lst.Add(r);
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("DalMapDsit Data (MapDsitDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                conn.Close();
+            }
+
+
+
+            return lst;
+        }
+    }
+}

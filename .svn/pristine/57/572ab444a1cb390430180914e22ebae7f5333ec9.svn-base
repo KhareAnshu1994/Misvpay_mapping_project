@@ -1,0 +1,211 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MapPinEmpDetails>
+@using Mapping_Solution.CustomHelper;
+
+<table class="table small border table-hover" id="tblMapPinEmp">
+    <thead>
+        <tr class="bg-primary text-white">
+
+            <th>All<input type="checkbox" class="form-check-input"> </th>
+            <th scope="col">PINCODE <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col" class="bg-danger">
+                RM_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i>
+            </th>
+            <th scope="col">RM_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">AUM_PERC <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">VALID_FROM <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">REGION<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">REGION_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">UFC_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">UFC_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">ZONE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">SAP_UFC_CODE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">SAP_REGION_CODE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">SAP_ZONE_CODE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">CHANNEL_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(15)"></i></th> <!--new added-->
+            @*<th scope="col">ACTION</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" data-id="@item.id"></td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.pincode)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.rm_code)*@
+                    @* @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.list as SelectList, new { @class = "form-select" })*@
+                   @* @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.rm_code as SelectList, item.rm_code, new { @class = "form-select rm-select" })*@
+                    <select class="form-select rm-select rm_code_list">
+
+                        @foreach (var drp in ViewBag.rm_code)
+                        {
+                            if (item.rm_code == drp.Value)
+                            {
+                                <option value="@drp.Value" selected>@drp.Value,@drp.Text</option>
+                            }
+                            else
+                            {
+                           <option value="@drp.Value">@drp.Value,@drp.Text</option>
+                            }
+
+                        }
+                    </select>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rm_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aum_perc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_zone_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.channel_code)
+                </td>
+                @*<td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Save</option>
+                        </select>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+
+
+            <tr id="ufc_data_update_btn_sec">
+                <td><input type="button" id="updateBtn" class="btn btn-primary" value="Update" /></td>
+                <td><input type="button" id="ActivityComplete_Btn" class="btn btn-primary" value="Activity Completed" data-mappig_id="" data-mappig_trans_id="" /></td>
+                <td><input type="text" class="form-control" id="remark_text" placeholder="Remark" style="margin-left: 0px;" /></td>
+            </tr>
+
+   
+</table>
+
+<script>
+    var onClick = function () {
+    };
+
+
+
+
+    $('#updateBtn').click(function () {
+
+        var data = [];
+
+        $(".row-checkbox").each(function () {
+
+
+            if ($(this).is(":checked")) {
+
+                var id = $(this).attr("data-id");
+                var rm_code = $(this).parents("tr").find(".rm-select").val();
+
+                data.push({ 'id': id, 'rm_code': rm_code })
+
+            }
+
+        });
+        console.log(data);
+        if (data.length > 0) {
+
+            jsondata = JSON.stringify(data);
+
+            $.ajax({
+                url: "/MapPinEmp/Update",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                data: jsondata,
+                success: function (data) {
+                    alert(JSON.stringify(data.message));
+                },
+                error: function (err) {
+                    console.error(err.message);
+                },
+            })
+        }
+        else {
+            alert("Please select any item");
+        }
+        //console.log(data)
+    });
+
+
+    $('#ActivityComplete_Btn').click(function () {
+
+        if (confirm("Are you sure you want to complete this") == true) {
+
+            var mapping_id = $(this).attr('data-mappig_id');
+            var mapping_trans_id = $(this).attr('data-mappig_trans_id');
+            var remark = $("#remark_text").val().trim();
+            if (remark != "") {
+
+                var data = {
+                    mapping_id: mapping_id,
+                    mapping_trans_id: mapping_trans_id,
+                    remark: remark
+                };
+                console.log(data);
+
+                $.ajax({
+                    url: "/MappingChangesAccess/UpdateActivity",
+                    //contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    type: "POST",
+                    data: data,
+                    success: function (data) {
+                        alert(JSON.stringify(data.message));
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.error(err.message);
+                    },
+                })
+            }
+            else {
+                $("#remark_text").focus();
+            }
+
+
+        }
+
+    });
+
+
+
+</script>
+
+@*<div class="col-md-12 mt-3">
+        <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Update </a><p>(Update Selected Record Only As Per Above Search Criteria)</p>
+    </div>*@

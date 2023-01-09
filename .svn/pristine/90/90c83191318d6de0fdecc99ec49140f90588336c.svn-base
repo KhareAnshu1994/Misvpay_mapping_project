@@ -1,0 +1,96 @@
+﻿using Mapping_Solution.CustomHelper;
+using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class AddEmployeeDetailsController : Controller
+    {
+        // GET: AddEmployeeDetails
+
+        IdalUfcMaster UFC = new DalUfcMaster();
+        IdalListOfRoles r = new DalListOfRoles();
+        IDalCamsCityUfcMaster d = new DalCamsCityUfcMaster();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+
+        public ActionResult Index(UfcMasterSearch e)
+        {
+            var ch = drop.GetChannel();
+            ViewBag.channel = new SelectList(ch, "ChannelCode", "ChannelCode");
+
+            var rl = drop.GetEMPRole();// It is coming from list of role
+            ViewBag.role = new SelectList(rl, "EmployeeRole", "EmployeeRole");
+
+            var re = drop.GetRegion();
+            ViewBag.region = new SelectList(re, "Region", "Region");
+
+            var zo = drop.GetZone();
+            ViewBag.zone = new SelectList(zo, "Zone", "Zone");
+
+            var ufc = UFC.GetUFCMaster(e); // It is Coming From Ufc Master
+            ViewBag.Location = new SelectList(ufc, "ufc_code", "ufc_name");
+           
+
+            var res = r.Get_Name();// It is coming from list of role
+            ViewBag.Rolename = new SelectList(res, "name", "name");
+
+
+            var city = d.GetCityMfdexPlus(); // It's coming from Cams City Ufc Master
+            ViewBag.City = new SelectList(city, "city_mfdex_plus", "city_mfdex_plus");
+
+
+            var st = drop.GetStatus();
+            ViewBag.Status = new SelectList(st, "Status", "Status");
+
+            var mo = drop.GetMovement();
+            ViewBag.Movement = new SelectList(mo, "TypeOfMovement", "TypeOfMovement");
+
+            var qt = drop.GetQuarter();
+            ViewBag.Quarter = new SelectList(qt, "SelectQuarter", "SelectQuarter");
+
+            return View();
+        }
+        [HttpPost]
+        public JsonResult create(AddEmployeeDetails e)
+        {
+            DalAddEmployeeDetails add = new DalAddEmployeeDetails();
+            return Json(add.InsertEMP(e));
+        }
+
+        [HttpPost]
+        public JsonResult Upload()
+        {
+            bool status = false;
+            DalAddEmployeeDetails add = new DalAddEmployeeDetails();
+            HttpFileCollectionBase files = Request.Files;
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                fname = file.FileName;
+                fname = Path.Combine(Server.MapPath("~/UploadFile/"), fname); // Get the complete folder path and store the file inside it.  
+                file.SaveAs(fname);
+                status = true;
+            }
+            if (status == true)
+            {
+                ViewBag.message = "File uploaded successfully";
+            }
+            else
+            {
+                ViewBag.message = "File not uploaded successfully";
+            }
+            return Json(ViewBag.message);
+        }
+
+
+    }
+}

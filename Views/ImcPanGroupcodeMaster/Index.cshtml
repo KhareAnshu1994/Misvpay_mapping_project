@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ImcPanGroupcodeMasterDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>IMC PAN GROUPCODE MASTER</h5>
+    </div>
+</div>
+<hr id="arn-master-firsthr">
+<div class="row">
+    <div class="col-md-12">
+        <table class="row pt-3" id="step1">
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" id="select3"></td>
+                    <td>
+                        @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                        @*<select class="form-select" id="select1">
+                                <option>Select Quarter</option>
+                                <option value="202353">2022-23-Q1</option>
+                                <option value="202354">2022-23-Q2</option>
+                                <option value="202355">2022-23-Q3</option>
+                                <option value="202356">2022-23-Q4</option>
+                            </select>*@
+                    </td>
+                    <td>
+
+                        @Html.DropDownList("GroupCode", ViewBag.groupcode as SelectList, "Select GROUPCode", new { @class = "form-select", id = "select2" })
+
+                        @*<select class="form-select" id="select2">
+                                <option>Select GROUPCODE</option>
+                                <option value="1">G1204</option>
+                                <option value="2">G1205</option>
+                                <option value="3">G1206</option>
+                                <option value="4">G1207</option>
+                                <option value="5">G1208</option>
+                                <option value="6">G1209</option>
+                                <option value="7">G1210</option>
+                                <option value="8">G1211</option>
+                                <option value="9">G1212</option>
+                            </select>*@
+                    </td>
+                    <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30">Search</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <hr id="arn-master-secondhr">
+        <div class="row pt-2">
+            <div class="col-md-6">
+
+
+
+
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+                <ul class="dropdown-menu">
+                    <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="overflow-auto" id="TableData">
+            @Html.Partial("_ImcPanGroupcodeMasterView", Model)
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblImcGroupcodeMaster').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let group_code = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.groupcode = group_code;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/ImcPanGroupcodeMaster/_ImcPanGroupcodeMasterView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblImcGroupcodeMaster').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblImcGroupcodeMaster").table2excel({
+                filename: "ImcPanGroupcodeMasterTable.xls"
+
+            });
+        });
+    });
+
+</script>

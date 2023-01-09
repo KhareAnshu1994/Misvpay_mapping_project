@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ReasonMasterDetail>
+
+@{
+    ViewBag.Title = "REASON Master";
+    ViewBag.page_id = "45";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-8">
+    <h5>REASON MASTER</h5>
+</div>
+<hr id="third-hr">
+<table>
+    <tr>
+        <td>
+            <table class="row pt-3 id="step1">
+                <tr>
+                    <td><input type="text" class="form-control" id="txtsearch" /></td>
+                    <td><a href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-30" style="margin-left: 30px;">Search</a></td>
+                    <td><a href="@Url.Action("Index","AddReasonMaster")" id="btn_search1" name="btnsearch" class="btn btn-primary w-30" style="margin-left: 30px;">Add</a></td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+</table>
+<hr id="arn-master-secondhr">
+<div class="overflow-auto" id="TableData">
+    @Html.Partial("_ReasonMasterView", Model)
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#tblReasonMaster').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search").click(function () {
+            let obj = {}
+
+            let searchText = $("#txtsearch").val();
+            //  let slctQurater = $("#select1").val();
+
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/ReasonMaster/_ReasonMasterView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblReasonMaster').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+    });
+
+</script>

@@ -1,0 +1,117 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DALEmployeeDetails : IDALEmployeeDetails
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        public List<EmployeeDetails> GetEmployeeDetails(EmployeeDetailsSearch emp)
+        {
+            List<EmployeeDetails> EMP = new List<EmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("Get_All_Tbl_EmployeeDetails", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("EMP_ID", emp.EmployeeId));
+                cmd.Parameters.Add(new OracleParameter("Emp_Name", emp.EmployeeName));
+                cmd.Parameters.Add(new OracleParameter("CHANNELCODE", emp.ChannelCode));
+                cmd.Parameters.Add(new OracleParameter("V_STATUS", emp.Status));
+                cmd.Parameters.Add(new OracleParameter("EMP_ROLE", emp.EmployeeRole));
+                cmd.Parameters.Add(new OracleParameter("LOCATIONUFC", emp.LocationUfc));
+
+
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            EmployeeDetails a = new EmployeeDetails();
+                            a.EmployeeId = Convert.ToString(dr["EMPLOYEE_ID"]);
+                            a.EmployeeName = Convert.ToString(dr["EMPLOYEE_NAME"]);
+                            a.ChannelCode = Convert.ToString(dr["CHANNEL_CODE"]);
+                            a.EmployeeRole = Convert.ToString(dr["EMPLOYEE_ROLE"]);
+                            a.Region = Convert.ToString(dr["REGION"]);
+                            a.Loaction_Ufc = Convert.ToString(dr["LOCATION_UFC"]);
+                            a.StartDate = dr["START_DATE"] == DBNull.Value ? null : (DateTime?)dr["START_DATE"];
+                            a.EndDate = dr["END_DATE"] == DBNull.Value ? null : (DateTime?)dr["END_DATE"];
+                            a.HR_Valid_From = dr["HR_VALID_FROM"] == DBNull.Value ? null : (DateTime?)dr["HR_VALID_FROM"];
+                            a.HR_Valid_Upto = dr["HR_VALID_UPTO"] == DBNull.Value ? null : (DateTime?)dr["HR_VALID_UPTO"];
+                            a.Status = Convert.ToString(dr["STATUS"]);
+                            a.FunctionalRole = Convert.ToString(dr["FUNCTIONAL_ROLE"]);
+
+                            EMP.Add(a);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal BnndMapPincodeArn Data (BnndMapPincodeArnDetails Model) ERROR :" + ex.Message);
+
+                    throw;
+                }
+                con.Close();
+            }
+
+            return EMP;
+        }
+        public List<EmployeeDetails> GetEmployeeID()
+        {
+            List<EmployeeDetails> EMP = new List<EmployeeDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("Get_All_Tbl_EmployeeDetails", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                
+                cmd.Parameters.Add(new OracleParameter("EMP_ID",null));
+                cmd.Parameters.Add(new OracleParameter("Emp_Name",null ));
+                cmd.Parameters.Add(new OracleParameter("CHANNELCODE",null));
+                cmd.Parameters.Add(new OracleParameter("V_STATUS",null));
+                cmd.Parameters.Add(new OracleParameter("EMP_ROLE", null)); ;
+                cmd.Parameters.Add(new OracleParameter("LOCATIONUFC", null));
+
+
+
+
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            EmployeeDetails a = new EmployeeDetails();
+                            a.EmployeeId = Convert.ToString(dr["EMPLOYEE_ID"]);
+                          
+                            EMP.Add(a);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal BnndMapPincodeArn Data (BnndMapPincodeArnDetails Model) ERROR :" + ex.Message);
+
+                    throw;
+                }
+                con.Close();
+            }
+
+            return EMP;
+        }
+    }
+}

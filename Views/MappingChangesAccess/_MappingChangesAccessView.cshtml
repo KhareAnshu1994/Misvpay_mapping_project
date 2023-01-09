@@ -1,0 +1,258 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MappingChangesAccessDetail>
+<style>
+
+    .open_for_changes {
+        background: aliceblue;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .work_in_progress {
+        background: #b1ffb0;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .final_submission {
+        background: #faa4ff;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .ready_to_move_prod {
+        background: #e5ff0d;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .moving_to_prod {
+        background: #a9bbff;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .activity_complete {
+        background: #00ff0a;
+        border: none;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 10px;
+    }
+
+</style>
+<table class="table small border table-hover" id="tblMappingChangeAccess">
+    <thead>
+        <tr class="bg-primary text-white">
+            <!-- <th scope="col"><input type="checkbox" class="form-check-input" /></th> -->
+            <th></th>
+            <th scope="col"> Reason Codes <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col"> Channel Code <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+            <th scope="col">Region <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">Selected UFC’s <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">UFC_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">Access Start Date <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">Access End Date <i class="fa fa-solid fa-sort" onclick="sortBy(7)"></i></th>
+            <th scope="col">KRA Valid From <i class="fa fa-solid fa-sort" onclick="sortBy(8)"></i></th>
+            <th scope="col">VYMO Valid From<i class="fa fa-solid fa-sort" onclick="sortBy(9)"></i></th>
+            <th scope="col">Employee Code <i class="fa fa-solid fa-sort" onclick="sortBy(10)"></i></th>
+            <th scope="col">Alternate Employee Code <i class="fa fa-solid fa-sort" onclick="sortBy(11)"></i></th>
+            <th scope="col">Remark <i class="fa fa-solid fa-sort" onclick="sortBy(12)"></i></th>
+            <th scope="col">Stage</th>
+            <th scope="col">Action</th>
+            <th scope="col">Attach</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td><input type="checkbox" class="form-check-input row-checkbox"></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.reason_codes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.channel_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.region)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.slcted_ufc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ufc_name)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.access_start_date)*@
+                @Html.TextBoxFor(modelItem => item.access_start_date, new { @class = "form-control mb-1 access_start_date", @disabled = "disabled" })
+            </td>
+            <td>
+                @* @Html.DisplayFor(modelItem => item.access_end_date)*@
+                @Html.TextBoxFor(modelItem => item.access_end_date, new { @class = "form-control mb-1 access_end_date ", @disabled = "disabled" })
+            </td>
+            <td>
+                @* @Html.DisplayFor(modelItem => item.kra_valid_from)*@
+                @Html.TextBoxFor(modelItem => item.kra_valid_from, new { @class = "form-control mb-1" })
+            </td>
+            <td>
+                @* @Html.DisplayFor(modelItem => item.vymo_valid_from)*@
+                @Html.TextBoxFor(modelItem => item.vymo_valid_from, new { @class = "form-control mb-1" })
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.employee_code)*@
+                @Html.TextBoxFor(modelItem => item.employee_code, new { @class = "form-control mb-1" })
+            </td>
+            <td>
+                @* @Html.DisplayFor(modelItem => item.alternate_employee_code)*@
+                @Html.TextBoxFor(modelItem => item.alternate_employee_code, new { @class = "form-control mb-1 alternate_emp_code", @disabled = "disabled" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.remark)
+            </td>
+
+            <td>
+                @if (item.stage_id == 1)
+                {
+                    <button class="open_for_changes">Open for changes</button>
+                }
+                else if (item.stage_id == 2)
+                {
+                    <button class="work_in_progress">Work In Progress</button>
+                }
+                else if (item.stage_id == 3)
+                {
+                    <button class="final_submission">Final Submission</button>
+                }
+                else if (item.stage_id == 4)
+                {
+                    <button class="ready_to_move_prod" data-mapping_access_id="@item.id">Ready to Move for Prodcution</button>
+                }
+                else if (item.stage_id == 5)
+                {
+                    <button class="moving_to_prod">Moving Data to Production</button>
+                }
+                else if (item.stage_id == 6)
+                {
+                    <button class="activity_complete">Activity Completed</button>
+                }
+            </td>
+
+            <td>
+                <select class="form-select" id="action" data-id="@item.id">
+                    <option value="">Select</option>
+                    <option value="1">Edit</option>
+                    <option value="2">Delete</option>
+                    <option value="3">Save</option>
+                    <option value="4">Send Email Reminder</option>
+                    <option value="5">Extend Date</option>
+                </select>
+                @*<div id="divaction">
+                <button class="btnactions" id="trash2"><i class="fa fa-trash"></i></button>
+                <button class="btnactions" id="pencil2"><i class="fa fa-pencil" onclick="edit2()"></i></button>
+                <button class="btnactions" id="btn2" style="display:none"><i class="fa fa-save" onclick="save2()"></i></button>
+            </div>*@
+            </td>
+            <td>
+                <button type="button" id="" class="btnactions">
+                    <label for="file"><i class="fa fa-paperclip"></i></label>
+
+                    <input type="file" id="file" style="display:none;" />
+            </td>
+
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<script>
+
+    $(document).ready(function () {
+        $(document).on("change", "#action", function () {
+
+            var action = $(this).val();
+            if (action == 1) {
+
+
+                //var id = $(this).attr('data-id');
+                //console.log(id);
+                $(this).parents("tr").find(".access_start_date, .access_end_date, .alternate_emp_code").removeAttr("disabled");
+
+
+            }
+
+            else if (action == 3) {
+
+                var id = $(this).attr('data-id');
+                var access_end_date = $(this).parents("tr").find(".access_end_date").val();
+                var access_start_date = $(this).parents("tr").find(".access_start_date").val();
+                var alternate_emp_code = $(this).parents("tr").find(".alternate_emp_code").val();
+
+                data = { 'id': id, 'access_start_date': access_start_date, 'access_end_date': access_end_date, 'alternate_employee_code': alternate_emp_code }
+
+                console.log(data);
+
+                if (Object.keys(data).length > 0) {
+                    jsondata = JSON.stringify(data);
+
+                    $.ajax({
+                        url: "/MappingChangesAccess/Save_action",
+                        type: "POST",
+                        data: data,
+                        success: function (data) {
+                            alert(JSON.stringify(data.message));
+                            location.reload();
+                        },
+                        error: function (err) {
+                            console.error(err.message);
+                        },
+                    })
+                }
+                else {
+                    alert("Please fill data");
+                }
+
+                console.log(data)
+
+            }
+
+        });
+
+        $(".ready_to_move_prod").click(function () {
+            var mapping_access_id = $(this).attr("data-mapping_access_id");
+
+            if (confirm("Are you sure!") == true) {
+         
+                var data = [{ mapping_access_id: mapping_access_id }];
+                $.ajax({
+                    url: "/MappingChangesAccess/MoveDatatoProduction",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.error(err.message);
+                    },
+                })
+            }
+        })
+    })
+
+</script>

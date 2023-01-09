@@ -1,0 +1,150 @@
+﻿@model IEnumerable<Mapping_Solution.Models.SubbrokerMasterDetails>
+
+@{
+    ViewBag.Title = "SUBBROKER Master";
+    ViewBag.page_id = "37";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>SUBBROKER Master</h5>
+    </div>
+    <div class="col-md-4">
+        <!--<form style="visibility:hidden;">-->
+            <!-- <input type="button" value="Templates" onClick="window.location.href='../Templates/ARN-Master.xls'"> -->
+            <!--<a href="../Templates/Subbroker-master.xlsx" download="Subbroker-Master"><button type="button" id="templatebtn" class="btn btn-primary" style="visibility:hidden;">Templates</button></a>
+        </form>-->
+    </div>
+    <hr id="subbroker-master-firsthr">
+    <div class="row" style="margin-left:1px;">
+        <div class="col-md-12">
+            @*<table style="visibility:hidden;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="file" id="myFile">
+                            </td>
+                            <td>
+                                <input type="button" value="Upload" class="btn btn-primary">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr id="third-hr">*@
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table class="row pt-3" id="step1">
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="form-control" id="select3"></td>
+                                        <td>
+                                            @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                                            @*<select class="form-select" id="select1">
+                                                    <option>Select Quarter</option>
+                                                    <option value="202353">2022-23-Q1</option>
+                                                    <option value="202354">2022-23-Q2</option>
+                                                    <option value="202355">2022-23-Q3</option>
+                                                    <option value="202356">2022-23-Q4</option>
+                                                </select>*@
+                                        </td>
+                                        <td>
+
+                                            @Html.DropDownList("BranchCode", ViewBag.branchcode as SelectList, "Select Branch Code", new { @class = "form-select", id = "select2" })
+
+                                            @*<select class="form-select" id="select2">
+                                                    <option>Select Branch Code</option>
+                                                    <option value="1">4277</option>
+                                                    <option value="2">2044</option>
+                                                    <option value="3">1747</option>
+                                                    <option value="4">72008</option>
+                                                    <option value="5">72103</option>
+                                                </select>*@
+                                        </td>
+                                        <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30" style="margin-left: 118px;">Search</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr id="subbroker-master-secondhr">
+            <!-- 1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a> -->
+            <div class="row pt-2">
+                <div class="col-md-6">
+
+
+
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="overflow-auto" id="TableData">
+                @Html.Partial("_SubbrokerMasterView", Model)
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblSubbrokerMaster').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let branchcode = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.branch_code = branchcode;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/SubbrokerMaster/_SubbrokerMasterView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblSubbrokerMaster').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblSubbrokerMaster").table2excel({
+                filename: "SubbrokerMasterTable.xls"
+
+            });
+        });
+
+    });
+
+</script>

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MfdexArnCityUfcWiseSharingMasterDetails>
+
+@{
+    ViewBag.Title = "MFDEX ARN CITY UFCWISE SHARING MASTER";
+    ViewBag.page_id = "41";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="margin-left:-5px;margin-right:-5px;">
+    <div class="col-md-8">
+        <h5>MFDEX ARN CITY UFCWISE SHARING MASTER</h5>
+    </div>
+    <div class="col-md-4">
+        <!--<form>-->
+        <!-- <input type="button" value="Templates" onClick="window.location.href='../Templates/ARN-Master.xls'"> -->
+        <!--<a href="../Templates/Mfdex-ARN-City-UFCWise-Sharing-master.xlsx" download="Mfdex-ARN-City-UFCWise-Sharing-Master"><button type="button" id="templatebtn" class="btn btn-primary">Templates</button></a>
+        </form>-->
+    </div>
+    <hr id="arn-master-firsthr">
+    <div class="row">
+        <div class="col-md-12">
+
+            @*<table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="file" id="myFile">
+                                </td>
+                                <td>
+                                    <input type="button" value="Upload" id="btnupload" class="btn btn-primary">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <hr id="third-hr">*@
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table class="row pt-4 id=" step1" ="">
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="form-control" id="select3"></td>
+                                        <td>
+                                            @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                                            @*<select class="form-select" id="select1">
+                                                    <option>Select Quarter</option>
+                                                    <option value="202353">2022-23-Q1</option>
+                                                    <option value="202354">2022-23-Q2</option>
+                                                    <option value="202355">2022-23-Q3</option>
+                                                </select>*@
+                                        </td>
+                                        <td>
+                                            @Html.DropDownList("Krv_Code", ViewBag.krv as SelectList, "Select KRV Code", new { @class = "form-select", id = "select2" })
+
+                                            @*<select class="form-select" id="select2">
+                                                    <option>Select KRV Code</option>
+                                                    <option value="1">ARN-0016</option>
+                                                    <option value="2">ARN-0632</option>
+                                                    <option value="3">ARN-0893</option>
+                                                    <option value="4">ARN-124591</option>
+                                                    <option value="4">ARN-77995</option>
+                                                </select>*@
+                                        </td>
+                                        <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30">Search</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr id="arn-master-secondhr">
+    <!-- 1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a> -->
+    <div class="row pt-2">
+        <div class="col-md-6">
+
+
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+            <ul class="dropdown-menu">
+                <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+            </ul>
+        </div>
+    </div>
+    <div class="overflow-auto" id="TableData">
+        @Html.Partial("_MfdexArnCityUfcWiseSharingMasterView", Model)
+
+    </div>
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblCityUfcWiseSharingMast').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let krvcode = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.krv_code = krvcode;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/MfdexArnCityUfcWiseSharingMaster/_MfdexArnCityUfcWiseSharingMasterView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblCityUfcWiseSharingMast').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblCityUfcWiseSharingMast").table2excel({
+                filename: "MfdexArnCityUfcWiseSharingMasterTable.xls"
+
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.Models
+{
+    public class MapRiaCodeInstitutionalDetails
+    {
+        public string ria_code { get; set; }
+        public string ria_name { get; set; }
+        public string arnno_ref { get; set; }
+        public string multicity { get; set; }
+        public string rm_code { get; set; }
+        public string rm_name { get; set; }
+        public string ufc_area_code { get; set; }
+        public string ufc_area_name { get; set; }
+        public string city { get; set; }
+    }
+}

@@ -1,0 +1,262 @@
+﻿
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Request</title>
+    <link rel="icon" href="~/Content/images/logo_1.png"
+          type="image/x-icon">
+
+    <link href="~/Content/css/bootstrap.min.v5.1.3.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/main.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/CustomFile/main.js"></script>
+
+
+
+
+    @* Customn file *@
+    <link href="~/Content/CustomFile/style.css" rel="stylesheet" />
+    <link href="~/Content/CustomFile/style1.css" rel="stylesheet" />
+
+
+
+
+    <link href="~/Content/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/js/bootstrap.min.v5.1.3.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+
+
+
+    <script src="~/Content/CustomFile/main.js"></script>
+
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between"><i class="toggle-sidebar-btn pe-2"> <span class="fa fa-align-justify text-white"></span> </i><img src="~/Content/images/logo_1.png" alt="" width="100"></div>
+
+        <div class="col-md-10">
+            <h6 class="text-center text-white small pt-2">Welcome <span>@Session["UserName"]</span> | Last Login <span>@Session["Time"] </span></h6>
+            <h6 class="text-left text-white small pt-2" style="margin-left:25px;">  Role :  @Session["Employee_role"] &nbsp;&nbsp; Location : @Session["Location_ufc"]</h6>
+        </div>
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item dropdown pe-4">
+                    <a class="nav-link dropdown-toggle text-white small" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li><a class="dropdown-item d-flex align-items-center" href="@Url.Action("Index","Login")"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#tour" data-bs-toggle="collapse" href="#">
+                    <span>MAPPING FOR RTL/BNND CHANNEL</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tour" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+
+                    <li class="nav-item">
+
+                        <ul id="mapping" class="nav-content mt-2 collapse show" data-bs-parent="#sidebar-nav" style="">
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index","MapArn")"><input type="checkbox" class="form-check-input me-2 mb-1">MFD TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MapPinEmp")"><input type="checkbox" class="form-check-input me-2 mb-1">PINCODE TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MapArnSubbrokerEuin")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+EUIN/SUB_ARN/BRANCH CODE MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MapMulticity")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+UFC TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MapArnCity")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+CITY TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","PanMapping")"><input type="checkbox" class="form-check-input me-2 mb-1">PAN MAPPING</a>
+                                @*<a class="dropdown-item" href="/mapping/map_direct_rmcode.html"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP DIRECT RM CODE</a>*@
+                                <a class="dropdown-item" href=@Url.Action("Index","MapRiaCode")><input type="checkbox" class="form-check-input me-2 mb-1">RIA TO RM MAPPING</a>
+                                @*<a class="dropdown-item" href="/mapping/map_ria_master.html"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP RIA MASTER</a>
+                                    <a class="dropdown-item" href="/mapping/map_bsf_poa_niftyindxdir.html"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP BSF POA NIFTYINDXDIR</a>
+                                    <a class="dropdown-item" href="/mapping/map_bsf_subarn_niftyindxdir.html"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP BSF SUBARN NIFTYINDXDIR</a>*@
+                                @*<a class="dropdown-item" href=@Url.Action("Index","Exceptions")><input type="checkbox" class="form-check-input me-2 mb-1"> EXCEPTIONS</a>*@
+                                <a class="dropdown-item" href=@Url.Action("Index","ExceptionsMapping")><input type="checkbox" class="form-check-input me-2 mb-1"> EXCEPTIONS MAPPING</a>
+                                <a class="dropdown-item" href=@Url.Action("Index","BnndMapPincodeArn")><input type="checkbox" class="form-check-input me-2 mb-1">ARN+PINCODE TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ArnRiaCityMap")"><input type="checkbox" class="form-check-input me-2 mb-1">RIA+CITY MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","BnndMapSubarnPin")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+ SUB ARN+PIN TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexMapCamsCityArn")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+SINGLE CITY TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexMapCamsDirectShare")"><input type="checkbox" class="form-check-input me-2 mb-1">DIRECT+SINGLE CITY TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexMapNewcityArn")"><input type="checkbox" class="form-check-input me-2 mb-1">ARN+GROUP OF CITIES TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexMapNewcityDirect")"><input type="checkbox" class="form-check-input me-2 mb-1">DIRECT+GROUP OF CITIES TO RM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexArnCityUfcWiseSharingMapping")"><input type="checkbox" class="form-check-input me-2 mb-1"> MFDEX ARN CITY UFCWISE SHARING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ArnPrmRmcodeMapping")"><input type="checkbox" class="form-check-input me-2 mb-1">PRM MAPPING</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","TeamSatMapping")"><input type="checkbox" class="form-check-input me-2 mb-1"> TEAM SAT Mapping</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","TeamSatMap")"><input type="checkbox" class="form-check-input me-2 mb-1"> TEAM SAT</a>
+
+                                <button type="submit" class="btn btn-primary mt-2">Final Submission</button>
+
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#institution" data-bs-toggle="collapse" href="#"><span>MAPPING FOR INSTITUTION CHANNEL</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                <ul id="institution" class="nav-content collapse mt-2 " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("Index","MapRiaCodeInstitutional")"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP RIA CODE</a>
+                        <a class="dropdown-item" href="@Url.Action("Index","MapDsit")"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP DSIT</a>
+                        <a class="dropdown-item" href="@Url.Action("Index","MapPanMapping")"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP PAN MAPPING</a>
+                        <a class="dropdown-item" href="@Url.Action("Index","MapArnInstitution")"><input type="checkbox" class="form-check-input me-2 mb-1"> MAP ARN</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("Index","ExceptionMappingInstitution")">
+                            <input type="checkbox" class="form-check-input me-2 mb-1"> EXCEPTIONS MAPPING
+                        </a>
+                        <button type="submit" class="btn btn-primary mt-2">Final Submission</button>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item" id="admin1">
+                <a id="admin_parent_menu" class="nav-link" data-bs-target="#config" data-bs-toggle="collapse" href="#" aria-expanded="true"> <span>ADMIN</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                <ul id="config" class="nav-content mt-2 collapse show" data-bs-parent="#sidebar-nav" style="">
+                    <li class="nav-item">
+                        <a id="master_parent_menu" class="nav-link collapsed" data-bs-target="#master" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>Masters</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                        <ul id="master" class="nav-content collapse mt-2" data-bs-parent="#config">
+                            <li>
+
+                                <a class="dropdown-item" href="@Url.Action("Index","ArnMaster")"><i class="bi bi-arrow-right"></i>ARN Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","UfcMaster")"><i class="bi bi-arrow-right"></i>UFC Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","RegionMaster")"><i class="bi bi-arrow-right"></i>REGION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ZoneMaster")"><i class="bi bi-arrow-right"></i>ZONE Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","UserMaster")"><i class="bi bi-arrow-right"></i>USER Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","PincodeMaster")"><i class="bi bi-arrow-right"></i>PINCODE Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SchemeCategoryMaster")"><i class="bi bi-arrow-right"></i>SCHEME Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","RiaMaster")"><i class="bi bi-arrow-right"></i>RIA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SchemeCatConversionMaster")"><i class="bi bi-arrow-right"></i>SCHEME-CATEGORY-CONVERSION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","KraMaster")"><i class="bi bi-arrow-right"></i>KRA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","CamsCityUfcMaster")"><i class="bi bi-arrow-right"></i>CAMS CITY UFC Master</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","FintechMaster")"><i class="bi bi-arrow-right"></i>FINTECH Master</a>*@
+                                <a class="dropdown-item" href="@Url.Action("Index","PanMaster")"><i class="bi bi-arrow-right"></i>PAN Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SubbrokerMaster")"><i class="bi bi-arrow-right"></i>SUBBROKER Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","BdaCaMaster")"><i class="bi bi-arrow-right"></i>BDA/CA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","CrcaExclusionMaster")"><i class="bi bi-arrow-right"></i>CRCA-EXCLUSION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexArnCityUfcWiseSharingMaster")"><i class="bi bi-arrow-right"></i>MFDEX ARN CITY UFCWISE SHARING MASTER</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","VirtualRmMaster")"><i class="bi bi-arrow-right"></i>Virtual RM MASTER</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ExceptionsMaster")"><i class="bi bi-arrow-right"></i>EXCEPTIONS Master</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","ImcPanGroupcodeMaster")"><i class="bi bi-arrow-right"></i>IMC PAN GROUPCODE MASTER</a>*@
+                                <a class="dropdown-item" href="@Url.Action("Index","MapDetagSubarnMaster")"><i class="bi bi-arrow-right"></i>MAP DETAG SUBARN MASTER</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ChannelMaster")"><i class="bi bi-arrow-right"></i>CHANNEL Master</a>
+                                @* <a class="dropdown-item" href="@Url.Action("Index","AddEmployeeDetails")"><i class="bi bi-arrow-right"></i>Add Employee Details</a>
+                                *@
+                            </li>
+                            <li class="nav-item" id="region1">
+                                <a class="nav-link collapsed" data-bs-target="#region" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>REASON Master</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                                <ul id="region" class="nav-content collapse mt-2" data-bs-parent="#master">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" href="../reason/addition.html"><i class="bi bi-arrow-right"></i>New Appointment</a>
+                                        <a class="dropdown-item" href="../reason/transfer.html"><i class="bi bi-arrow-right"></i>Promotion/Transfer</a>
+                                        <a class="dropdown-item" href="../reason/seperation.html"><i class="bi bi-arrow-right"></i>Seperation</a>
+                                        <a class="dropdown-item" href="../reason/allindia.html"><i class="bi bi-arrow-right"></i>All India</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("Index","MappingChangesAccess")"><i class="bi bi-arrow-right"></i>Mapping Change Access</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#user" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>USER MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                        <ul id="user" class="nav-content collapse mt-2" data-bs-parent="#config">
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index","EmployeeDetail")"><i class="bi bi-arrow-right"></i>Employee Details</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index","AddEmployeeDetails")"><i class="bi bi-arrow-right"></i>Add Employee Details</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","File")"><i class="bi bi-arrow-right"></i>Check Details</a>*@
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#userSetting" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                                <ul id="userSetting" class="nav-content collapse mt-2" data-bs-parent="#user">
+                                    @* <li>
+                                            <a class="dropdown-item" href="@Url.Action("Index","AssignRoleToUsers")"><i class="bi bi-arrow-right"></i>Assign Role to Users</a>
+                                        </li>*@
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index","ListOfRoles")"><i class="bi bi-arrow-right"></i>List Of Roles</a>
+                                        <!-- <li> -->
+                                        <!-- <a class="dropdown-item" href="../usersettings/Role/Item/2.html"><i class="bi bi-arrow-right"></i>Add Role</a> -->
+                                        <!-- </li> -->
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index","AssignMenusToRole")"><i class="bi bi-arrow-right"></i>Assign Menus To Role</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Mapping Data1 Checkout</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Reports</a>
+                    </li>
+                    <!-- <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Report Data Checkout</a> -->
+                </ul>
+            </li>
+
+            <li class="nav-item" style="list-style:none;">
+                <a class="nav-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse" href="#" aria-expanded="false">
+                    Reports<i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="reports" class="nav-content mt-2 collapse" data-bs-parent="#sidebar-nav" style="list-style: none; color: #4154f1; font-size: 12px; font-weight: 600;">
+
+                    <li style="margin-left:-20px;">
+                        <a style="" class="dropdown-item" href="@Url.Action("Index","MappingStatusReport")"><i class="bi bi-arrow-right"></i>Mapping Status</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <main id="main" class="main">
+        <section class="section dashboard">
+            <div class="bg-white p-3 border">
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>UTI</span></strong>
+            <script type="text/javascript">
+                var d = new Date();
+                yr = d.getFullYear();
+                document.write(yr);
+            </script>. All Rights Reserved
+        </div>
+    </footer>
+
+</body>
+
+</html>
+@*//anshu*@
+
+
+<script src="~/Scripts/js/main.js"></script>
+<script src="~/Scripts/js/uti.js"></script>
+<script src="~/Scripts/js/custom.js"></script>
+@*//anshu*@

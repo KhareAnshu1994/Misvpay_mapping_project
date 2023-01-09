@@ -1,0 +1,502 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Assign Menus To Role</h5>
+                </div>
+                <hr id="arn-master-secondhr">
+                <left>
+                    <form class="ng-pristine ng-invalid ng-invalid-required">
+                        <div class="col-md-6">
+                            <font size="2">
+                                <label>Role Name</label>
+                                @Html.DropDownList("Role", ViewBag.name as SelectList, "Select", new { @class = "form-select", style = "width:220px;margin-right:-90px;" })
+                               
+                            </font>
+                        </div>
+                        <br>
+                        <div ng-repeat="parent_items in menus_list track by $index" class="ng-scope"></div>
+                        <!-- <h4 style="text-align:left"><b class="ng-binding">Masters</b></h4> -->
+                        <table class="border" style="width:80% ">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" rowspan="2" class="border" text-align="center">Masters</th>
+                                    <th colspan="5" class="border">Action</th>
+                                <tr class="border">
+                                    <th class="border">All<input type="checkbox" /></th>
+                                    <th class="border">Add<input type="checkbox" /></th>
+                                    <th class="border">Edit<input type="checkbox" /></th>
+                                    <!-- <th  class="border">Delete</th> -->
+                                    <th class="border">View<input type="checkbox" /></th>
+                                </tr>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox">&nbsp;ARN Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;UFC Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;REGION Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;ZONE Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;USER Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;PINCODE Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;SCHEME Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;RIA Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;SCHEME CATEGORY CONVERSION Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;KRA Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;CAMS CITY UFC Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;FINTECH Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;PAN Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;SUBBROKER Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;BDA/CA Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;CRCA-EXCLUSION Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;VIRTUAL RMCODE Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX ARN CITY UFCWISE Sharing Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;EXCEPTIONS Master</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+
+                                <!-- <table class="border"  style="width:80% ">
+                                  <thead> -->
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="names">Mapping For RTL/BNND Channel</span></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP ARN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP PIN EMP</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP ARN SUBBROKER EUIN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP MULTICITY</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP ARN CITY</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;PAN MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP RIA CODE</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;EXCEPTIONS MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;BNND MAP PINCODE ARN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;ARN RIA CITY</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;BNND MAP SUBARN PIN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX MAP CAMS CITY ARN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX MAP CAMS DIRECT SHARE</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX MAP NEWCITY ARN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX MAP NEWCITY DIRECT</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MFDEX ARN CITY UFCWISE SHARING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;PRM ARN MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;TEAM SAT MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;TEAM SAT</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <!-- </div> -->
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td><span class="names">Mapping For Institution Channel</span></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP RIA CODE</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP DSIT</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP PAN MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;MAP ARN</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;EXCEPTIONS MAPPING</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td><span class="names">User Management</span></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;Employee Details</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+                                <tr class="border">
+                                    <td><input type="checkbox">&nbsp;Add Employee Details</td>
+                                    <td></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <td class="border"><input type="checkbox"></td>
+                                    <!-- <td class="border"><input type="checkbox" ></td> -->
+                                    <td class="border"><input type="checkbox"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="col-md-12 mt-3 text-left">
+                            <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Submit</a>
+                        </div>
+                        <!-- <div class="form-group row">
+                          <div class="col-sm-5">
+                          <button type="submit" class="btn btn-primary" >Submit</button>
+                        </div> -->
+                        </table>
+          

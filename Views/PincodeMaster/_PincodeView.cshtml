@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Mapping_Solution.Models.PincodeMasterDetail>
+
+<table class="table small border" id="tblPincodeMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th></th>
+            <th scope="col">PINCODE</th>
+            <th scope="col">UFC_CODE</th>
+            <th scope="col">DIST_CD</th>
+            <th scope="col">DIST_NAME</th>
+            <th scope="col">CITY_AS_PER_AMFI</th>
+            <th scope="col">CITY_AS_PER_CAMS</th> <!--new added-->
+            <th scope="col">T30B30</th>
+            <th scope="col">T5B5</th> <!--new added-->
+            <th scope="col">T15B15</th> <!--new added-->
+            <th scope="col">T8B8</th> <!--new added-->
+            <th scope="col">DOFA_PIN_CATEGORY</th> <!--new added-->
+            <th scope="col">UFC_LOCATION</th> <!--new added-->
+            <th scope="col">VALID_FROM</th>
+            <th scope="col">VALID_UPTO</th>
+            <th scope="col">SAP_UFC_CODE</th>
+            <th scope="col">SAP_REGION_CODE</th>
+            <th scope="col">SAP_ZONE_CODE</th>
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td><input type="checkbox" class="form-check-input" /></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pincode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ufc_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dist_cd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dist_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city_as_per_amfi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city_as_per_cams)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.district)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.t30b30)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.t5b5)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.t15b15)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.t8b8)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dofa_pin_category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ufc_location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valid_from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valid_upto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sap_ufc_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sap_region_code)
+            <td>
+                @Html.DisplayFor(modelItem => item.sap_zone_code)
+
+            </td>
+
+
+            @* <td>
+            <select class="form-select">
+                <option>Select</option>
+                <option>Edit</option>
+                <option>Save</option>
+                <option>Delete</option>
+            </select>
+        </td>*@
+            @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+        </td>*@
+        </tr>
+        }
+    </tbody>
+</table>

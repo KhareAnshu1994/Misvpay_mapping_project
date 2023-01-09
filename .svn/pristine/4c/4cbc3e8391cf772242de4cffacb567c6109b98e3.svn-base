@@ -1,0 +1,35 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class TeamSatMappingController : Controller
+    {
+        // GET: TeamSatMapping
+        IdalTeamSatMapping team = new DalTeamSatMapping();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+
+        public ActionResult Index(MapSearchActivites e)
+        {
+            var qt = drop.GetQuarter();
+            ViewBag.Quarter = new SelectList(qt, "SelectQuarter", "SelectQuarter");
+
+            var add = team.Get_TeamSatMapping_AllDetails(e);
+            return View(add);
+        }
+
+
+        public ActionResult _TeamSatMappingView(MapSearchActivites e)
+        {
+
+            var add = team.Get_TeamSatMapping_AllDetails(e);
+            return PartialView("_TeamSatMappingView", add);
+        }
+    }
+}

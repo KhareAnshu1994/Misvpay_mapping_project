@@ -1,0 +1,151 @@
+﻿@model IEnumerable<Mapping_Solution.Models.PanMasterDetails>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>PAN MASTER</h5>
+    </div>
+    <div class="col-md-4">
+        <form>
+            <!-- <input type="button" value="Templates" onClick="window.location.href='../Templates/ARN-Master.xls'"> -->
+            <a href="../Templates/Pan-master.xlsx" download="Pan-Master"><button type="button" id="templatebtn" class="btn btn-primary">Templates</button></a>
+        </form>
+    </div>
+</div>
+<hr id="pan-master-firsthr">
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="file" id="myFile">
+                    </td>
+                    <td>
+                        <input type="button" value="Upload" class="btn btn-primary">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr id="third-hr">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="row pt-3" id="step1">
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control" id="select3"></td>
+                                    <td>
+                                        @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, "Select Quarter", new { @class = "form-select", id = "select1" })
+
+                                        @*<select class="form-select" id="select1">
+                                                <option>Select Quarter</option>
+                                                <option value="202353">2022-23-Q1</option>
+                                                <option value="202354">2022-23-Q2</option>
+                                                <option value="202355">2022-23-Q3</option>
+                                                <option value="202356">2022-23-Q4</option>
+                                            </select>*@
+                                    </td>
+                                    <td>
+
+                                        @Html.DropDownList("PanNumber", ViewBag.panno as SelectList, "Select PAN NUMBER", new { @class = "form-select", id = "select2" })
+
+                                        @*<select class="form-select" id="select2">
+                                                <option>Select PAN NUMBER</option>
+                                                <option value="202353">AACCB8574H</option>
+                                                <option value="202354">AMHPS8833N</option>
+                                                <option value="202355">ATYPS2398L</option>
+                                                <option value="202356">AAATS4626E</option>
+                                                <option value="202357">AACCG4247R</option>
+                                                <option value="202358">AAATK8598H</option>
+                                                <option value="202359">AAATK8599G</option>
+                                                <option value="202360">AAACD7468A</option>
+                                                <option value="202361">AAACG7996C</option>
+                                            </select>*@
+                                    </td>
+                                    <td><a href="#" id="btn_search1" name="btnsearch" class="btn btn-primary w-30" style="margin-left: 103px;">Search</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr id="pan-master-secondhr">
+        <div class="row pt-2">
+            <div class="col-md-6">
+
+
+
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 270px;"><i class="fa fa-solid fa-download"></i></button>
+                <ul class="dropdown-menu">
+                    <li><button id="btnExport" class="dropdown-item" type="button">Excel</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="overflow-auto" id="TableData">
+            @Html.Partial("_PanMasterView", Model)
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tblPanMaster').DataTable({
+            searching: false,
+
+        });
+
+
+        $("#btn_search1").click(function () {
+            let obj = {}
+
+            let panno = $("#select2").val();
+            let searchText = $("#select3").val();
+            let slctQurater = $("#select1").val();
+
+            obj.pan_no = panno;
+            obj.search_text = searchText;
+            //obj.quarter = slctQurater;
+
+
+            $("#TableData").show();
+            $.ajax({
+                url: "/PanMaster/_PanMasterView",
+                type: "get",
+                data: obj,
+                dataType: "html",
+                success: function (result) {
+                    $("#TableData").html(result);
+                    table = $('#tblPanMaster').DataTable({ searching: false, });
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.reload();
+                        return;
+                    }
+                    $("#TableData").hide();
+                }
+
+            });
+
+        });
+        $("#btnExport").click(function () {
+            $("#tblPanMaster").table2excel({
+                filename: "PanMasterTable.xls"
+
+            });
+        });
+       
+    });
+
+</script>

@@ -1,0 +1,28 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class AddRoleController : Controller
+    {
+        // GET: AddRole
+        public ActionResult Index()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public JsonResult create(AddRole e)
+        {
+            IdalAddRole add = new DalAddRole();
+            return Json(add.AddRole(e));
+        }
+
+    }
+}

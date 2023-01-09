@@ -1,0 +1,49 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class EmployeeDetailController : Controller
+    {
+        // GET: EmployeeDetail
+
+        IdalUfcMaster UFC = new DalUfcMaster();
+        IDALEmployeeDetails objemp = new DALEmployeeDetails();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+        IdalChannelmaster m = new DalChannelmaster();
+
+        public ActionResult Index(EmployeeDetailsSearch emp, UfcMasterSearch e)
+        {
+            var re = m.GetChannelCode();
+            ViewBag.channelcode = new SelectList(re, "channel_code", "channel_code");
+
+            var ufc = UFC.GetUFCMaster(e); // It is Coming From Ufc Master
+            ViewBag.Location = new SelectList(ufc, "ufc_code", "ufc_name");
+
+            var st = drop.GetStatus();
+            ViewBag.Status = new SelectList(st, "Status", "Status");
+
+            var rl = drop.GetEMPRole();
+            ViewBag.role = new SelectList(rl, "EmployeeRole", "EmployeeRole");
+
+
+            var a = objemp.GetEmployeeDetails(emp);
+            return View(a);
+        }
+
+
+        public ActionResult _EmployeeDetail(EmployeeDetailsSearch emp)
+        {
+            var a = objemp.GetEmployeeDetails(emp);
+            return PartialView("_EmployeeDetail", a);
+        }
+
+
+    }
+}

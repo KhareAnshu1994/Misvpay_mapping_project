@@ -1,0 +1,797 @@
+﻿@using Mapping_Solution.CustomHelper;
+@using Newtonsoft.Json;
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/Content/images/logo_1.png"
+          type="image/x-icon">
+    <link href="~/Content/css/multiple-select.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap.min.v5.1.3.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/main.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/CustomFile/main.js"></script>
+
+
+
+
+    @* Customn file *@
+    @*<link href="~/Content/CustomFile/style.css" rel="stylesheet" />*@
+    <link href="~/Content/CustomFile/style1.css" rel="stylesheet" />
+
+
+    <link href="~/Content/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Content/css/jquery.multiselect.css" rel="stylesheet" />*@
+
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" />*@
+
+    @*<script src="~/Scripts/js/jquery-2.2.4.min.js"></script>*@
+    <script src="~/Scripts/js/bootstrap.min.v5.1.3.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    @*<script src="~/Scripts/js/jquery.multiselect.js"></script>*@
+    @*<script src="~/Scripts/js/jquery.multi-select.js"></script>*@
+    <script src="~/Scripts/js/jquery.multiselect.js"></script>
+    <script src="~/Scripts/js/moment.min.js"></script>
+
+    <script src="~/Content/CustomFile/main.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        .selected_menu {
+            font-weight: bold !important;
+        }
+
+        #ufc_data_update_btn_sec {
+            display: none
+        }
+
+        #ufc_data_bulk_update_btn_sec {
+            display: none
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between"><i class="toggle-sidebar-btn pe-2"> <span class="fa fa-align-justify text-white"></span> </i><img src="~/Content/images/logo_1.png" alt="" width="100"></div>
+
+        <div class="col-md-10">
+            <h6 class="text-center text-white small pt-2">Welcome <span>@UserManager.User.UserName</span> | Last Login <span>@UserManager.User.Login_Time </span></h6>
+            <h6 class="text-left text-white small pt-2" style="margin-left:25px;">  Role :  @UserManager.User.Role &nbsp;&nbsp; Location : @UserManager.User.Location</h6>
+        </div>
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item dropdown pe-4">
+                    <a class="nav-link dropdown-toggle text-white small" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li><a class="dropdown-item d-flex align-items-center" href="@Url.Action("Index", "Login")"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#tour" data-bs-toggle="collapse" href="#">
+                    <span>MAPPING FOR RTL/BNND CHANNEL</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tour" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+
+                    <li class="nav-item">
+
+                        <ul id="mapping" class="nav-content mt-2 collapse show" data-bs-parent="#sidebar-nav" style="">
+                            <li>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapArn")" data-table_name="MISVPAY_TBL_MFD_TO_RM_MAPPING_RTL" data-page_id="1">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">  MFD TO RM MAPPING
+                                </a>
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapPinEmp")" data-table_name="MISVPAY_TBL_PINCODE_TO_RM_MAPPING_RTL" data-page_id="2">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    PINCODE TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapArnSubbrokerEuin")" data-table_name="MISVPAY_TBL_ARNEUIN_SUB_ARN_BRANCH_CODE_MAPPING_RTL" data-page_id="3">
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+EUIN/SUB_ARN/BRANCH <br />CODE MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapMulticity")" data-table_name="MISVPAY_TBL_ARN_UFC_TO_RM_MAPPING_RTL" data-page_id="4">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+UFC TO RM MAPPING
+                                </a>
+
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapArnCity")" data-table_name="MISVPAY_TBL_ARN_CITY_TO_RM_MAPPING_RTL" data-page_id="5">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+CITY TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "PanMapping")" data-table_name="MISVPAY_TBL_PANMAPPING_RTL" data-page_id="6">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    PAN MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MapRiaCode")" data-table_name="MISVAY_TBL_RIA_TO_RM_MAPPING_RTL" data-page_id="7">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    RIA TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "ExceptionsMapping")" data-table_name="MISVPAY_TBL_EXCEPTIONSMAPPING_RTL" data-page_id="8">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    EXCEPTIONS MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "BnndMapPincodeArn")" data-table_name="MISVPAY_TBL_ARN_PINCODE_TO_RM_MAPPING_RTL" data-page_id="9">
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+PINCODE TO RM MAPPING
+                                </a>
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "ArnRiaCityMap")" data-table_name="MISVPAY_TBL_RIA_CITY_MAPPING_RTL" data-page_id="10">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    RIA+CITY MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "BnndMapSubarnPin")" data-table_name="MISV_TBL_ARN_SUB_ARN_PIN_TO_RM_MAPPING_RTL" data-page_id="11">
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+ SUB ARN+PIN TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MfdexMapCamsCityArn")" data-table_name="MISV_TBL_ARN_SINGLE_CITY_TO_RM_MAPPING_RTL" data-page_id="12">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+SINGLE CITY TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MfdexMapCamsDirectShare")" data-table_name="MISV_TBL_DIRECT_SINGLE_CITY_TO_RM_MAPPING_RTL" data-page_id="13">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    DIRECT+SINGLE CITY TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MfdexMapNewcityArn")" data-table_name="MISV_TBL_ARN_GROUP_OF_CITIES_TO_RM_MAPPING_RTL" data-page_id="14">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    ARN+GROUP OF CITIES TO RM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "MfdexMapNewcityDirect")" data-table_name="MISVPAY_TBL_DIRECT_GROUP_OF_CITIES_TO_RMMAPPING_RTL" data-page_id="15">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    DIRECT+GROUP OF CITIES TO RM <br />MAPPING
+                                </a>
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "ArnPrmRmcodeMapping")" data-table_name="MISVPAY_TBL_PRM_MAPPING_RTL" data-page_id="16">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    PRM MAPPING
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "TeamSatMapping")" data-table_name="MISVPAY_TBL_TEAMSATMAPPING_RTL" data-page_id="17">
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    TEAM SAT Mapping
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "TeamSatMap")" data-table_name="MISVPAY_TBL_TEAMSATMAP_RTL" data-page_id="18">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    TEAM SAT
+                                </a>
+
+
+                                <a class="dropdown-item" href="@Url.Action("Index", "VymoDistributorMapping")" data-table_name="MISVPAY_TBL_VYMO_DISTRIBUTOR_MAPPING_RTL" data-page_id="19">
+
+                                    <input type="checkbox" class="form-check-input me-2 mb-1">
+                                    VYMO DISTRIBUTOR MAPPING
+                                </a>
+
+
+                                <button type="submit" class="btn btn-primary mt-2" id="rtl_final_sub" style="display:none">Final Submission</button>
+
+
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#institution" data-bs-toggle="collapse" href="#"><span>MAPPING FOR INSTITUTION CHANNEL</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                <ul id="institution" class="nav-content collapse mt-2 " data-bs-parent="#sidebar-nav">
+                    <li>
+
+                        <a class="dropdown-item" href="@Url.Action("Index", "MapRiaCodeInstitutional")" data-table_name="MISVPAY_TBL_MAPRIA_CODE_INST" data-page_id="20">
+
+                            <input type="checkbox" class="form-check-input me-2 mb-1">
+                            MAP RIA CODE
+                        </a>
+
+
+                        <a class="dropdown-item" href="@Url.Action("Index", "MapDsit")" data-table_name="MISVPAY_TBL_MAP_DSIT_INST" data-page_id="21">
+
+                            <input type="checkbox" class="form-check-input me-2 mb-1">
+                            MAP DSIT
+                        </a>
+
+
+                        <a class="dropdown-item" href="@Url.Action("Index", "MapPanMapping")" data-table_name="MISVPAY_TBL_MAP_PAN_MAPPING_INST" data-page_id="22">
+
+                            <input type="checkbox" class="form-check-input me-2 mb-1">
+                            MAP PAN MAPPING
+                        </a>
+
+
+                        <a class="dropdown-item" href="@Url.Action("Index", "MapArnInstitution")" data-table_name="MISVPAY_TBL_MAP_ARN_INST" data-page_id="23">
+
+                            <input type="checkbox" class="form-check-input me-2 mb-1">
+                            MAP ARN
+                        </a>
+
+                        <a class="dropdown-item" href="@Url.Action("Index", "ExceptionMappingInstitution")" data-table_name="MISVPAY_TBL_EXCEPTIONS_MAPPING_INST" data-page_id="24">
+
+                            <input type="checkbox" class="form-check-input me-2 mb-1">
+                            EXCEPTIONS MAPPING
+                        </a>
+
+                        <button type="submit" class="btn btn-primary mt-2" id="inst_final_sub" style="display:none">Final Submission</button>
+
+
+
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item" id="admin1">
+                <a id="admin_parent_menu" class="nav-link" data-bs-target="#config" data-bs-toggle="collapse" href="#" aria-expanded="true"> <span>ADMIN</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                <ul id="config" class="nav-content mt-2 collapse show" data-bs-parent="#sidebar-nav" style="">
+                    <li class="nav-item">
+                        <a id="master_parent_menu" class="nav-link collapsed" data-bs-target="#master" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>Masters</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                        <ul id="master" class="nav-content collapse mt-2" data-bs-parent="#config">
+                            <li>
+
+                                <a class="dropdown-item" href="@Url.Action("Index","ArnMaster")" data-page_id="25"><i class="bi bi-arrow-right"></i>ARN Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","UfcMaster")" data-page_id="26"><i class="bi bi-arrow-right"></i>UFC Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","RegionMaster")" data-page_id="27"><i class="bi bi-arrow-right"></i>REGION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ZoneMaster")" data-page_id="28"><i class="bi bi-arrow-right"></i>ZONE Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","UserMaster")" data-page_id="29"><i class="bi bi-arrow-right"></i>USER Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","PincodeMaster")" data-page_id="30"><i class="bi bi-arrow-right"></i>PINCODE Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SchemeCategoryMaster")" data-page_id="31"><i class="bi bi-arrow-right"></i>SCHEME Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","RiaMaster")" data-page_id="32"><i class="bi bi-arrow-right"></i>RIA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SchemeCatConversionMaster")" data-page_id="33"><i class="bi bi-arrow-right"></i>SCHEME-CATEGORY-CONVERSION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","KraMaster")" data-page_id="34"><i class="bi bi-arrow-right"></i>KRA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","CamsCityUfcMaster")" data-page_id="35"><i class="bi bi-arrow-right"></i>CAMS CITY UFC Master</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","FintechMaster")"><i class="bi bi-arrow-right"></i>FINTECH Master</a>*@
+                                <a class="dropdown-item" href="@Url.Action("Index","PanMaster")" data-page_id="36"><i class="bi bi-arrow-right"></i>PAN Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","SubbrokerMaster")" data-page_id="37"><i class="bi bi-arrow-right"></i>SUBBROKER Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","BdaCaMaster")" data-page_id="38"><i class="bi bi-arrow-right"></i>BDA/CA Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","CrcaExclusionMaster")" data-page_id="39"><i class="bi bi-arrow-right"></i>CRCA-EXCLUSION Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","VirtualRmMaster")" data-page_id="40"><i class="bi bi-arrow-right"></i>VIRTUAL RM Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","MfdexArnCityUfcWiseSharingMaster")" data-page_id="41"><i class="bi bi-arrow-right"></i>MFDEX ARN CITY UFCWISE SHARING MASTER</a>
+
+                                <a class="dropdown-item" href="@Url.Action("Index","ExceptionsMaster")" data-page_id="42"><i class="bi bi-arrow-right"></i>EXCEPTIONS Master</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","ImcPanGroupcodeMaster")"><i class="bi bi-arrow-right"></i>IMC PAN GROUPCODE MASTER</a>*@
+                                <a class="dropdown-item" href="@Url.Action("Index","MapDetagSubarnMaster")" data-page_id="43"><i class="bi bi-arrow-right"></i>MAP DETAG SUBARN MASTER</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ChannelMaster")" data-page_id="44"><i class="bi bi-arrow-right"></i>CHANNEL Master</a>
+                                <a class="dropdown-item" href="@Url.Action("Index","ReasonMaster")" data-page_id="45"><i class="bi bi-arrow-right"></i>REASON Master</a>
+                                @* <a class="dropdown-item" href="@Url.Action("Index","AddEmployeeDetails")"><i class="bi bi-arrow-right"></i>Add Employee Details</a>
+                                *@
+                            </li>
+                            @*  <li class="nav-item" id="region1">
+                                    <a class="nav-link collapsed" data-bs-target="#region" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>REASON Master</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                                    <ul id="region" class="nav-content collapse mt-2" data-bs-parent="#master">
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" href="../reason/addition.html"><i class="bi bi-arrow-right"></i>New Appointment</a>
+                                            <a class="dropdown-item" href="../reason/transfer.html"><i class="bi bi-arrow-right"></i>Promotion/Transfer</a>
+                                            <a class="dropdown-item" href="../reason/seperation.html"><i class="bi bi-arrow-right"></i>Seperation</a>
+                                            <a class="dropdown-item" href="../reason/allindia.html"><i class="bi bi-arrow-right"></i>All India</a>
+                                        </li>
+                                    </ul>
+                                </li>*@
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("AddMappingChangeAccessRecord","MappingChangesAccess")" data-page_id="46"><i class="bi bi-arrow-right"></i> Add Mapping Change Access Record</a>
+                        <a class="dropdown-item" href="@Url.Action("Index","MappingChangesAccess")" data-page_id="47"><i class="bi bi-arrow-right"></i>Mapping Change Access</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="user_management_menu" class="nav-link collapsed" data-bs-target="#user" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>USER MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                        <ul id="user" class="nav-content collapse mt-2" data-bs-parent="#config">
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index","EmployeeDetail")" data-page_id="48"><i class="bi bi-arrow-right"></i>Employee Details</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index","AddEmployeeDetails")" data-page_id="49"><i class="bi bi-arrow-right"></i>Add Employee Details</a>
+                                @*<a class="dropdown-item" href="@Url.Action("Index","File")"><i class="bi bi-arrow-right"></i>Check Details</a>*@
+                            </li>
+                            <li class="nav-item">
+                                <a id="user_setting_menu" class="nav-link collapsed" data-bs-target="#userSetting" data-bs-toggle="collapse" href="#" aria-expanded="false"> <span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i></a>
+                                <ul id="userSetting" class="nav-content collapse mt-2" data-bs-parent="#user">
+                                    @* <li>
+                                            <a class="dropdown-item" href="@Url.Action("Index","AssignRoleToUsers")"><i class="bi bi-arrow-right"></i>Assign Role to Users</a>
+                                        </li>*@
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index","ListOfRoles")" data-page_id="50"><i class="bi bi-arrow-right"></i>List Of Roles</a>
+                                        <!-- <li> -->
+                                        <!-- <a class="dropdown-item" href="../usersettings/Role/Item/2.html"><i class="bi bi-arrow-right"></i>Add Role</a> -->
+                                        <!-- </li> -->
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index","AssignMenusToRole")" data-page_id="51"><i class="bi bi-arrow-right"></i>Assign Menus To Role</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Mapping Data1 Checkout</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Reports</a>
+                    </li>
+                    <!-- <a class="dropdown-item" href=""><i class="bi bi-arrow-right"></i>Report Data Checkout</a> -->
+                </ul>
+            </li>
+
+            <li class="nav-item" style="list-style:none;">
+                <a class="nav-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse" href="#" aria-expanded="false">
+                    Reports<i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="reports" class="nav-content mt-2 collapse" data-bs-parent="#sidebar-nav" style="list-style: none; color: #4154f1; font-size: 12px; font-weight: 600;">
+
+                    <li style="margin-left:-20px;">
+                        <a style="" class="dropdown-item" href="@Url.Action("Index","MappingStatusReport")"><i class="bi bi-arrow-right"></i>Mapping Status</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <main id="main" class="main">
+        <section class="section dashboard">
+            <div class="bg-white p-3 border">
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>UTI</span></strong>
+            <script type="text/javascript">
+                var d = new Date();
+                yr = d.getFullYear();
+                document.write(yr);
+            </script>. All Rights Reserved
+        </div>
+    </footer>
+
+    <style>
+        .rm_code_list_split {
+            width: 100px;
+            height: 29px;
+            border: 1px #c1bebe solid;
+            margin-right: 10px
+        }
+
+        .share_input {
+            width: 100px;
+            height: 29px;
+            border: 1px #c1bebe solid;
+            margin-right:10px
+        }
+
+        #addnewSplitRow {
+            background: #113da3;
+            border: 1px #113da3 solid;
+            color: #fff;
+            height: 30px;
+            cursor: pointer;
+        }
+    </style>
+
+    <div class="modal fade" id="splitModal" tabindex="-1" role="dialog" aria-labelledby="splitModalLable" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="splitModalLabel">Modal title</h5>
+                    <button type="button" class="close-splitModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style=" font-size: 10px;">
+                                    Rm Code
+                                </th>
+                                <th style=" font-size: 10px;">
+                                    AAUM EQUITY % SHARE
+                                </th>
+                                <th style=" font-size: 10px;">
+                                    SAAUM HYBRID % SHARE
+                                </th>
+                                <th style=" font-size: 10px;">
+                                    AAUM ARBITRAGE % SHARE
+                                </th>
+                                <th style=" font-size: 10px;">
+                                    AAUM FIXED INCOME % SHARE
+                                </th>
+                                <th style=" font-size: 10px;">
+                                    AAUM CASH % SHARE
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <select class="rm_code_list_split" style="width:100px"></select>
+                                </td>
+                                <td>
+                                    <input class="aaum_equity_perc_share share_input" type="number" />
+                                </td>
+                                <td>
+                                    <input class="saaum_hybrid_perc_share share_input" type="number" />
+                                </td>
+                                <td>
+                                    <input class="aaum_arbitrage_perc_share share_input" type="number" />
+                                </td>
+                                <td>
+                                    <input class="aaum_fixed_income_perc_share share_input" type="number" />
+                                </td>
+                                <td>
+                                    <input class="aaum_cash_perc_share share_input" type="number" />
+                                </td>
+                                <td>
+                                    <button id="addnewSplitRow">Add</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="selected_arn"/>
+                    <button type="button" class="btn btn-secondary close-splitModal" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_update_split_changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $('.btn_split').on('click', function () {
+            $("#splitModal").modal('show');
+            var arn = $(this).attr("data-arn");
+            $("#selected_arn").val(arn);
+            $("#splitModalLabel").html("Split for " + arn);
+
+            $("#splitModal .modal-body table tbody").html('');
+
+            $("tr[data-arn='" + arn + "']").each(function (i) {
+                var id = $(this).attr('data-id');
+                var rm_code_list = $(this).find(".rm_code_list").html();
+                $("#splitModal .rm_code_list_split").html(rm_code_list)
+                var aaum_equity_perc_share = $(this).find(".aaum_equity_perc_share").val();
+                var saaum_hybrid_perc_share = $(this).find(".saaum_hybrid_perc_share").val();
+                var aaum_arbitrage_perc_share = $(this).find(".aaum_arbitrage_perc_share").val();
+                var aaum_fixed_income_perc_share = $(this).find(".aaum_fixed_income_perc_share").val();
+                var aaum_cash_perc_share = $(this).find(".aaum_cash_perc_share").val();
+                console.log(rm_code_list)
+             
+                 $("#splitModal .modal-body table tbody").append('<tr class="newlyadded"><td><select class="rm_code_list_split" style="width:100px">' + rm_code_list + '</select></td ><td> <input class="aaum_equity_perc_share share_input" type="number" value="' + aaum_equity_perc_share + '"/></td><td><input class="saaum_hybrid_perc_share share_input" type="number" value="' + saaum_hybrid_perc_share + '"/></td><td><input class="aaum_arbitrage_perc_share share_input" type="number" value="' + aaum_arbitrage_perc_share + '"/></td><td><input class="aaum_fixed_income_perc_share share_input" type="number" value="' + aaum_fixed_income_perc_share + '"/></td><td><input class="aaum_cash_perc_share share_input" type="number" value="' + aaum_cash_perc_share + '"/><input type="hidden" value="' + id+'" class="id"/></td><td></td></tr >');
+               
+
+
+            })
+        })
+
+        $("#addnewSplitRow").click(function () {
+
+            var rm_code_list = $(this).parents("tr").find(".rm_code_list_split").html();
+            var rm_code_value = $(this).parents("tr").find(".rm_code_list_split").val();
+       
+            var aaum_equity_perc_share = $(this).parents("tr").find(".aaum_equity_perc_share").val();
+            var saaum_hybrid_perc_share = $(this).parents("tr").find(".saaum_hybrid_perc_share").val();
+            var aaum_arbitrage_perc_share = $(this).parents("tr").find(".aaum_arbitrage_perc_share").val();
+            var aaum_fixed_income_perc_share = $(this).parents("tr").find(".aaum_fixed_income_perc_share").val();
+            var aaum_cash_perc_share = $(this).parents("tr").find(".aaum_cash_perc_share").val();
+            var newRow = '<tr class="newlyadded"><td><select class="rm_code_list_split" style="width:100px">' + rm_code_list + '</select></td ><td> <input class="aaum_equity_perc_share share_input" type="number" value="' + aaum_equity_perc_share + '"/></td><td><input class="saaum_hybrid_perc_share share_input" type="number" value="' + saaum_hybrid_perc_share + '"/></td><td><input class="aaum_arbitrage_perc_share share_input" type="number" value="' + aaum_arbitrage_perc_share + '"/></td><td><input class="aaum_fixed_income_perc_share share_input" type="number" value="' + aaum_fixed_income_perc_share + '"/></td><td><input class="aaum_cash_perc_share share_input" type="number" value="' + aaum_cash_perc_share + '"/><input type="hidden" value="0" class="id"/></td><td><button class="removeSplitRow">X</button></td></tr >';
+            $("#splitModal .modal-body table tbody").append(newRow);
+           
+        })
+
+        $("body").on("change", ".rm_code_list_split", function () {
+            $(this).find("option").removeAttr("selected");
+            $(this).find("option[value='" + $(this).val() + "']").attr("selected","selected");
+        })
+
+        $("body").on("click", ".removeSplitRow", function () {
+            $(this).parents("tr").remove();
+        })
+
+        $("body").on("keyup", ".aaum_equity_perc_share", function () {
+         
+        })
+
+        $("#btn_update_split_changes").click(function () {
+            var data = [];
+            var selected_table = $("a.selected_menu").attr("data-table_name");
+            var arn = $("#selected_arn").val();
+            $("#splitModal .modal-body table tbody tr").each(function (i) {
+
+                var id = $(this).find(".id").val();
+                var rm_code = $(this).find(".rm_code_list_split").val();
+                var aaum_equity_perc_share = $(this).find(".aaum_equity_perc_share").val();
+                var saaum_hybrid_perc_share = $(this).find(".saaum_hybrid_perc_share").val();
+                var aaum_arbitrage_perc_share = $(this).find(".aaum_arbitrage_perc_share").val();
+                var aaum_fixed_income_perc_share = $(this).find(".aaum_fixed_income_perc_share").val();
+                var aaum_cash_perc_share = $(this).find(".aaum_cash_perc_share").val();
+                data.push({ arn: arn, map_table_name: selected_table, id: id, rm_code: rm_code, aaum_equity_perc_share: aaum_equity_perc_share, saaum_hybrid_perc_share: saaum_hybrid_perc_share, aaum_arbitrage_perc_share: aaum_arbitrage_perc_share, aaum_fixed_income_perc_share: aaum_fixed_income_perc_share, aaum_cash_perc_share: aaum_cash_perc_share});
+            })
+            console.log(data);
+            if (data.length > 0)
+            {
+                $.ajax({
+                    url: "/MappingChangesAccess/UpdateSplitData",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                       
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.error(err.message);
+                    },
+                })
+            }
+
+        })
+
+        $(".close-splitModal").click(function () {
+
+            $("#splitModal").modal('hide');
+        })
+
+        var title = '@ViewBag.Title';
+
+
+
+        $("#sidebar-nav a").each(function () {
+
+            if ($(this).attr('data-page_id') =='@ViewBag.page_id') {
+                $(this).addClass("selected_menu");
+                $(this).parents("ul").addClass("show");
+                $(this).parents("ul").parent('.nav-item').eq(0).find("a").eq(0).removeClass('collapsed');
+                $(this).parents("ul").eq(0).addClass("show");
+                $(this).parents("ul").eq(0).parent('.nav-item').eq(0).find("a").eq(0).removeClass('collapsed');
+
+            }
+
+        })
+
+        $("#sidebar-nav a input[type=checkbox]").hide();
+
+         var mapping_details_edit = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(UserManager.User.mapping_details_edit))');
+        console.log(mapping_details_edit)
+
+        var rtl_complete = true;
+
+        var inst_complete = true;
+
+        var rtl_access_complete_data = [];
+
+        if (mapping_details_edit != null && mapping_details_edit != undefined && mapping_details_edit.length>0) {
+
+            mapping_details_edit.forEach(function (obj) {
+
+
+                if (obj.mapping_table.indexOf('_RTL') > -1 && obj.complete_status == false) {
+                    rtl_complete = false;
+                }
+
+                if (obj.mapping_table.indexOf('_INST') > -1 && obj.complete_status == false) {
+                    inst_complete = false;
+                }
+
+                var elementExists = $("a[data-table_name='" + obj.mapping_table + "']");
+
+                if (elementExists.length > 0) {
+
+                    $(elementExists).find("input[type=checkbox]").show();
+
+                    if (obj.complete_status == true) {
+                        $(elementExists).find("input[type=checkbox]").prop("checked", true);
+                        $(elementExists).find("input[type=checkbox]").prop("disabled", true);
+                    }
+
+                    if (obj.edit_window == false) {
+                        $(elementExists).find("input[type=checkbox]").prop("disabled", true);
+                    }
+                }
+
+                if (obj.mapping_table.indexOf('_RTL') > -1 && obj.complete_status == true) {
+                    obj.ufc_details.forEach(function (Ufcobj) {
+
+                        rtl_access_complete_data.push({ 'mapping_access_id': Ufcobj.mapping_access_id, 'ufc_code': Ufcobj.ufc_code})
+                    })
+                }
+
+            })
+
+            if (rtl_complete == true) {
+                $("#rtl_final_sub").show();
+
+            }
+
+            if (inst_complete == true) {
+                $("#inst_final_sub").show();
+            }
+        }
+
+        var ufc = '@UserManager.User.Location';
+        var role = '@UserManager.User.Role';
+
+        if (role != '#ADMIN#') {
+            $("#ufcNameSearchFilter option").each(function () {
+                var value = $(this).attr("value");
+                if (value != ufc) {
+
+
+                    if (mapping_details_edit != null && mapping_details_edit != undefined && mapping_details_edit.length>0) {
+                        var selected_table = $("a.selected_menu").attr("data-table_name");
+                        mapping_details_edit.forEach((obj) => {
+                            if (obj.mapping_table == selected_table) {
+
+                                obj.ufc_details.forEach((ufcobj) => {
+
+                                    if (ufcobj.ufc_code != value) {
+                                        $(this).attr("disabled", "true");
+                                        $(this).css("color", "#8b8989");
+                                    }
+                                    else {
+                                        console.log(ufcobj.ufc_code);
+                                        console.log(value)
+                                        $(this).removeAttr("disabled");
+                                        $(this).css("color", "#212529");
+                                    }
+
+                                })
+                            }
+                            else {
+                                $(this).attr("disabled", "true");
+                                $(this).css("color", "#8b8989");
+                            }
+
+                        })
+                    }
+                    else {
+                        $(this).attr("disabled", "true");
+                        $(this).css("color", "#8b8989");
+                    }
+                }
+
+            })
+        }
+
+
+
+
+        function checkUpdateBtnStatus()
+        {
+            $("#ufc_data_update_btn_sec").hide();
+            $("#ufc_data_bulk_update_btn_sec").hide();
+            $('.btn_split').hide();
+            if (mapping_details_edit != null && mapping_details_edit != undefined)
+            {
+
+                mapping_details_edit.forEach(function (obj) {
+                    var selected_table = $("a.selected_menu").attr("data-table_name");
+                    var selectedUFC = $("#ufcNameSearchFilter").val();
+
+                    if (obj.mapping_table == selected_table) {
+
+                        obj.ufc_details.forEach(function (ufcobj) {
+
+                            if (ufcobj.ufc_code == selectedUFC && ufcobj.complete_status == false && ufcobj.edit_window == true) {
+                                $("#ufc_data_update_btn_sec").show();
+                                $("#ufc_data_bulk_update_btn_sec").show();
+                                $('.btn_split').show();
+                                $("#ActivityComplete_Btn").attr('data-mappig_id', ufcobj.mapping_access_id);
+                                $("#ActivityComplete_Btn").attr('data-mappig_trans_id', ufcobj.mapping_trans_id);
+                            }
+
+                        })
+                    }
+                })
+            }
+
+        }
+
+        $("#rtl_final_sub").click(function () {
+
+            console.log(JSON.stringify(rtl_access_complete_data));
+            if (confirm("Are you sure you want to complete this") == true) {
+
+                    $.ajax({
+                        url: "/MappingChangesAccess/FinalSubmit",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        type: "POST",
+                        data: JSON.stringify(rtl_access_complete_data),
+                        success: function (data) {
+                            //alert(JSON.stringify(data.message));
+                            location.reload();
+                        },
+                        error: function (err) {
+                            console.error(err.message);
+                        },
+                    })
+
+
+
+            }
+
+        })
+
+    </script>
+
+</body>
+
+</html>
+@*//anshu*@
+
+
+<script src="~/Scripts/js/main.js"></script>
+<script src="~/Scripts/js/uti.js"></script>
+
+@*//anshu*@

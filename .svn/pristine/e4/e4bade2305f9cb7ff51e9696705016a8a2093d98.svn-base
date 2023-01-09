@@ -1,0 +1,61 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMapRiaCodeInstitutional : IDalMapRiaCodeInstitutional
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<MapRiaCodeInstitutionalDetails> GetMapRiaCodeInstitutional(MapSearchActivites e)
+        {
+            List<MapRiaCodeInstitutionalDetails> ria = new List<MapRiaCodeInstitutionalDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("get_all_tbl_mapria_code_ic", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            MapRiaCodeInstitutionalDetails m = new MapRiaCodeInstitutionalDetails();
+                            m.ria_code = dr["ria_code"] != DBNull.Value ? dr["ria_code"].ToString() : "";
+                            m.ria_name = dr["ria_name"] != DBNull.Value ? dr["ria_name"].ToString() : "";
+                            m.arnno_ref = dr["arnno_ref"] != DBNull.Value ? dr["arnno_ref"].ToString() : "";
+                            m.multicity = dr["multicity"] != DBNull.Value ? dr["multicity"].ToString() : "";
+                            m.rm_code = dr["rm_code"] != DBNull.Value ? dr["rm_code"].ToString() : "";
+                            m.rm_name = dr["rm_name"] != DBNull.Value ? dr["rm_name"].ToString() : "";
+                            m.ufc_area_code = dr["ufc_area_code"] != DBNull.Value ? dr["ufc_area_code"].ToString() : "";
+                            m.ufc_area_name = dr["ufc_area_name"] != DBNull.Value ? dr["ufc_area_name"].ToString() : "";
+                            m.city = dr["city"] != DBNull.Value ? dr["city"].ToString() : "";
+
+                            ria.Add(m);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("DalMapRiaCodeInstitutional Data (MapRiaCodeInstitutionalDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return ria;
+        }
+    }
+}

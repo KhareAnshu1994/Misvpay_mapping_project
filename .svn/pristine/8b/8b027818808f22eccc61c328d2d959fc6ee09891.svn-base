@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Newtonsoft.Json;
+using Oracle.ManagedDataAccess.Client;
+
+namespace Mapping_Solution.Controllers
+{
+    public class LoginController : Controller
+    {
+        IdalLogin login = new DalLogin();
+        // GET: Login
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+
+        #region For Employee Login
+        [HttpPost]
+        public ActionResult LoginCheck(LoginDetails e)
+        {
+            var a = login.GetEmpLogin(e);
+            Session["Time"] = DateTime.Now;
+
+            foreach (var item in a)
+            {
+                if (item.UserName != null)
+                {
+                    Session["UserName"] = item.UserName;
+                    Session["Employee_role"] = item.Role;
+                    Session["Location_ufc"] = item.Location;
+                    return RedirectToAction("Index", "Main");
+                }
+            }
+
+
+
+
+            TempData["Error"] = "Invalid Username or Password";
+            return RedirectToAction("Index", "Login");
+        }
+
+    }
+    #endregion
+
+}

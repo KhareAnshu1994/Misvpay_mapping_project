@@ -1,0 +1,36 @@
+﻿using Mapping_Solution.DataAccessLayer.DAL;
+using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Mapping_Solution.Controllers
+{
+    public class CamsCityUfcMasterController : Controller
+    {
+        IDalCamsCityUfcMaster d = new DalCamsCityUfcMaster();
+        IDALAddEmpDropDown drop = new DALAddEmpDropDown();
+
+        public ActionResult Index(CamsCityUfcMasterSearch e)
+        {
+            var qt = drop.GetQuarter();
+            ViewBag.Quarter = new SelectList(qt, "SelectQuarter", "SelectQuarter");
+
+            var re = d.GetCityMfdexPlus();
+            ViewBag.CityMfdexPlus = new SelectList(re, "city_mfdex_plus", "city_mfdex_plus");
+
+            var a = d.GetCAMS_City_UFC(e);
+
+            return View(a);
+        }
+        public ActionResult _CamsCityUfcView(CamsCityUfcMasterSearch e)
+        {
+            var a = d.GetCAMS_City_UFC(e);
+
+            return PartialView("_CamsCityUfcView", a);
+        }
+    }
+}

@@ -1,0 +1,73 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+
+    public class DalMapPinEmp : IDalMapPinEmp
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<MapPinEmpDetails> GetMapPinEmp(MapSearchActivites e)
+        {
+            List<MapPinEmpDetails> res = new List<MapPinEmpDetails>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "getall_pincode_to_rm_mapping";//get_all_tbl_map_pin_emp
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            MapPinEmpDetails r = new MapPinEmpDetails();
+                            r.pincode = Convert.ToInt32(rd["pincode"]);
+                            r.rm_code = Convert.ToString(rd["rm_code"]);
+                            r.rm_name = Convert.ToString(rd["rm_name"]);
+                            r.aum_perc = Convert.ToInt32(rd["aum_perc"]);
+                            r.valid_from = rd["valid_from"] == DBNull.Value ? null : (DateTime?)rd["valid_from"];
+                            r.ufc_code = rd["ufc_code"] != DBNull.Value ? rd["ufc_code"].ToString() : "";
+                            r.ufc_name = rd["ufc_name"] != DBNull.Value ? rd["ufc_name"].ToString() : "";
+                            r.region_code = rd["region_code"] != DBNull.Value ? rd["region_code"].ToString() : "";
+                            r.region_name = rd["region_name"] != DBNull.Value ? rd["region_name"].ToString() : "";
+                            r.zone = rd["zone"] != DBNull.Value ? rd["zone"].ToString() : "";
+                            r.sap_ufc_code = rd["sap_ufc_code"] != DBNull.Value ? rd["sap_ufc_code"].ToString() : "";
+
+                            res.Add(r);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MapPinEmp Data (MapPinEmpDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return res;
+            }
+        }
+    }
+}

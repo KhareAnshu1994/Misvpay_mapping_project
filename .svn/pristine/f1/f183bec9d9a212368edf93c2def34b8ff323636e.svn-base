@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ArnRiaCityDetail>
+
+<table class="table small border" id="tblArnRiaCityMap">
+
+    <thead>
+        <tr class="bg-primary text-white">
+            <!-- <th scope="col"><input type="checkbox" class="form-check-input" /></th> -->
+            <th scope="col" id="colall">All<input type="checkbox" class="form-check-input" id="alltxt"> </th>
+            <th scope="col">ARNNO_REF</th>
+            <th scope="col">RIA</th>
+            <th scope="col">CITY</th>
+            <th scope="col">DISTRIBUTOR NAME</th>
+            <th scope="col" class="bg-danger">RM_CODE</th>
+            <th scope="col">RM_NAME</th>
+            <th scope="col">REGION_CODE</th>
+            <th scope="col">REGION_NAME</th>
+            <th scope="col">UFC_CODE</th>
+            <th scope="col">UFC_NAME</th>
+            <th scope="col">ZONE</th>
+            <th scope="col">SAP_UFC_CODE</th>
+            <!--<th scope="col">VALID_FROM <i class="fa fa-solid fa-sort" onclick="sortBy(8)"></i></th>
+            <th scope="col">VALID_UPTO <i class="fa fa-solid fa-sort" onclick="sortBy(9)"></i></th>-->
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input" /></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arnno_ref)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distributor_name)
+                </td>
+
+                <td>
+                   @* @Html.DisplayFor(modelItem => item.rm_code)*@
+                    @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.rm_code as SelectList, new { @class = "form-select" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rm_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-md-12 mt-3">
+    <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Update </a><p>(Update Selected Record Only As Per Above Search Criteria)</p>
+</div>

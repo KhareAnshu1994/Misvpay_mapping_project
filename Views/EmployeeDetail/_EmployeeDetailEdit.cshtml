@@ -1,0 +1,154 @@
+﻿@using System.Globalization;
+
+@model List<Mapping_Solution.Models.EmployeeDetails>
+@{
+    ViewBag.Title = "_EmployeeDetailEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #text1 {
+        color: #ff0000;
+        /*background: #ff0000;*/
+    }
+
+    #text2 {
+        color: #ff0000;
+    }
+
+    #text3 {
+        color: #ff0000;
+    }
+
+    #text4 {
+        color: #ff0000;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Employee Details Edit</h5>
+        <hr id="arn-master-firsthr">
+        <div class="row">
+            <div class="col-md-12">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+
+                                <input type="file" id="myFile">
+                            </td>
+                            <td>
+                                <input type="button" value="Upload" id="btnupload" class="btn btn-primary" onclick="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                    <hr id="third-hr">
+                    <div class="row pt-3">
+                        <div class="form-group col-md-6 mb-3">
+                            <label>Employee ID</label>
+                            <input type="text" id="eid" name="" class="form-control" value="@Model[0].EmployeeId" required>
+                            <span id="text1"></span>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label>Employee Name </label>
+                            <input type="text" id="ename" name="" class="form-control" value="@Model[0].EmployeeName" required>
+                            <span id="text2"></span>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label>Email ID</label>
+                            <input type="email" id="emailid" name="" value="@Model[0].EmailId" class="form-control" required>
+                            <span id="text3"></span>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label>Password</label>
+                            <input type="text" @*id="pass"*@ name="" id="adminpass" class="form-control" value="@Model[0].Password" required>
+                            <span id="text4"></span>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label> Channel Code </label>
+                            @Html.DropDownList("ChannelCode", ViewBag.channel as SelectList, @Model[0].ChannelCode, new { @class = "form-select", id = "ddlChannelCode" })
+
+
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label> Employee Role </label>
+                            @Html.DropDownList("EmployeeRole", ViewBag.role as SelectList, @Model[0].EmployeeRole, new { @class = "form-select", id = "ddlemployeerole" })
+                        </div>
+                        <hr class="mt-3">
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Zone</label>
+                            @Html.DropDownList("Zone", ViewBag.ZoneCode as SelectList, @Model[0].Zone, new { @class = "form-select", id = "ddlzone" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Region</label>
+                            @Html.DropDownList("Region", ViewBag.region as SelectList, @Model[0].Region, new { @class = "form-select", id = "ddlRegion" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Location/UFC</label>
+                            @Html.DropDownList("Loaction_Ufc", ViewBag.Location as SelectList, @Model[0].Loaction_Ufc, new { @class = "form-select", id = "ddl_location" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Functional Role</label>
+                            @Html.DropDownList("FunctionalRole", ViewBag.Rolename as SelectList, @Model[0].FunctionalRole, new { @class = "form-select", id = "ddlFunctionalRole" })
+                        </div>
+                        @* <div class="form-group col-md-4 mb-3">
+                                <label>City</label>
+                                @Html.DropDownList("City", ViewBag.City as SelectList, @Model[0].City, new { @class = "form-select", id = "ddlCity" })
+                            </div>*@
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Start Date/Transfer Date</label>
+
+                            <input type="date" id="startDate" name="start_Date" value="@Model[0].StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control datepicker">
+
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>End Date</label>
+                            <input type="date" id="endDate" name="end_Date" value="@Model[0].EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Status</label>
+                            @Html.DropDownList("Status", ViewBag.Status as SelectList, @Model[0].Status, new { @class = "form-select", id = "ddl_status" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Type of Movement</label>
+                            @Html.DropDownList("TypeOfMovement", ViewBag.Movement as SelectList, @Model[0].TypeOfMovement, new { @class = "form-select", id = "Typesofmove" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Select Quarter</label>
+                            @Html.DropDownList("SelectQuarter", ViewBag.Quarter as SelectList, @Model[0].SelectQuarter, new { @class = "form-select", id = "ddlquarterselction" })
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Valid From</label>
+                            <input type="date" id="validFrom" name="valid_from" value="@Model[0].Valid_from.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>Valid Upto</label>
+                            <input type="date" id="validUpto" name="valid_upto" value="@Model[0].Valid_Upto.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>HR Valid From</label>
+                            <input type="date" id="hrValidFrom" name="hr_valid_from" value="@Model[0].HR_Valid_From.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            <label>HR Valid Upto</label>
+                            <input type="date" id="hrValidUpto" name="hr_valid_upto" value="@Model[0].HR_Valid_Upto.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" class="form-control">
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label>Remark</label><textarea id="txtRemark" name="" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-12 mt-3 text-center">
+                            @*<a href="#" id="btn_search" name="btnsearch" class="btn btn-primary" onclick="register()">Save</a>*@
+                            @*<button id="btn_search" name="btnsearch" class="btn btn-primary" onclick="register()">Save</button>*@ <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                            <input type="submit" value="Save" id="btn_search" name="btnsearch" class="btn btn-primary" onclick="register()" />&nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-primary">Cancel</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="@Url.Action("Index","Main")" id="btn_search" name="btnsearch" class="btn btn-primary">Back</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

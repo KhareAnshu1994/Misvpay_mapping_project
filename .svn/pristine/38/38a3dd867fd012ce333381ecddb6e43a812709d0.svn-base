@@ -1,0 +1,30 @@
+﻿
+
+    <table class="table small border">
+        <tr class="bg-primary text-white">
+            <th scope="col">Region</th>
+            <th scope="col">From Date</th>
+            <th scope="col">To Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">UFC Count</th>
+        </tr>
+        <tbody>
+            <tr ng-repeat="item in rolegridData" class="ng-scope">
+                <td class="ng-binding">MUMB</td>
+                <td class="ng-binding">01/09/2022</td>
+                <td class="ng-binding">12/09/2022</td>
+                <td class="ng-binding">Not Completed</td>
+                <td><a href="../Reports/ufcdetails/1.html" class="ng-binding">3</a></td>
+            </tr>
+            <tr ng-repeat="item in rolegridData" class="ng-scope">
+                <td class="ng-binding">MUMB</td>
+                <td class="ng-binding">01/09/2022</td>
+                <td class="ng-binding">12/09/2022</td>
+                <td class="ng-binding">Completed</td>
+                <td><a href="../Reports/ufcdetails/2.html" class="ng-binding">3</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+    </div>

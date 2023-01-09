@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Mapping_Solution.Models.EmployeeDetails>
+
+<table class="table small border table-hover" id="tblEmpDetails">
+    <thead>
+        <tr class="bg-primary text-white">
+            @*<th scope="col">Sr No <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>*@
+            <th scope="col">Emp ID <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i></th>
+            <th scope="col">Employee Name <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">Channel <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">Role <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">Region <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">Location<i class="fa fa-solid fa-sort" onclick="sortBy(7)"></i></th>
+            @*<th scope="col">UFC <i class="fa fa-solid fa-sort" onclick="sortBy(8)"></i></th>*@
+            <th scope="col">Start Date <i class="fa fa-solid fa-sort" onclick="sortBy(9)"></i></th>
+            <th scope="col">End Date <i class="fa fa-solid fa-sort" onclick="sortBy(10)"></i></th>
+            <th scope="col">HR Start Date <i class="fa fa-solid fa-sort" onclick="sortBy(11)"></i></th>
+            <th scope="col">HR End Date <i class="fa fa-solid fa-sort" onclick="sortBy(12)"></i></th>
+            <th scope="col">Status <i class="fa fa-solid fa-sort" onclick="sortBy(13)"></i></th>
+            <th scope="col">Functional Role <i class="fa fa-solid fa-sort" onclick="sortBy(14)"></i></th>
+            <th scope="col">ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChannelCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeRole)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loaction_Ufc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HR_Valid_From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HR_Valid_Upto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FunctionalRole)
+                </td>
+                <td>
+                    <a href="@Url.Action("Index","AddEmployeeDetails")">Edit</a>
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+            </tr>
+        }
+        @*<tr>
+                <td>1</td>
+                <td>0635</td>
+                <td>Shaikh , Sadik Papamiya</td>
+                <td>RTL</td>
+                <td>RH</td>
+                <td>GULF</td>
+                <td>117</td>
+                <td>NRI BRANCH OFFICE</td>
+                <td>10-APR-2012</td>
+                <td> </td>
+                <td>01-APR-2012</td>
+                <td>30-DEC-9999</td>
+                <td>WORKING</td>
+                <td>RH</td>
+                <td>
+                    <a href="@Url.Action("Index","AddEmployeeDetails")">Edit</a>
+                </td>
+            </tr>*@
+    </tbody>
+</table>

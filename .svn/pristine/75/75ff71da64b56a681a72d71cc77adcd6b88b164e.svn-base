@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapping_Solution", "Mapping_Solution.csproj", "{3E8FEBB3-10AD-4701-8D2D-B93889A23BBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E8FEBB3-10AD-4701-8D2D-B93889A23BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8FEBB3-10AD-4701-8D2D-B93889A23BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E8FEBB3-10AD-4701-8D2D-B93889A23BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E8FEBB3-10AD-4701-8D2D-B93889A23BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {500361E1-2DBC-4B75-9930-F5C27D5197BD}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ChannelmasterDetail>
+
+<table class="table small border" id="tblChannelMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th> </th>
+            <th scope="col">CHANNEL_CODE</th>
+            <th scope="col">CHANNEL_NAME</th>
+            <th scope="col">CHN_SAP_CODE</th>
+           @* <th scope="col">MIS_MENU_CD</th>*@
+            <th scope="col">VALID_FROM</th>
+            <th scope="col">VALID_UPTO</th>
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input" /></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.channel_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.channel_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.chn_sap_code)
+                </td>
+              @*  <td>
+                    @Html.DisplayFor(modelItem => item.mis_menu_cd)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_upto)
+                </td>
+
+                @*<td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Edit</option>
+                            <option>Save</option>
+                            <option>Delete</option>
+                        </select>
+                    </td>*@
+
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ListOfRolesDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>List Of Roles</h5>
+    </div>
+    <div class="col-md-4" style="padding-bottom:10px;">
+        <a href="@Url.Action("Index","AddRole")"><button type="button" class="btn btn-primary">Add Role</button></a>
+    </div>
+    <hr>
+
+    <div class="overflow-auto">
+
+        <table class="table small border" id="tblListofRole">
+            <thead>
+
+                <tr class="bg-primary text-white">
+                    @*<th></th>*@
+                    <th scope="col">SrNo</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Is Active</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.srno)
+                        </td>
+                        <td>
+                           @* <a href="@Url.Action("Index","AddRole")">*@
+                                @Html.DisplayFor(modelItem => item.code)
+                            @*</a>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.is_active)
+                        </td>
+                        @*  <td>
+                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>*@
+                    </tr>
+                }
+            <tbody>
+        </table>
+
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#tblListofRole').DataTable({
+                searching: false,
+
+            });
+
+        });
+    </script>

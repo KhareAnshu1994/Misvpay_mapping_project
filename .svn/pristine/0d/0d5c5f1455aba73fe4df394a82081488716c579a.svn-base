@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MapPinEmpDetails>
+
+<table class="table small border table-hover" id="tblMapPinEmp">
+    <thead>
+        <tr class="bg-primary text-white">
+
+            <th>All<input type="checkbox" class="form-check-input"> </th>
+            <th scope="col">PINCODE <i class="fa fa-solid fa-sort" onclick="sortBy(1)"></i></th>
+            <th scope="col" class="bg-danger">
+                RM_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(2)"></i>
+            </th>
+            <th scope="col">RM_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(3)"></i></th>
+            <th scope="col">AUM_PERC <i class="fa fa-solid fa-sort" onclick="sortBy(4)"></i></th>
+            <th scope="col">VALID_FROM <i class="fa fa-solid fa-sort" onclick="sortBy(5)"></i></th>
+            <th scope="col">REGION<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">REGION_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">UFC_CODE <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">UFC_NAME <i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">ZONE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+            <th scope="col">SAP_UFC_CODE<i class="fa fa-solid fa-sort" onclick="sortBy(6)"></i></th>
+
+            @*<th scope="col">ACTION</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input"></td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.pincode)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.rm_code)*@
+                   @* @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.list as SelectList, new { @class = "form-select" })*@
+                    @Html.DropDownListFor(modelItem => item.rm_code, ViewBag.rm_code as SelectList, new { @class = "form-select" })
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rm_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aum_perc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+                @*<td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Save</option>
+                        </select>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-md-12 mt-3">
+    <a href="#" id="btn_search" name="btnsearch" class="btn btn-primary">Update </a><p>(Update Selected Record Only As Per Above Search Criteria)</p>
+</div>

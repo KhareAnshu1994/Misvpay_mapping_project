@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Mapping_Solution.Models.ReasonMasterDetail>
+@*@{
+    ViewBag.Title = "_ReasonMasterView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+<table class="table small border" id="tblReasonMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th scope="col">Reason Codes</th>
+            <th scope="col">Reason Code Description</th>
+            <th scope="col">Action</th>
+        </tr>
+        `
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reason_codes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reason_code_description)
+                </td>
+                @*  <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+                <td>
+                    <a href="@Url.Action("Index","AddReasonMaster")">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+

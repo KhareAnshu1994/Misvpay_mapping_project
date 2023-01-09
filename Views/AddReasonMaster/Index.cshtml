@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form>
+    <!-- <hr> -->
+    <div class="row pt-3 mb-5">
+        <div class="form-group col-md-3 mb-3">
+            <label>Code</label>
+            <input type="text" id="code" name="" class="form-control">
+        </div>
+        <div class="form-group col-md-12 mb-3">
+            <label>Description</label>
+            <textarea id="description" name="" class="form-control"></textarea>
+        </div>
+        @* <div class="col-md-3 mt-3"><a href="../master/reason-master.html" id="btn_search" name="btnsearch" class="btn btn-primary w-100">Save</a></div>*@
+        @* <button type="submit" class="btn btn-primary" onclick="save()">Save</button>*@
+        <div class="form-group row">
+            <div class="col-sm-5">
+                <button type="submit" class="btn btn-primary" style="padding-left:90px;padding-right:90px;" onclick="save()">Save</button>
+            </div>
+        </div>
+</form>
+
+<script>
+    function save() {
+        let obj = {};
+        let code = document.getElementById("code").value;
+        obj.reason_codes = code;
+
+        let description = document.getElementById("description").value;
+        obj.reason_code_description = description;
+
+       @* let isactive = document.getElementById("isactive").checked;
+        obj.is_active = isactive;*@
+
+
+
+
+        let djson = JSON.stringify(obj);
+        //console.log(obj);
+        console.log(djson);
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //document.getElementById("demo").innerHTML = this.responseText;
+                console.log(this.responseText);
+                //alert("Data Save Sucessfully...!!!");
+                //onreset;
+            }
+            //else {
+            //    alert("Data is not Save...!!!");
+            //}
+        };
+
+        xhttp.open("POST", "https://localhost:44344/AddReasonMaster/Create", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(djson);
+
+
+    }
+</script>
+

@@ -1,0 +1,77 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalMappingChangesAccess : IdalMappingChangesAccess
+    {
+
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<MappingChangesAccessDetail> GetMappingChangesAccess()
+        {
+            List<MappingChangesAccessDetail> obj = new List<MappingChangesAccessDetail>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "MISVPAY_mappingchangeaccess_GETALL";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("mapchange", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            MappingChangesAccessDetail dt = new MappingChangesAccessDetail();
+                            dt.id = Convert.ToInt32(reader["id"]);
+                            dt.reason_codes = reader["reason_codes"] != DBNull.Value ? reader["reason_codes"].ToString() : "";
+                            dt.channel_code = reader["channel_code"] != DBNull.Value ? reader["channel_code"].ToString() : "";
+                            dt.region = reader["region"] != DBNull.Value ? reader["region"].ToString() : "";
+                            dt.selected_ufc = reader["selected_ufc"] != DBNull.Value ? reader["selected_ufc"].ToString() : "";
+                            dt.ufc_name = reader["ufc_name"] != DBNull.Value ? reader["ufc_name"].ToString() : "";
+
+                            dt.access_start_date = reader["access_start_date"] == DBNull.Value ? null : (DateTime?)reader["access_start_date"];
+                            dt.access_end_date = reader["access_end_date"] == DBNull.Value ? null : (DateTime?)reader["access_end_date"];
+                            dt.kra_valid_from = reader["kra_valid_from"] == DBNull.Value ? null : (DateTime?)reader["kra_valid_from"];
+                            dt.vymo_valid_from = reader["vymo_valid_from"] == DBNull.Value ? null : (DateTime?)reader["vymo_valid_from"];
+                            dt.employee_code = reader["employee_code"] != DBNull.Value ? reader["employee_code"].ToString() : "";
+                            dt.alternate_employee_code = reader["alternate_employee_code"] != DBNull.Value ? reader["alternate_employee_code"].ToString() : "";
+                            dt.remark = reader["remark"] != DBNull.Value ? reader["remark"].ToString() : "";
+
+
+
+                            obj.Add(dt);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MappingChangesAccess Data (MappingChangesAccessDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return obj;
+            }
+
+        }
+    }
+}

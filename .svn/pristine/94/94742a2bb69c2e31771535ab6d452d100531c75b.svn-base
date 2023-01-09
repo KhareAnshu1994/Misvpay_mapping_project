@@ -1,0 +1,69 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalPanMapping : IdalPanMapping
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+
+        public List<PanMappingDetails> GetPANMapping(MapSearchActivites e)
+        {
+            List<PanMappingDetails> PANMAPPING = new List<PanMappingDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("GET_ALL_TBL_PANMAPPING_DATA", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            PanMappingDetails p = new PanMappingDetails();
+                            p.pan = Convert.ToString(dr["PAN"]);
+                            p.client_name = Convert.ToString(dr["client_name"]);
+                            p.rm_code = Convert.ToString(dr["RM_CODE"]);
+                            p.rm_name = Convert.ToString(dr["RM_NAME"]);
+                            p.rh_code = Convert.ToString(dr["RH_CODE"]);
+                            p.valid_from = dr["VALID_FROM"] == DBNull.Value ? null : (DateTime?)dr["VALID_FROM"];
+                            p.group_name = dr["GROUP_NAME"] != DBNull.Value ? dr["GROUP_NAME"].ToString() : "";
+                            p.source = Convert.ToString(dr["SOURCE"]);
+                            p.creation_date = dr["CREATION_DATE"] == DBNull.Value ? null : (DateTime?)dr["CREATION_DATE"];
+                            p.group_code = Convert.ToString(dr["GROUP_CODE"]);
+                            p.region_code = Convert.ToString(dr["GROUP_CODE"]);
+                            p.region_name = Convert.ToString(dr["REGION_CODE"]);
+                            p.location = Convert.ToString(dr["LOCATION"]);
+                            p.ufc_name = Convert.ToString(dr["UFC_NAME"]);
+                            p.zone = Convert.ToString(dr["ZONE"]);
+                            p.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+
+                            PANMAPPING.Add(p);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal PanMapping Data (PanMappingDetails Model) ERROR :" + ex.Message);
+                    throw;
+                }
+                con.Close();
+            }
+            return PANMAPPING;
+        }
+    }
+}

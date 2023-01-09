@@ -1,0 +1,73 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalExceptionsMapping : IdalExceptionsMapping
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        public List<ExceptionsMappingDetails> GetExceptionsMapping(MapSearchActivites e)
+        {
+            List<ExceptionsMappingDetails> res = new List<ExceptionsMappingDetails>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Get_All_Tbl_ExceptionsMapping_Data";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+                cmd.Parameters.Add("get_all_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            ExceptionsMappingDetails exc = new ExceptionsMappingDetails();
+                            exc.case_id = dr["CASE_ID"] != DBNull.Value ? dr["CASE_ID"].ToString() : "";
+                            exc.rm_code = dr["rm_code"] != DBNull.Value ? dr["rm_code"].ToString() : "";
+                            exc.rm_name = dr["rm_name"] != DBNull.Value ? dr["rm_name"].ToString() : "";
+                            exc.case_type = dr["CASE_TYPE"] != DBNull.Value ? '\0' : Convert.ToChar(dr["CASE_TYPE"]);
+                            exc.region = dr["region_code"] != DBNull.Value ? dr["region_code"].ToString() : "";
+                            exc.region_name = dr["region_name"] != DBNull.Value ? dr["region_name"].ToString() : "";
+                            exc.ufc_code = dr["ufc_code"] != DBNull.Value ? dr["ufc_code"].ToString() : "";
+                            exc.ufc_name = dr["ufc_name"] != DBNull.Value ? dr["ufc_name"].ToString() : "";
+                            exc.zone = dr["zone"] != DBNull.Value ? dr["zone"].ToString() : "";
+                            exc.sap_ufc_code = dr["sap_ufc_code"] != DBNull.Value ? dr["sap_ufc_code"].ToString() : "";
+
+                            res.Add(exc);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal Exception Mapping Data (ExceptionsMappingDetails Model) ERROR" + ex.Message);
+
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return res;
+            }
+        }
+    }
+}

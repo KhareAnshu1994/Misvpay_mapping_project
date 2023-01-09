@@ -1,0 +1,210 @@
+﻿@model IEnumerable<Mapping_Solution.Models.BdaCaMasterDeatails>
+
+<table class="table small border" id="tblBdaCaMaster">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th> </th>
+            <th scope="col">CRCACODE</th>
+            <th scope="col">REGION</th>
+            <!-- <th scope="col">REGION_CODE</th> -->
+            <th scope="col">UFC</th>
+            <th scope="col">UFC_CODE</th>
+            <th scope="col">DIST_CODE</th>
+            <th scope="col">CRCODE</th>
+            <th scope="col">DISTRICT_NAME</th>
+            <th scope="col">CACODE</th>
+            <th scope="col">UFC_HQ</th>
+            <th scope="col">NAME_CR</th>
+            <th scope="col">STATUS</th>
+            <th scope="col">DATE_OF_APP</th>
+            <th scope="col">ADDRESS1</th>
+            <th scope="col">ADDRESS2</th>
+            <th scope="col">ADDRESS3</th>
+            <th scope="col">ADDRESS4</th>
+            <th scope="col">PHONENO</th>
+            <th scope="col">MOBILENO</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">DATE_OF_BIRTH</th>
+            <th scope="col">DRAWEEBANK_BRCODE</th>
+            <th scope="col">ACNO_ALTBRANCHCODE</th>
+            <th scope="col">VALID_FROM</th>
+            <th scope="col">VALID_UPTO</th>
+            <th scope="col">PAYBEL_LOC</th>
+            <th scope="col">BRANCH_NAME</th>
+            <th scope="col">IFSC_CODE</th>
+            <th scope="col">STATUS_DOSM</th>
+            <th scope="col">FIXED_PAY</th>
+            <th scope="col">ZONE</th>
+            <th scope="col">SAP_UFC_CODE</th>
+            <th scope="col">SAP_REGION_CODE</th>
+            <th scope="col">SAP_ZONE_CODE</th>
+            <th scope="col">ARN_NUMBER</th>
+            <th scope="col">ARN_VALIDITY</th>
+            <th scope="col">GST_NUMBER</th>
+            <th scope="col">PAN_NO</th>
+            <th scope="col">GST_VALID</th>
+            <th scope="col">MAHARASHTRA</th>
+            <th scope="col">RBP</th>
+            <th scope="col">ETSP</th>
+            <th scope="col">UTI_INFRA_FUND</th>
+            <th scope="col">BDACA_UTI_EMAIL</th>
+            <!-- <th scope="col">SELF_ARN_NO</th>
+            <th scope="col">SELF_ARN_NAME</th>
+            <th scope="col">REMARKS</th>
+            <th scope="col">PRODUCT</th>
+            <th scope="col">STRENGTH</th>
+            <th scope="col">WEAKNESS</th>
+            <th scope="col">ADD_DISPATCH</th> -->
+            <!-- <th scope="col">ACTION</th> -->
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="form-check-input"></td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.crcacode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dist_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.crcode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.district_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cacode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ufc_hq)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name_cr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date_of_app)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phone_no)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.mobile_no)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date_of_birth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.draweebank_brcode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.acno_altbranchcode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valid_upto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.paybel_loc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.branch_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ifsc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status_dosm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fixed_pay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_ufc_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_region_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sap_zone_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arn_validity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.gst_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pan_no)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.gst_valid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.maharashtra)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rbp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.etsp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.uti_infra_fund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.bdaca_uti_email)
+                </td>
+                @*<td>
+                        <select class="form-select">
+                            <option>Select</option>
+                            <option>Edit</option>
+                            <option>Save</option>
+                            <option>Delete</option>
+                        </select>
+                    </td>*@
+            </tr>
+        }
+
+    </tbody>
+</table>

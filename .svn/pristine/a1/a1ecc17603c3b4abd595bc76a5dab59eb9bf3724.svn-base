@@ -1,0 +1,191 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+
+    public class DalMapPanMapping : IdalMapPanMapping
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        static string strconTemp = ConfigurationManager.ConnectionStrings["OracleTEMP"].ToString();
+
+
+        public List<MapPanMappingDetail> GetMapPanMapping(MapSearchActivites e)
+        {
+            List<MapPanMappingDetail> obj = new List<MapPanMappingDetail>();
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "MISVPAY_MAP_PAN_MAPPING_GETALL_INST";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+
+
+                cmd.Parameters.Add("mappan", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            MapPanMappingDetail dt = new MapPanMappingDetail();
+                            dt.id = Convert.ToInt32(reader["id"]);
+                            dt.pan_no = reader["pan_no"] != DBNull.Value ? reader["pan_no"].ToString() : "";
+                            dt.name = reader["name"] != DBNull.Value ? reader["name"].ToString() : "";
+                            dt.rm_code = reader["rm_code"] != DBNull.Value ? reader["rm_code"].ToString() : "";
+                            dt.rm_name = reader["rm_name"] != DBNull.Value ? reader["rm_name"].ToString() : "";
+                            dt.client_group = reader["client_group"] != DBNull.Value ? reader["client_group"].ToString() : "";
+                            dt.source = reader["source"] != DBNull.Value ? reader["source"].ToString() : "";
+                            dt.group_code = reader["group_code"] != DBNull.Value ? reader["group_code"].ToString() : "";
+                            dt.group_name = reader["group_name"] != DBNull.Value ? reader["group_name"].ToString() : "";
+
+                            dt.region_code = reader["region_code"] != DBNull.Value ? reader["region_code"].ToString() : "";
+                            dt.region_name = reader["region_name"] != DBNull.Value ? reader["region_name"].ToString() : "";
+                            dt.zone = reader["zone"] != DBNull.Value ? reader["zone"].ToString() : "";
+                            dt.sap_ufc_code = reader["sap_ufc_code"] != DBNull.Value ? reader["sap_ufc_code"].ToString() : "";
+                            dt.sap_region_code = reader["sap_region_code"] != DBNull.Value ? reader["sap_region_code"].ToString() : "";
+                            dt.sap_zone_code = reader["sap_zone_code"] != DBNull.Value ? reader["sap_zone_code"].ToString() : "";
+                            dt.channel_code = reader["channel_code"] != DBNull.Value ? reader["channel_code"].ToString() : "";
+
+
+
+                            obj.Add(dt);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal MapPanMapping Data (MapPanMappingDetail Model) ERROR :" + ex.Message);
+                    throw;
+                }
+
+                cmd.Dispose();
+                con.Close();
+
+                return obj;
+            }
+        }
+
+        #region Update Map Pan Mapping Inst
+        public Response UpdateMapPanMappingInst(List<MapPanMappingDetail> objList)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    for (int i = 0; i < objList.Count; i++)
+                    {
+                        OracleCommand cmd = new OracleCommand("UPDATE_MISVPAY_TBL_MAP_PAN_MAPPING_INST", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        cmd.Parameters.Add(new OracleParameter("v_id", objList[i].id));
+                        cmd.Parameters.Add(new OracleParameter("v_rm_code", objList[i].rm_code));
+
+
+                        cmd.ExecuteNonQuery();
+
+                        if (cmd.ExecuteNonQuery() < 0)
+                        {
+                            res.status = true;
+                            res.message = "Data Updated Successfully";
+                        }
+                        else
+                        {
+                            res.status = false;
+                            res.message = "Data not Updated";
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+        #region Bulk Update Rm Code Map Pan Mapping Inst
+        public Response Bulk_Update_Map_pan_mapping_inst(MapPanMappingDetail objModel)
+        {
+            Response res = new Response();
+            using (OracleConnection con = new OracleConnection(strconTemp))
+            {
+
+                try
+                {
+                    con.Open();
+
+                    OracleCommand cmd = new OracleCommand("UPDATE_BULK_RMCODE_MISVPAY_TBL_MAP_PAN_MAPPING_INST", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    cmd.Parameters.Add(new OracleParameter("S_rm_code", objModel.New_rmcode));
+                    cmd.Parameters.Add(new OracleParameter("p_rm_code", objModel.Old_rmcode));
+
+
+                    cmd.ExecuteNonQuery();
+
+                    if (cmd.ExecuteNonQuery() < 0)
+                    {
+                        res.status = true;
+                        res.message = "RM Code Replaced Successfully";
+                    }
+                    else
+                    {
+                        res.status = false;
+                        res.message = "RM Code not Replaced Successfully";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    res.message = "Error in Update Data " + ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+
+                }
+            }
+            return res;
+
+        }
+
+        #endregion;
+
+
+
+
+    }
+}

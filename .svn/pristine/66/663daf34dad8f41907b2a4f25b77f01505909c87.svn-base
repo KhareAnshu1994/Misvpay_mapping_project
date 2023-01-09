@@ -1,0 +1,63 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalBnndMapPincodeArn : IdalBnndMapPincodeArn
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+        public List<BnndMapPincodeArnDetails> GetBnndMapPincodeArn(MapSearchActivites e)
+        {
+            List<BnndMapPincodeArnDetails> BNND = new List<BnndMapPincodeArnDetails>();
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand("GetAll_arn_pincode_to_rm_mapping", con);//Get_All_Tbl_BnndMapPincodeArn_Data
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", e.search_text));
+                //cmd.Parameters.Add(new OracleParameter("search_text", e.quarter));
+                cmd.Parameters.Add("Get_All_Data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                try
+                {
+                    con.Open();
+                    OracleDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            BnndMapPincodeArnDetails b = new BnndMapPincodeArnDetails();
+                            b.arn_number = Convert.ToString(dr["ARN_NUMBER"]);
+                            b.pin_code = Convert.ToInt32(dr["PINCODE"]);
+                            b.arn_name = Convert.ToString(dr["ARN_NAME"]);
+                            b.rm_code = Convert.ToString(dr["RM_CODE"]);
+                            b.rm_name = Convert.ToString(dr["RM_NAME"]);
+                            b.region_code = Convert.ToString(dr["REGION_CODE"]);
+                            b.region_name = Convert.ToString(dr["REGION_NAME"]);
+                            b.ufc_code = Convert.ToString(dr["UFC_CODE"]);
+                            b.ufc_name = Convert.ToString(dr["UFC_NAME"]);
+                            b.zone = Convert.ToString(dr["ZONE"]);
+                            b.sap_ufc_code = Convert.ToString(dr["SAP_UFC_CODE"]);
+
+                            BNND.Add(b);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal BnndMapPincodeArn Data (BnndMapPincodeArnDetails Model) ERROR :" + ex.Message);
+
+                    throw;
+                }
+                con.Close();
+            }
+
+            return BNND;
+        }
+    }
+}

@@ -1,0 +1,159 @@
+﻿using Mapping_Solution.DataAccessLayer.InterfaceDAL;
+using Mapping_Solution.Models;
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+
+namespace Mapping_Solution.DataAccessLayer.DAL
+{
+    public class DalRegionMaster : IDalRegionMaster
+    {
+        static string strcon = ConfigurationManager.ConnectionStrings["Oracle"].ToString();
+
+        #region Get RegionMaster List or Search List
+        public List<RegionMasterDetails> GetRegionMaster(RegionMasterSearch e)
+        {
+            List<RegionMasterDetails> res = new List<RegionMasterDetails>();
+
+
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "get_all_region_master";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("search_text", String.IsNullOrEmpty(e.search_text) ? null : e.search_text));
+                cmd.Parameters.Add(new OracleParameter("umr_region_code", e.umr_region_code));
+                //cmd.Parameters.Add(new OracleParameter("quarter", e.quarter));
+
+
+
+
+                cmd.Parameters.Add("get_data", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+
+
+
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            RegionMasterDetails r = new RegionMasterDetails();
+                            r.umr_region_code = Convert.ToString(rd["umr_region_code"]);
+                            r.umr_region_name = Convert.ToString(rd["umr_region_name"]);
+                            r.umr_region_channel = Convert.ToString(rd["umr_region_channel"]);
+                            r.umr_order_no = Convert.ToInt32(rd["umr_order_no"]);
+                            r.umr_file_date = Convert.ToDateTime(rd["umr_file_date"]);
+                            r.umr_action_date = Convert.ToDateTime(rd["umr_action_date"]);
+                            r.umr_valid_from = Convert.ToDateTime(rd["umr_valid_from"]);
+                            r.umr_valid_upto = Convert.ToDateTime(rd["umr_valid_upto"]);
+                            r.umr_creation_date = Convert.ToDateTime(rd["umr_creation_date"]);
+                            r.umr_created_by = Convert.ToString(rd["umr_created_by"]);
+                            r.umr_modification_date = rd["umr_modification_date"] == DBNull.Value ? null : (DateTime?)rd["umr_modification_date"];
+                            r.umr_modified_by = Convert.ToString(rd["umr_modified_by"]);
+                            r.umr_upd_type = rd["umr_upd_type"] == DBNull.Value ? '\0' : Convert.ToChar(rd["umr_upd_type"]);
+
+
+
+                            res.Add(r);
+                        }
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal Region Master Data (RegionMasterDetails Model) ERROR :" + ex.Message);
+
+
+
+                    throw;
+                }
+
+
+
+                cmd.Dispose();
+                con.Close();
+
+
+
+                return res;
+            }
+        }
+        #endregion
+
+
+
+
+        public List<RegionMasterDetails> GetRegionCode()
+        {
+            List<RegionMasterDetails> res = new List<RegionMasterDetails>();
+
+
+
+            using (OracleConnection con = new OracleConnection(strcon))
+            {
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "get_distinct_regioncode";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("get_region", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+
+
+
+                try
+                {
+                    con.Open();
+                    OracleDataReader rd = cmd.ExecuteReader();
+
+
+
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            RegionMasterDetails r = new RegionMasterDetails();
+                            r.umr_region_code = Convert.ToString(rd["umr_region_code"]);
+                            res.Add(r);
+                        }
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    Helper.WriteLog("Dal Region Master Data (RegionMasterDetails Model) ERROR :" + ex.Message);
+
+
+
+                    throw;
+                }
+
+
+
+                cmd.Dispose();
+                con.Close();
+
+
+
+                return res;
+            }
+        }
+
+    }
+}

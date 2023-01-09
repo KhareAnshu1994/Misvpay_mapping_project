@@ -1,0 +1,393 @@
+﻿@model IEnumerable<Mapping_Solution.Models.MappingChangesAccessDetail>
+
+
+@{
+    ViewBag.Title = "Mapping Change Access";
+    ViewBag.page_id = "47";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+
+    .error{
+        color:red;
+    }
+    .ms-options-wrap .ms-options {
+        position: absolute !important;
+        background: #fff;
+        z-index: 999;
+        border: 1px #d7d7d7 solid;
+        max-width: 300px;
+    }
+
+        .ms-options-wrap ul {
+            list-style: none;
+            padding: 0px;
+            line-height: 30px;
+            margin-top: 10px;
+        }
+    .ms-options-wrap button {
+        width: 100%;
+        background: #fff;
+        border: 1px #d8d8d8 solid;
+        height: 32px;
+        border-radius: 2px;
+        text-align: left;
+        overflow:hidden
+    }
+
+        .ms-options-wrap .ms-search input {
+            width: 90%;
+            margin: 10px;
+            padding: 5px 10px;
+        }
+
+    .ms-options-wrap a{
+        padding:15px
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Mapping Change Access</h4>
+        <form id="addmappingChangeAccessForm">
+            <hr>
+            <div class="row pt-3">
+                <div class="form-group col-md-3 mb-3">
+                    <label>Reason Codes</label>
+
+                    @Html.DropDownList("ReasonCode", ViewBag.reasoncode as SelectList, "--Select--", new { @class = "form-select w-100", id = "ddlReasonCode" })
+                    @*<select class="form-select">
+                            <option>--select--</option>
+                            <option>Addition</option>
+                            <option>New Appointment</option>
+                            <option>Promotion/Transfer</option>
+                            <option>Termination</option>
+                            <option>Seperation</option>
+                            <option>All India</option>
+                        </select>*@
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+                    <label>Channel Code</label>
+                    @Html.DropDownList("ChannelCode", ViewBag.channelcode as SelectList, "Select Channel Code", new { @class = "form-select w-100", id = "ddlChannelCode" })
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+
+                    <label>Region</label>
+                    @Html.DropDownList("RegionCode", ViewBag.region as SelectList, "Select Region Code", new { @class = "form-select w-100", id = "ddlRegioncode" })
+
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+
+
+                    <label>Selected UFC’s</label>
+                    <select class="form-select w-100" id="slctUfc" multiple name="Ufccode">
+
+                        @if (ViewBag.Ufccode != null)
+                        {
+
+                            foreach (var item in ViewBag.Ufccode)
+                            {
+
+                                <option value="@item.Value|@item.Text">@item.Value, @item.Text</option>
+                            }
+                        }
+
+                    </select>
+                 
+                    <label class="error"></label>
+                </div>
+
+                <div class="form-group col-md-3 mb-3">
+                    <label>Mapping Criteria</label>
+                    <select class="form-select w-100" id="slctMappingCriteria" multiple name="MappingCriteria">
+
+                        @if (ViewBag.MappingCriteria != null)
+                        {
+                            foreach (var item in ViewBag.MappingCriteria)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+
+                            }
+                        }
+                    </select>
+                    <label class="error"></label>
+                </div>
+
+                <div class="form-group col-md-3 mb-3">
+                    <label>Access Start Date</label>
+                    <input type="date" id="accessstartDate" name="Access_start_Date" class="form-control" />
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+                    <label>Access End Date</label>
+                    <input type="date" id="accessEndDate" name="Access_end_Date" class="form-control" />
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+                    @{
+                        DateTime date = DateTime.Now;
+                        string currentDate = date.ToString("yyyy-MM-dd");
+                    }
+                    <label>Effective Date</label>
+                    <input type="date" id="effectiveDate" name="effective_Date" value="@currentDate" class="form-control" />
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+                    <label>KRA Valid From</label>
+                    <input type="date" id="kravalidfrom" name="kra_valid_from" class="form-control" />
+                    <label class="error"></label>
+                </div>
+                <div class="form-group col-md-3 mb-3">
+
+                    <label>VYMO Valid From</label>
+                    <input type="date" value="@currentDate" id="Vymovalidfrom" name="vymo_valid_from" class="form-control" readonly />
+                    <label class="error"></label>
+                </div>
+                <div class="col-md-3">
+                    <label>Remark</label>
+                    <input type="text" id="remark" name="remark" class="form-control" placeholder="Remark">
+                    <label class="error"></label>
+                </div>
+
+               
+                <div class="form-group col-md-3 mb-3">
+                    <label>Purpose</label>
+
+                    @Html.DropDownList("Purpose", ViewBag.Purpose as SelectList, "Select", new { @class = "form-select w-100", id = "idpurpose" })
+                    <label class="error"></label>
+                </div>
+                <div class="col-md-3 mt-3">
+                    <button type="button" style="margin-left:1px;margin-top:12px;" id="btn_search" class="btn btn-primary w-100" onclick="register()" >Submit</button>
+              
+                    @*<a style="margin-left:1px;margin-top:12px;" href="#" id="btn_search" name="btnsearch" class="btn btn-primary w-100">Submit</a>*@
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        @*1-10 of 500 <i class="fa fa-solid fa-angle-left"></i> <a href=""><i class="fa fa-solid fa-angle-right"></i></a>*@
+        <div class="overflow-auto" id="">
+            @Html.Partial("_MappingChangesAccessView", Model)
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $('#effectiveDate').change(function () {
+            let effDate = $('#effectiveDate').val();
+
+            $('#Vymovalidfrom').val(effDate);
+            //console.log(a);
+
+            var effectiveDate = new Date(effDate);
+
+            var effectiveDateMonth = effectiveDate.getMonth();
+
+            var kradate = "";
+
+            if (effectiveDateMonth == 0 || effectiveDateMonth == 3 || effectiveDateMonth == 6 || effectiveDateMonth == 9) {
+                kradate = new Date(effectiveDate.getFullYear(), effectiveDate.getMonth(), 1);
+            }
+            else {
+
+                if (effectiveDateMonth == 1 || effectiveDateMonth == 2) {
+                    kradate = new Date(effectiveDate.getFullYear(), 3, 1);
+                }
+                else if (effectiveDateMonth == 4 || effectiveDateMonth == 5) {
+                    kradate = new Date(effectiveDate.getFullYear(), 6, 1);
+                }
+                else if (effectiveDateMonth == 7 || effectiveDateMonth == 8) {
+                    kradate = new Date(effectiveDate.getFullYear(), 9, 1);
+                }
+                else if (effectiveDateMonth == 10 || effectiveDateMonth == 11) {
+                    kradate = new Date(effectiveDate.getFullYear() + 1, 0, 1);
+                }
+
+            }
+            //moment(kradate).format("");
+            //var e = moment($("#kravalidfrom").kradate).format("DD-MM-YYYY")
+
+            var KRADATE = moment(kradate).format("YYYY-MM-DD")
+            $("#kravalidfrom").val(KRADATE);
+
+        });
+
+
+        $('#effectiveDate').trigger("change");
+
+
+        $('#slctUfc').multiselect({
+            search: true,
+            selectAll: true
+        });
+
+        $('#slctMappingCriteria').multiselect({
+            search: true,
+            selectAll: true
+        });
+
+        $('#tblMappingChangeAccess').DataTable({
+            searching: false,
+
+        });
+        $('#ddlRegioncode').change(function () {
+
+            var region_code = $('#ddlRegioncode').val();
+            var data = { region_code: region_code};
+            $.ajax({
+                url: "/MappingChangesAccess/GetUFCList",
+                type: "POST",
+                data: data,
+                success: function (result) {
+                    $("#slctUfc").html("");
+                    console.log(result);
+                    if (result != null && result != undefined && result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var option = '<option value="' + result[i].ufc_code + '|' + result[i].ufc_name + '">' + result[i].ufc_code + ',' + result[i].ufc_name + '</option>';
+                            $("#slctUfc").append(option);
+                        }
+                    }
+
+                    $('#slctUfc').multiselect('reload');
+
+
+
+                },
+                error: function (err) {
+                    console.error(err.message);
+                },
+            });
+
+        })
+
+
+    });
+    function register() {
+        let obj = {};
+        var error = false;
+        $(".error").html("");
+        let reasoncode = $('#ddlReasonCode').val();
+        if (reasoncode == "") {
+            $('#ddlReasonCode').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let channelcode = $('#ddlChannelCode').val();
+        if (channelcode == "") {
+            $('#ddlChannelCode').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+        let regon = $('#ddlRegioncode').val();
+        if (regon == "") {
+            $('#ddlRegioncode').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+        let ufc = $('#slctUfc').val();
+        if (ufc == "") {
+            $('#slctUfc').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+        let mappingCriteria = $('#slctMappingCriteria').val().toString();
+        if (mappingCriteria == "") {
+            $('#slctMappingCriteria').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let accessStartdate = $('#accessstartDate').val();
+        if (accessStartdate == "") {
+            $('#accessstartDate').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let accessEnddate = $('#accessEndDate').val();
+        if (accessEnddate == "") {
+            $('#accessEndDate').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let effectiveDate = $('#effectiveDate').val();
+        if (effectiveDate == "") {
+            $('#effectiveDate').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let kraValidfrom = $('#kravalidfrom').val();
+        if (kraValidfrom == "") {
+            $('#kravalidfrom').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let VymoValidfrom = $('#Vymovalidfrom').val();
+        if (VymoValidfrom == "") {
+            $('#Vymovalidfrom').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+        let remak = $('#remark').val();
+
+
+        let prpose = $('#idpurpose').val();
+        if (prpose == "") {
+            $('#idpurpose').parent().find("label.error").html("required*");
+            error = true;
+        }
+
+
+
+        if (error == false) {
+            obj.reason_codes = reasoncode;
+            obj.channel_code = channelcode;
+            obj.region = regon;
+            obj.selected_ufc = ufc;
+            obj.mapping_tables = mappingCriteria;
+            obj.access_start_date = accessStartdate;
+            obj.access_end_date = accessEnddate;
+            obj.effective_date = effectiveDate;
+            obj.kra_valid_from = kraValidfrom;
+            obj.vymo_valid_from = VymoValidfrom;
+            obj.remark = remak;
+            obj.purpose = prpose;
+
+            console.log(obj);
+
+            $.ajax({
+                url: "/MappingChangesAccess/InsertChangingAccess",
+                type: "POST",
+                data: obj,
+                success: function (data) {
+
+                   location.reload();
+
+
+                },
+                error: function (err) {
+                    console.error(err.message);
+                },
+            });
+        }
+
+    }
+
+</script> 
